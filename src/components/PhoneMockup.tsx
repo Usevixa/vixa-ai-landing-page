@@ -26,8 +26,8 @@ const PhoneMockup = () => {
       </div>
 
       {/* Phone Frame */}
-      <div className="relative glass-card rounded-[2.5rem] p-3 glow-primary">
-        <div className="bg-background rounded-[2rem] overflow-hidden">
+      <div className="relative glass-card rounded-[2.5rem] p-3 animate-glow-pulse hover-lift">
+        <div className="bg-background rounded-[2rem] overflow-hidden shadow-2xl">
           {/* Phone Status Bar */}
           <div className="bg-muted px-6 py-2 flex items-center justify-between text-xs">
             <span>9:41</span>
