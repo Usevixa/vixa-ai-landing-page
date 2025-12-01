@@ -376,24 +376,24 @@ All colors MUST be HSL.
 
   /* Smooth Bold on Hover - Variable Font Weight Animation */
   .hover-bold-smooth {
-    font-variation-settings: "wght" 400;
-    transition: font-variation-settings 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+    font-weight: 400;
+    transition: font-weight 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
                 color 0.3s ease;
   }
 
   .hover-bold-smooth:hover {
-    font-variation-settings: "wght" 700;
+    font-weight: 700;
   }
 
   /* Variant for starting at medium weight */
   .hover-bold-smooth-medium {
-    font-variation-settings: "wght" 500;
-    transition: font-variation-settings 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    font-weight: 500;
+    transition: font-weight 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 color 0.3s ease;
   }
 
   .hover-bold-smooth-medium:hover {
-    font-variation-settings: "wght" 700;
+    font-weight: 700;
   }
 }
 
