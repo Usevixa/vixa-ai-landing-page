@@ -35,17 +35,18 @@ const Index = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden mesh-background dot-pattern noise-overlay">
+      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
         <GradientOrbs />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none animate-gradient-shift" />
+        <div className="animated-grid absolute inset-0 opacity-50" />
         
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
-            <div className="space-y-8 animate-fade-in">
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-bold leading-tight tracking-tight">
-                VIXA AI — Your Financial{" "}
-                <span className="text-gradient-primary">Co-Pilot</span> on WhatsApp
+            <div className="space-y-8 animate-blur-in">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold tracking-tight leading-tight">
+                <span className="text-gradient-vibrant">Your Financial Co-Pilot</span>
+                <br />
+                <span className="text-foreground">on WhatsApp</span>
               </h1>
               
               <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
@@ -397,9 +398,9 @@ const Index = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 mesh-background dot-pattern relative overflow-hidden">
+      <section className="relative py-20 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <GradientOrbs />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
+        <div className="animated-grid absolute inset-0 opacity-40" />
         <div className="container mx-auto max-w-4xl text-center space-y-8 relative z-10">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
             Ready to talk to <span className="text-gradient-primary">your wallet</span>?
