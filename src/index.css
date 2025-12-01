@@ -122,6 +122,79 @@ All colors MUST be HSL.
     );
   }
   
+  /* Dot Pattern Background */
+  .dot-pattern {
+    background-image: radial-gradient(circle, hsl(var(--primary) / 0.08) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  
+  /* Noise Texture Overlay */
+  .noise-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+  }
+  
+  /* Shimmer Card Effect */
+  .shimmer-card {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shimmer-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent 40%, hsl(var(--primary) / 0.12) 48%, hsl(var(--primary) / 0.15) 52%, transparent 60%);
+    transition: left 0.6s ease;
+  }
+  
+  .shimmer-card:hover::after {
+    left: 100%;
+  }
+  
+  /* Animated Border Effect */
+  .animated-border {
+    position: relative;
+  }
+  
+  .animated-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+      from 0deg at 50% 50%,
+      hsl(var(--primary) / 0.4) 0deg,
+      hsl(var(--secondary) / 0.4) 120deg,
+      hsl(var(--primary) / 0.4) 240deg,
+      hsl(var(--secondary) / 0.4) 360deg
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: border-rotate 4s linear infinite;
+  }
+  
+  .animated-border:hover::before {
+    opacity: 1;
+  }
+  
+  @keyframes border-rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
   /* Glow Effects - Enhanced */
   .glow-primary {
     box-shadow: var(--shadow-glow-primary);

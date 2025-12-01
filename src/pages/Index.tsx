@@ -3,6 +3,8 @@ import PhoneMockup from "@/components/PhoneMockup";
 import FeatureCard from "@/components/FeatureCard";
 import ChatDemo from "@/components/ChatDemo";
 import FAQAccordion from "@/components/FAQAccordion";
+import GradientOrbs from "@/components/GradientOrbs";
+import AnimatedSection from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import {
   Mic,
@@ -33,7 +35,8 @@ const Index = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden mesh-background">
+      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden mesh-background dot-pattern noise-overlay">
+        <GradientOrbs />
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none animate-gradient-shift" />
         
         <div className="container mx-auto">
@@ -64,10 +67,12 @@ const Index = () => {
               </ul>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground animate-glow-pulse text-base px-8 font-semibold">
-                  Try VIXA on WhatsApp
+                <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground text-base px-8 font-semibold relative overflow-hidden group">
+                  <span className="relative z-10">Try VIXA on WhatsApp</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary bg-[length:200%_100%] group-hover:animate-[gradient-shift_2s_ease_infinite]" />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary text-base px-8 font-medium transition-all duration-300">
+                <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary text-base px-8 font-medium transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]">
                   View AI Demo
                 </Button>
               </div>
@@ -82,8 +87,9 @@ const Index = () => {
       </section>
 
       {/* What is VIXA AI? */}
-      <section id="overview" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section id="overview" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30 relative overflow-hidden">
         <div className="container mx-auto max-w-6xl">
+          <AnimatedSection animation="fade-up">
           <div className="text-center space-y-6 mb-16">
             <div className="inline-block px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold tracking-wide mb-4">
               OVERVIEW
@@ -95,6 +101,7 @@ const Index = () => {
               VIXA AI is the intelligence layer behind the VIXA wallet. It listens to your messages and voice notes on WhatsApp, understands your intent, and turns it into real, secure financial actions.
             </p>
           </div>
+          </AnimatedSection>
 
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
@@ -122,6 +129,7 @@ const Index = () => {
       {/* How It Works */}
       <section id="how-it-works" className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-6xl">
+          <AnimatedSection animation="fade-up">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-sm font-semibold tracking-wide mb-4">
               HOW IT WORKS
@@ -130,6 +138,7 @@ const Index = () => {
               How VIXA AI turns your <span className="text-gradient-gold">words into actions</span>
             </h2>
           </div>
+          </AnimatedSection>
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
@@ -154,20 +163,25 @@ const Index = () => {
                 description: "Money moves instantly. Receipts generated automatically.",
               },
             ].map((step, index) => (
-              <div key={index} className="relative">
-                <div className="glass-card p-6 rounded-2xl text-center hover:glow-primary transition-all">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+              <AnimatedSection key={index} animation="fade-up" delay={index * 100}>
+              <div className="relative">
+                <div className="glass-card shimmer-card p-6 rounded-2xl text-center hover:glow-primary transition-all">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4 relative">
                     <step.icon className="w-8 h-8 text-primary" />
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-transparent animate-pulse" />
                   </div>
                   <h3 className="font-heading font-semibold text-lg mb-2">{step.title}</h3>
                   <p className="text-sm text-muted-foreground">{step.description}</p>
                 </div>
                 {index < 3 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary/30">
-                    →
+                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                    <div className="w-8 h-0.5 bg-gradient-to-r from-primary/50 to-secondary/50 relative">
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary animate-pulse" />
+                    </div>
                   </div>
                 )}
               </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -383,7 +397,8 @@ const Index = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 mesh-background relative overflow-hidden">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 mesh-background dot-pattern relative overflow-hidden">
+        <GradientOrbs />
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
         <div className="container mx-auto max-w-4xl text-center space-y-8 relative z-10">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
@@ -395,10 +410,14 @@ const Index = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground animate-glow-pulse text-lg px-12 font-semibold">
-              Get VIXA on WhatsApp
+            <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground text-lg px-12 font-semibold relative overflow-hidden group">
+              <span className="relative z-10">Get VIXA on WhatsApp</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary bg-[length:200%_100%] group-hover:animate-[gradient-shift_2s_ease_infinite]" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+              </div>
             </Button>
-            <Button size="lg" variant="ghost" className="text-primary hover:text-primary-glow hover:bg-primary/10 text-lg font-medium transition-all duration-300">
+            <Button size="lg" variant="ghost" className="text-primary hover:text-primary-glow hover:bg-primary/10 text-lg font-medium transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]">
               Return to main VIXA site →
             </Button>
           </div>

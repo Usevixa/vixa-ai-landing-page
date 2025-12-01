@@ -26,8 +26,14 @@ const PhoneMockup = () => {
       </div>
 
       {/* Phone Frame */}
-      <div className="relative glass-card rounded-[2.5rem] p-3 animate-glow-pulse hover-lift">
-        <div className="bg-background rounded-[2rem] overflow-hidden shadow-2xl">
+      <div className="relative glass-card rounded-[2.5rem] p-3 hover-lift group">
+        {/* Multi-layer glow effect */}
+        <div className="absolute inset-0 rounded-[2.5rem] opacity-40 group-hover:opacity-60 transition-opacity duration-500">
+          <div className="absolute inset-0 bg-primary/20 blur-2xl animate-pulse" />
+          <div className="absolute inset-0 bg-secondary/10 blur-3xl" style={{ animation: 'pulse 3s ease-in-out infinite' }} />
+        </div>
+        
+        <div className="bg-background rounded-[2rem] overflow-hidden shadow-2xl relative z-10">
           {/* Phone Status Bar */}
           <div className="bg-muted px-6 py-2 flex items-center justify-between text-xs">
             <span>9:41</span>
