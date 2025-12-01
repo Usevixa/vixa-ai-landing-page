@@ -18,7 +18,7 @@ const FeatureCard = ({ icon: Icon, title, description, delay = 0 }: FeatureCardP
           <Icon className="w-6 h-6 text-primary relative z-10" />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
-        <h3 className="text-xl font-heading font-semibold hover-bold-smooth-medium text-foreground tracking-tight">
+        <h3 className="text-xl font-heading hover-bold-smooth-medium text-foreground tracking-tight">
           {title}
         </h3>
         <p className="text-muted-foreground leading-relaxed flex-grow">
