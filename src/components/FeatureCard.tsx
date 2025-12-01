@@ -10,12 +10,13 @@ interface FeatureCardProps {
 const FeatureCard = ({ icon: Icon, title, description, delay = 0 }: FeatureCardProps) => {
   return (
     <div
-      className="glass-card gradient-border hover-lift p-6 rounded-2xl hover:glow-primary transition-all duration-500 group animate-fade-in h-full"
+      className="glass-card gradient-border animated-border shimmer-card hover-lift p-6 rounded-2xl hover:glow-primary transition-all duration-500 group animate-fade-in h-full"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="flex flex-col items-start space-y-4 h-full">
-        <div className="p-3 bg-primary/10 rounded-xl group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-          <Icon className="w-6 h-6 text-primary" />
+        <div className="p-3 bg-primary/10 rounded-xl group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300 relative overflow-hidden">
+          <Icon className="w-6 h-6 text-primary relative z-10" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
         <h3 className="text-xl font-heading font-semibold text-foreground tracking-tight">
           {title}
