@@ -67,16 +67,11 @@ const Index = () => {
                 ))}
               </ul>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground text-base px-8 font-semibold relative overflow-hidden group">
-                  <span className="relative z-10">Try VIXA on WhatsApp</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary bg-[length:200%_100%] group-hover:animate-[gradient-shift_2s_ease_infinite]" />
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
-                </Button>
-                <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary text-base px-8 font-medium transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]">
-                  View AI Demo
-                </Button>
-              </div>
+              <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground text-base px-8 font-semibold relative overflow-hidden group">
+                <span className="relative z-10">Try VIXA on WhatsApp</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary bg-[length:200%_100%] group-hover:animate-[gradient-shift_2s_ease_infinite]" />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+              </Button>
             </div>
 
             {/* Right - Phone Mockup */}
@@ -410,18 +405,13 @@ const Index = () => {
             Join early users already using VIXA AI to move money smarter, safer, and faster across Africa.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground text-lg px-12 font-semibold relative overflow-hidden group">
-              <span className="relative z-10">Get VIXA on WhatsApp</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary bg-[length:200%_100%] group-hover:animate-[gradient-shift_2s_ease_infinite]" />
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
-              </div>
-            </Button>
-            <Button size="lg" variant="ghost" className="text-primary hover:text-primary-glow hover:bg-primary/10 text-lg font-medium transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]">
-              Return to main VIXA site →
-            </Button>
-          </div>
+          <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground text-lg px-12 font-semibold relative overflow-hidden group">
+            <span className="relative z-10">Try VIXA on WhatsApp</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary bg-[length:200%_100%] group-hover:animate-[gradient-shift_2s_ease_infinite]" />
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+            </div>
+          </Button>
         </div>
       </section>
 

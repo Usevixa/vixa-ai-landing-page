@@ -39,15 +39,6 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <Button
-              variant="outline"
-              className="border-border hover:border-primary hover:text-primary transition-all"
-            >
-              Back to VIXA Wallet
-            </Button>
-          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -71,14 +62,6 @@ const Navigation = () => {
                 {link.label}
               </a>
             ))}
-            <div className="px-4 pt-2">
-              <Button
-                variant="outline"
-                className="w-full border-border hover:border-primary hover:text-primary"
-              >
-                Back to VIXA Wallet
-              </Button>
-            </div>
           </div>
         )}
       </div>
