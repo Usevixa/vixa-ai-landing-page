@@ -11,17 +11,16 @@ const Navigation = () => {
     { label: "Capabilities", href: "#capabilities" },
     { label: "AI Demo", href: "#demo" },
     { label: "For Users", href: "#users" },
-    { label: "For Builders", href: "#builders" },
     { label: "FAQ", href: "#faq" },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/50 backdrop-blur-xl">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <a href="/" className="flex items-center space-x-2 group">
-            <span className="text-xl sm:text-2xl font-heading font-bold text-gradient-primary transition-all">
+            <span className="text-2xl font-heading font-bold text-gradient-primary transition-all tracking-tight">
               VIXA AI
             </span>
           </a>
@@ -32,9 +31,10 @@ const Navigation = () => {
               <a
                 key={link.href}
                 href={link.href}
-                className="px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-300 relative group"
               >
                 {link.label}
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary group-hover:w-3/4 transition-all duration-300"></span>
               </a>
             ))}
           </div>

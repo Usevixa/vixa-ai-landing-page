@@ -33,14 +33,14 @@ const Index = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none" />
+      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden mesh-background">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none animate-gradient-shift" />
         
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="space-y-8 animate-fade-in">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold leading-tight">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-bold leading-tight tracking-tight">
                 VIXA AI — Your Financial{" "}
                 <span className="text-gradient-primary">Co-Pilot</span> on WhatsApp
               </h1>
@@ -64,10 +64,10 @@ const Index = () => {
               </ul>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground glow-primary text-base px-8">
+                <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground animate-glow-pulse text-base px-8 font-semibold">
                   Try VIXA on WhatsApp
                 </Button>
-                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10 text-base px-8">
+                <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary text-base px-8 font-medium transition-all duration-300">
                   View AI Demo
                 </Button>
               </div>
@@ -82,10 +82,13 @@ const Index = () => {
       </section>
 
       {/* What is VIXA AI? */}
-      <section id="overview" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section id="overview" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center space-y-6 mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold">
+            <div className="inline-block px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold tracking-wide mb-4">
+              OVERVIEW
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
               What exactly is <span className="text-gradient-primary">VIXA AI</span>?
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -117,11 +120,16 @@ const Index = () => {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="how-it-works" className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-center mb-16">
-            How VIXA AI turns your <span className="text-gradient-gold">words into actions</span>
-          </h2>
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-sm font-semibold tracking-wide mb-4">
+              HOW IT WORKS
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
+              How VIXA AI turns your <span className="text-gradient-gold">words into actions</span>
+            </h2>
+          </div>
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
@@ -166,11 +174,16 @@ const Index = () => {
       </section>
 
       {/* Capabilities Grid */}
-      <section id="capabilities" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section id="capabilities" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-center mb-16">
-            What VIXA AI <span className="text-gradient-primary">can do</span> for you
-          </h2>
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold tracking-wide mb-4">
+              CAPABILITIES
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
+              What VIXA AI <span className="text-gradient-primary">can do</span> for you
+            </h2>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
@@ -218,10 +231,13 @@ const Index = () => {
       </section>
 
       {/* AI Chat Demo */}
-      <section id="demo" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="demo" className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-5xl">
           <div className="text-center space-y-6 mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold">
+            <div className="inline-block px-4 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-sm font-semibold tracking-wide mb-4">
+              AI DEMO
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
               See VIXA AI <span className="text-gradient-gold">in action</span>
             </h2>
             <p className="text-muted-foreground text-lg">
@@ -258,11 +274,16 @@ const Index = () => {
       </section>
 
       {/* For Users */}
-      <section id="users" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section id="users" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-center mb-16">
-            How everyday people <span className="text-gradient-primary">use VIXA AI</span>
-          </h2>
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold tracking-wide mb-4">
+              FOR USERS
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
+              How everyday people <span className="text-gradient-primary">use VIXA AI</span>
+            </h2>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -299,47 +320,17 @@ const Index = () => {
         </div>
       </section>
 
-      {/* For Builders */}
-      <section id="builders" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto max-w-5xl">
-          <div className="glass-card rounded-3xl p-8 sm:p-12 text-center space-y-8">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold">
-              For <span className="text-gradient-gold">builders</span> and fintech partners
-            </h2>
-            
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              VIXA AI exposes clean APIs and webhooks so partners can embed chat-native, AI-assisted payments into their own platforms.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto text-left">
-              {[
-                { icon: Brain, label: "Intent parsing engine" },
-                { icon: Code, label: "Configurable workflows" },
-                { icon: Webhook, label: "Webhooks for events" },
-                { icon: Database, label: "Audit-friendly logs" },
-              ].map((feature, index) => (
-                <div key={index} className="flex items-center space-x-3 bg-muted/50 p-4 rounded-xl">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <feature.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <span className="font-medium">{feature.label}</span>
-                </div>
-              ))}
-            </div>
-
-            <Button size="lg" className="bg-secondary hover:bg-secondary-glow text-secondary-foreground glow-secondary">
-              Talk to Us About Integration
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* Security Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-center mb-16">
-            Safe by design, <span className="text-gradient-primary">not by accident</span>
-          </h2>
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold tracking-wide mb-4">
+              SECURITY
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
+              Safe by design, <span className="text-gradient-primary">not by accident</span>
+            </h2>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -377,19 +368,25 @@ const Index = () => {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-center mb-16">
-            Frequently Asked <span className="text-gradient-gold">Questions</span>
-          </h2>
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-sm font-semibold tracking-wide mb-4">
+              FAQ
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
+              Frequently Asked <span className="text-gradient-gold">Questions</span>
+            </h2>
+          </div>
           <FAQAccordion />
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10">
-        <div className="container mx-auto max-w-4xl text-center space-y-8">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 mesh-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
+        <div className="container mx-auto max-w-4xl text-center space-y-8 relative z-10">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
             Ready to talk to <span className="text-gradient-primary">your wallet</span>?
           </h2>
           
@@ -398,10 +395,10 @@ const Index = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground glow-primary text-base px-10">
+            <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground animate-glow-pulse text-lg px-12 font-semibold">
               Get VIXA on WhatsApp
             </Button>
-            <Button size="lg" variant="ghost" className="text-primary hover:text-primary-glow hover:bg-primary/10">
+            <Button size="lg" variant="ghost" className="text-primary hover:text-primary-glow hover:bg-primary/10 text-lg font-medium transition-all duration-300">
               Return to main VIXA site →
             </Button>
           </div>

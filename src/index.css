@@ -98,36 +98,109 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
-  /* Glass Effect */
+  /* Glass Effect - Enhanced */
   .glass-card {
     background: var(--gradient-card);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid hsl(var(--border) / 0.5);
     box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
   }
   
-  /* Glow Effects */
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      hsl(var(--primary) / 0.2), 
+      transparent
+    );
+  }
+  
+  /* Glow Effects - Enhanced */
   .glow-primary {
     box-shadow: var(--shadow-glow-primary);
+    transition: box-shadow 0.4s ease;
+  }
+  
+  .glow-primary:hover {
+    box-shadow: 0 0 60px hsl(150 100% 45% / 0.5);
   }
   
   .glow-secondary {
     box-shadow: var(--shadow-glow-secondary);
+    transition: box-shadow 0.4s ease;
   }
   
-  /* Text Gradients */
+  .glow-secondary:hover {
+    box-shadow: 0 0 60px hsl(45 95% 58% / 0.5);
+  }
+  
+  /* Text Gradients - Enhanced */
   .text-gradient-primary {
     background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: gradient-shift 8s ease infinite;
   }
   
   .text-gradient-gold {
     background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-glow)));
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: gradient-shift 8s ease infinite;
+  }
+  
+  /* Hover Effects */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+  
+  /* Gradient Border */
+  .gradient-border {
+    position: relative;
+    background: var(--gradient-card);
+    border-radius: 1rem;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.5), hsl(var(--secondary) / 0.5));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  
+  .gradient-border:hover::before {
+    opacity: 1;
+  }
+  
+  /* Mesh Background */
+  .mesh-background {
+    background-image: 
+      radial-gradient(at 0% 0%, hsl(var(--primary) / 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsl(var(--secondary) / 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsl(var(--primary) / 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsl(var(--secondary) / 0.05) 0px, transparent 50%);
   }
   
   /* Animations */
