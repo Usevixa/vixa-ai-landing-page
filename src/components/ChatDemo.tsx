@@ -10,7 +10,7 @@ interface ChatDemoProps {
 
 const ChatDemo = ({ messages, title }: ChatDemoProps) => {
   return (
-    <div className="glass-card rounded-2xl p-4 sm:p-6 max-w-2xl mx-auto">
+    <div className="glass-card rainbow-border rounded-2xl p-4 sm:p-6 max-w-2xl mx-auto hover:shadow-elevation transition-all duration-300">
       {title && (
         <h4 className="text-lg font-heading font-semibold mb-4 text-center text-muted-foreground">
           {title}
@@ -24,10 +24,10 @@ const ChatDemo = ({ messages, title }: ChatDemoProps) => {
             style={{ animationDelay: `${index * 200}ms` }}
           >
             <div
-              className={`max-w-[80%] px-4 py-3 rounded-2xl ${
+              className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
                 message.sender === "user"
-                  ? "bg-primary text-primary-foreground rounded-br-sm"
-                  : "bg-muted text-foreground rounded-bl-sm"
+                  ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-br-sm"
+                  : "bg-gradient-to-br from-card to-muted text-foreground rounded-bl-sm border border-border"
               }`}
             >
               {message.sender === "ai" && (

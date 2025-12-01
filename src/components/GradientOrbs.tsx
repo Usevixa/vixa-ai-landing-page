@@ -1,33 +1,43 @@
 const GradientOrbs = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Primary Green Orb - Top Left */}
+      {/* Primary Teal Orb - Top Left */}
       <div 
-        className="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-30"
+        className="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-40"
         style={{
-          background: 'radial-gradient(circle, hsl(150 100% 45% / 0.4) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsl(160 85% 75% / 0.6) 0%, transparent 70%)',
           filter: 'blur(80px)',
           animation: 'orb-float-1 20s ease-in-out infinite',
         }}
       />
       
-      {/* Secondary Gold Orb - Bottom Right */}
+      {/* Secondary Purple Orb - Bottom Right */}
       <div 
-        className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full opacity-30"
+        className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full opacity-40"
         style={{
-          background: 'radial-gradient(circle, hsl(45 95% 58% / 0.4) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsl(265 85% 80% / 0.6) 0%, transparent 70%)',
           filter: 'blur(80px)',
           animation: 'orb-float-2 22s ease-in-out infinite',
         }}
       />
       
-      {/* Tertiary Green Orb - Center Right */}
+      {/* Tertiary Sky Blue Orb - Center */}
       <div 
-        className="absolute top-1/2 -right-32 w-80 h-80 rounded-full opacity-20"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-30"
         style={{
-          background: 'radial-gradient(circle, hsl(150 100% 55% / 0.3) 0%, transparent 70%)',
-          filter: 'blur(70px)',
+          background: 'radial-gradient(circle, hsl(200 95% 80% / 0.5) 0%, transparent 70%)',
+          filter: 'blur(90px)',
           animation: 'orb-float-3 18s ease-in-out infinite',
+        }}
+      />
+
+      {/* Coral Accent Orb - Top Right */}
+      <div 
+        className="absolute -top-20 -right-20 w-72 h-72 rounded-full opacity-25"
+        style={{
+          background: 'radial-gradient(circle, hsl(15 90% 75% / 0.5) 0%, transparent 70%)',
+          filter: 'blur(70px)',
+          animation: 'orb-float-1 25s ease-in-out infinite reverse',
         }}
       />
 

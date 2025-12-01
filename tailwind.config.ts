@@ -33,6 +33,8 @@ export default {
           foreground: "hsl(var(--secondary-foreground))",
           glow: "hsl(var(--secondary-glow))",
         },
+        coral: "hsl(var(--coral))",
+        sky: "hsl(var(--sky))",
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -107,14 +109,39 @@ export default {
           "0%": { transform: "translateX(-100%)" },
           "100%": { transform: "translateX(100%)" }
         },
+        "float-gentle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" }
+        },
+        "pulse-soft": {
+          "0%, 100%": { opacity: "0.5" },
+          "50%": { opacity: "0.8" }
+        },
+        "rainbow-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "400% 50%" }
+        },
+        "mesh-shift": {
+          "0%, 100%": { backgroundPosition: "0% 0%" },
+          "50%": { backgroundPosition: "100% 100%" }
+        },
+        "blur-in": {
+          "0%": { filter: "blur(10px)", opacity: "0" },
+          "100%": { filter: "blur(0)", opacity: "1" }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "gradient-shift": "gradient-shift 8s ease infinite",
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
-        "fade-in": "fade-in 0.6s ease-out",
-        "shimmer": "shimmer 2s infinite",
+        "fade-in": "fade-in 0.6s ease-out forwards",
+        "shimmer": "shimmer 2s linear infinite",
+        "float-gentle": "float-gentle 3s ease-in-out infinite",
+        "pulse-soft": "pulse-soft 3s ease-in-out infinite",
+        "rainbow-shift": "rainbow-shift 3s linear infinite",
+        "mesh-shift": "mesh-shift 20s ease infinite",
+        "blur-in": "blur-in 0.6s ease-out forwards",
       },
     },
   },
