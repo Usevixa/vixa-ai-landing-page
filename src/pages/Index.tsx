@@ -5,6 +5,9 @@ import ChatDemo from "@/components/ChatDemo";
 import FAQAccordion from "@/components/FAQAccordion";
 import GradientOrbs from "@/components/GradientOrbs";
 import AnimatedSection from "@/components/AnimatedSection";
+import FloatingParticles from "@/components/FloatingParticles";
+import AnimatedCounter from "@/components/AnimatedCounter";
+import WaveDivider from "@/components/WaveDivider";
 import { Button } from "@/components/ui/button";
 import {
   Mic,
@@ -37,6 +40,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
         <GradientOrbs />
+        <FloatingParticles count={20} />
         <div className="animated-grid absolute inset-0 opacity-50" />
         
         <div className="container mx-auto">
@@ -44,9 +48,9 @@ const Index = () => {
             {/* Left Content */}
             <div className="space-y-8 animate-blur-in">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold tracking-tight leading-tight">
-                <span className="text-gradient-vibrant">Your Financial Co-Pilot</span>
+                <span className="text-gradient-vibrant stagger-text" style={{ animationDelay: '0ms' }}>Your Financial Co-Pilot</span>
                 <br />
-                <span className="text-foreground">on WhatsApp</span>
+                <span className="text-foreground stagger-text" style={{ animationDelay: '200ms' }}>on WhatsApp</span>
               </h1>
               
               <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
@@ -67,7 +71,7 @@ const Index = () => {
                 ))}
               </ul>
 
-              <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground text-base px-8 font-semibold relative overflow-hidden group">
+              <Button size="lg" className="pulse-glow-button bg-primary hover:bg-primary-glow text-primary-foreground text-base px-8 font-semibold relative overflow-hidden group">
                 <span className="relative z-10">Try VIXA on WhatsApp</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary bg-[length:200%_100%] group-hover:animate-[gradient-shift_2s_ease_infinite]" />
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
@@ -84,6 +88,7 @@ const Index = () => {
 
       {/* What is VIXA AI? */}
       <section id="overview" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30 relative overflow-hidden">
+        <WaveDivider variant="top" />
         <div className="container mx-auto max-w-6xl">
           <AnimatedSection animation="fade-up">
           <div className="text-center space-y-6 mb-16">
@@ -122,8 +127,20 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Stats Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-12">
+            <AnimatedCounter end={10000} suffix="+" label="Active Users" />
+            <AnimatedCounter end={500000} suffix="+" label="Transactions Completed" />
+            <AnimatedCounter end={15} suffix="+" label="Countries Supported" />
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
-      <section id="how-it-works" className="py-24 px-4 sm:px-6 lg:px-8">
+      <section id="how-it-works" className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <WaveDivider variant="top" />
         <div className="container mx-auto max-w-6xl">
           <AnimatedSection animation="fade-up">
           <div className="text-center mb-16">
@@ -184,7 +201,8 @@ const Index = () => {
       </section>
 
       {/* Capabilities Grid */}
-      <section id="capabilities" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section id="capabilities" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30 relative overflow-hidden">
+        <WaveDivider variant="top" />
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold tracking-wide mb-4">
@@ -405,7 +423,7 @@ const Index = () => {
             Join early users already using VIXA AI to move money smarter, safer, and faster across Africa.
           </p>
 
-          <Button size="lg" className="bg-primary hover:bg-primary-glow text-primary-foreground text-lg px-12 font-semibold relative overflow-hidden group">
+          <Button size="lg" className="pulse-glow-button bg-primary hover:bg-primary-glow text-primary-foreground text-lg px-12 font-semibold relative overflow-hidden group">
             <span className="relative z-10">Try VIXA on WhatsApp</span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary bg-[length:200%_100%] group-hover:animate-[gradient-shift_2s_ease_infinite]" />
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
