@@ -395,6 +395,69 @@ All colors MUST be HSL.
   .hover-bold-smooth-medium:hover {
     font-variation-settings: "wght" 700;
   }
+
+  /* Pulse glow animation for CTA button */
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  .pulse-glow-button {
+    position: relative;
+  }
+
+  .pulse-glow-button::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    opacity: 0.6;
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    z-index: -1;
+  }
+
+  /* Staggered text reveal */
+  @keyframes reveal-text {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-text {
+    animation: reveal-text 0.8s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  }
+
+  /* Wave animation for divider */
+  @keyframes wave {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(-20px);
+    }
+  }
+
+  /* Enhanced 3D tilt effect */
+  .tilt-card-enhanced {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+
+  .tilt-card-enhanced:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(2deg) scale(1.02);
+  }
 }
 
 @layer base {
