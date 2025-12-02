@@ -21,7 +21,7 @@ const Navigation = () => {
           {/* Logo */}
           <a href="/" className="flex items-center space-x-2 group">
             <span className="text-2xl font-heading font-bold text-gradient-primary transition-all tracking-tight">
-              VIXA AI
+              VIXA - Virtual Interaction & eXchange assistant
             </span>
           </a>
 
