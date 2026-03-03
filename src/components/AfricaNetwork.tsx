@@ -121,11 +121,11 @@ const AfricaNetwork = () => {
             Local rails. Intelligent execution.
           </h2>
           <p className="text-center text-muted-foreground text-sm sm:text-base max-w-xl mx-auto mb-2">
-            Real coverage across Africa — bank transfers, mobile money, and stablecoin settlement where it matters.
+            Powered across Africa.
           </p>
         </AnimatedSection>
 
-        <div className="relative w-full max-w-sm mx-auto mt-8">
+        <div className="relative w-full max-w-3xl mx-auto mt-8">
           <svg
             viewBox={`0 0 ${SVG_W} ${SVG_H}`}
             className="w-full h-auto"

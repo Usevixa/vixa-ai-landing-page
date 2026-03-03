@@ -4,7 +4,7 @@ const layers = [
   { num: "01", title: "Intent Recognition", desc: "Understands voice, pidgin, and informal typing across African languages and dialects." },
   { num: "02", title: "Financial Logic", desc: "Handles multi-currency conversion, live rates, and compliance rules automatically." },
   { num: "03", title: "Security Engine", desc: "PIN-gated execution with anomaly detection and real-time risk scoring." },
-  { num: "04", title: "Execution Layer", desc: "Triggers stablecoin conversion and routes through local payout rails instantly." },
+  { num: "04", title: "Settlement Rails", desc: "Stablecoin core connected to local banks and mobile money." },
 ];
 
 const IntelligenceStack = () => {
@@ -20,7 +20,7 @@ const IntelligenceStack = () => {
             </h2>
             <div className="flex items-end">
               <p className="text-base text-muted-foreground max-w-md leading-relaxed">
-                Four architectural layers that turn natural language into secure financial execution.
+                Four layers working quietly behind every message.
               </p>
             </div>
           </div>
