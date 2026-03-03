@@ -8,7 +8,7 @@ import SafetyEngine from "@/components/SafetyEngine";
 import LiveChatDemo from "@/components/LiveChatDemo";
 import FinalCTA from "@/components/FinalCTA";
 
-const SectionDivider = () => (
+const Divider = () => (
   <div className="container mx-auto px-4 sm:px-6 lg:px-8">
     <div className="h-px bg-border" />
   </div>
@@ -17,25 +17,21 @@ const SectionDivider = () => (
 const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* Navigation */}
+      {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <a href="/" className="font-heading font-bold text-xl tracking-tight text-foreground">
+          <div className="flex items-center justify-between h-14">
+            <a href="/" className="font-heading font-bold text-lg tracking-tight text-foreground">
               VIXA
             </a>
-            <div className="hidden md:flex items-center gap-8">
-              {["Why VIXA", "How It Works", "Coverage"].map((item, i) => (
-                <a
-                  key={item}
-                  href={["#whyvixa", "#howitworks", "#coverage"][i]}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {item}
+            <div className="hidden md:flex items-center gap-6">
+              {[["Why VIXA", "#whyvixa"], ["How It Works", "#howitworks"], ["Coverage", "#coverage"]].map(([label, href]) => (
+                <a key={label} href={href} className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors duration-200">
+                  {label}
                 </a>
               ))}
             </div>
-            <a href="#cta" className="px-5 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:-translate-y-0.5 hover:shadow-md transition-all duration-300">
+            <a href="#cta" className="px-4 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
               Get Started
             </a>
           </div>
@@ -43,43 +39,43 @@ const Index = () => {
       </nav>
 
       <HeroSection />
-      <SectionDivider />
+      <Divider />
 
       <div id="whyvixa">
         <WhyVixa />
       </div>
-      <SectionDivider />
+      <Divider />
 
       <div id="howitworks">
         <HowItWorks />
       </div>
-      <SectionDivider />
+      <Divider />
 
-      <div className="bg-muted/40">
+      <div className="section-alt">
         <IntelligenceStack />
       </div>
-      <SectionDivider />
+      <Divider />
 
       <div id="coverage">
         <AfricaNetwork />
       </div>
-      <SectionDivider />
+      <Divider />
 
       <ImageStrip />
-      <SectionDivider />
+      <Divider />
 
       <SafetyEngine />
-      <SectionDivider />
+      <Divider />
 
       <LiveChatDemo />
-      <SectionDivider />
+      <Divider />
 
       <div id="cta">
         <FinalCTA />
       </div>
 
-      <footer className="py-8 px-4 border-t border-border">
-        <div className="container mx-auto text-center text-muted-foreground text-sm">
+      <footer className="py-6 px-4 border-t border-border">
+        <div className="container mx-auto text-center text-muted-foreground text-xs">
           <p>© 2025 VIXA. Intelligence for African money movement.</p>
         </div>
       </footer>
