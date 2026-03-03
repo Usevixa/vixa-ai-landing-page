@@ -9,32 +9,32 @@ const layers = [
 
 const IntelligenceStack = () => {
   return (
-    <section className="py-[80px] sm:py-[100px] px-4 sm:px-6 lg:px-8">
+    <section className="py-[60px] sm:py-[80px] px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto">
         <AnimatedSection animation="fade-up">
-          <div className="grid md:grid-cols-2 gap-4 mb-16 lg:mb-20">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold tracking-[-0.03em] text-foreground leading-[0.95]">
+          <div className="grid md:grid-cols-2 gap-4 mb-12 lg:mb-16">
+            <h2 className="text-[36px] sm:text-[48px] lg:text-[60px] xl:text-[72px] font-heading font-bold tracking-[-0.025em] text-foreground leading-[0.92]">
               The intelligence
               <br />
               layer.
             </h2>
             <div className="flex items-end">
-              <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
+              <p className="text-base text-muted-foreground max-w-md leading-relaxed">
                 Four architectural layers that turn natural language into secure financial execution.
               </p>
             </div>
           </div>
         </AnimatedSection>
 
-        <div className="border-t-2 border-foreground/10">
+        <div className="border-t border-foreground/8">
           {layers.map((layer, i) => (
-            <AnimatedSection key={i} animation="fade-up" delay={i * 100}>
-              <div className="grid md:grid-cols-[80px_1fr_1.2fr] gap-4 md:gap-8 py-8 md:py-10 items-baseline border-b-2 border-foreground/10">
-                <span className="text-sm font-bold text-primary tracking-wider font-heading">{layer.num}</span>
-                <h3 className="text-2xl sm:text-3xl font-heading font-bold text-foreground tracking-tight leading-tight">
+            <AnimatedSection key={i} animation="fade-up" delay={i * 80}>
+              <div className="grid md:grid-cols-[60px_1fr_1.2fr] gap-3 md:gap-6 py-6 md:py-8 items-baseline border-b border-foreground/8">
+                <span className="text-[10px] font-bold text-primary tracking-widest font-heading">{layer.num}</span>
+                <h3 className="text-xl sm:text-2xl font-heading font-bold text-foreground tracking-tight leading-tight">
                   {layer.title}
                 </h3>
-                <p className="text-base text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {layer.desc}
                 </p>
               </div>
