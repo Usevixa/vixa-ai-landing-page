@@ -6,6 +6,12 @@ import AfricaNetwork from "@/components/AfricaNetwork";
 import ForBuilders from "@/components/ForBuilders";
 import FinalCTA from "@/components/FinalCTA";
 
+const SectionDivider = () => (
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="h-px bg-border" />
+  </div>
+);
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -35,24 +41,30 @@ const Index = () => {
       </nav>
 
       <HeroSection />
+      <SectionDivider />
       <StatementBlock />
+      <SectionDivider />
       <div id="howitworks">
         <HowItWorks />
       </div>
-      <div id="stack">
+      <SectionDivider />
+      <div id="stack" className="bg-muted/40">
         <IntelligenceStack />
       </div>
+      <SectionDivider />
       <div id="network">
         <AfricaNetwork />
       </div>
-      <div id="api">
+      <SectionDivider />
+      <div id="api" className="bg-muted/40">
         <ForBuilders />
       </div>
+      <SectionDivider />
       <div id="cta">
         <FinalCTA />
       </div>
 
-      <footer className="py-8 px-4 border-t border-border/50">
+      <footer className="py-8 px-4 border-t border-border">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
           <p>© 2025 VIXA. Intelligence for African money movement.</p>
         </div>
