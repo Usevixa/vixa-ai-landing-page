@@ -1,26 +1,53 @@
 
 
-## Plan: Fix Africa Map to Match Exact Supported Countries
+## Plan: Align Landing Page to Spec (Gap Fix)
 
-### Problem
-The current map includes **Ghana** and **DR Congo**, which are NOT in the user's supported country list. The user provided exactly **18 countries**. The bottom text also says "18-country coverage" but there are 20 nodes.
+Most of the page structure already exists but has several mismatches with the spec. Here are the specific changes needed:
 
-### Changes to `src/components/AfricaNetwork.tsx`
+### 1. `src/pages/Index.tsx` — Fix section order, add StatementBlock, remove ImageStrip, add alternating backgrounds
 
-1. **Remove Ghana and DR Congo** from the `countries` array — they are not in the supported list.
+Current order: Hero → WhyVixa → HowItWorks → IntelligenceStack → AfricaNetwork → ImageStrip → SafetyEngine → LiveChatDemo → FinalCTA
 
-2. **Update connections array** to remove any lines that referenced Ghana (27,44) or DR Congo (44,56) coordinates.
+**Correct order per spec:**
+Hero → StatementBlock → WhyVixa → AfricaNetwork → HowItWorks → SafetyEngine → IntelligenceStack → LiveChatDemo → FinalCTA
 
-3. **Make the Africa silhouette bolder** — increase stroke width, use a filled semi-transparent silhouette instead of just an outline, so nodes clearly sit "inside" Africa.
+- Import and add `StatementBlock` after Hero
+- Remove `ImageStrip` import and usage
+- Apply alternating background tints: `#F7F6F2` / `#F3F2ED` / `#FFFFFF` via inline styles or utility classes on wrapper divs
 
-4. **Increase the map size** — change from `max-w-3xl` to `max-w-5xl` and use a taller aspect ratio for more visual dominance.
+### 2. `src/components/StatementBlock.tsx` — Fix copy
 
-5. **Improve node positioning** — adjust coordinates so all 18 nodes sit clearly within the Africa silhouette boundary (some like Senegal at x:18 may be outside the current path).
+Change text from "Built for Africa. Not adapted for Africa." to:
+- "Africa doesn't need another app."
+- "It needs execution."
+- Remove the `<span className="text-primary">` coloring — just plain bold black text
 
-6. **Use a more accurate/larger Africa SVG path** that better contains all the West/East/Southern African country positions.
+### 3. `src/components/WhyVixa.tsx` — Fix line text
 
-7. **Update bottom stat text** to say "18-country coverage" (already correct).
+Change "VIXA makes chat become execution." → "VIXA turns chat into execution."
+Change "Apps are optional — WhatsApp is universal." → "Apps are optional — WhatsApp is everywhere."
+Change "And every movement is PIN-confirmed." → "And every move is PIN-confirmed."
 
-### Final 18 Countries (exact from user's list):
-Benin, Botswana, Burkina Faso, Cameroon, Ivory Coast, Congo Brazzaville, Gabon, Kenya, Mali, Malawi, Nigeria, Senegal, South Africa, Tanzania, Togo, Rwanda, Uganda, Zambia
+### 4. `src/components/AfricaNetwork.tsx` — Make full-width
+
+Change `max-w-sm` → `max-w-3xl` and remove container constraint so the map feels continental-scale. Update title/subtext to match spec exactly.
+
+### 5. `src/components/IntelligenceStack.tsx` — Fix layer 04
+
+Change "Execution Layer" → "Settlement Rails"
+Change description to "Stablecoin core connected to local banks and mobile money."
+Update subtext to "Four layers working quietly behind every message."
+
+### 6. `src/components/LiveChatDemo.tsx` — Fix headline
+
+Change "See it in action." → "Built for real life — not demos."
+
+### 7. `src/components/FinalCTA.tsx` — Fix button text and styling
+
+Change button text "Launch VIXA on WhatsApp" → "Enter the VIXA Network"
+Add inner shadow, subtle glow on hover, 1.03x scale on hover (no bounce)
+
+### 8. `src/index.css` — Minor tweaks
+
+Ensure alternating section utility classes exist for `#F7F6F2`, `#F3F2ED`, `#FFFFFF`.
 
