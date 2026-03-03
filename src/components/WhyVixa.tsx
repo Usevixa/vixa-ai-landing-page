@@ -123,7 +123,7 @@ const WhyVixa = () => {
   const ActiveSceneComponent = scenes[activeScene];
 
   return (
-    <section ref={sectionRef} className="relative" style={{ height: "170vh" }}>
+    <section ref={sectionRef} className="relative" style={{ height: "130vh" }}>
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 grid-overlay pointer-events-none" />
 
