@@ -75,7 +75,7 @@ const LiveChatDemo = () => {
       <div className="container mx-auto">
         <AnimatedSection animation="fade-up">
           <h2 className="text-[36px] sm:text-[48px] lg:text-[60px] xl:text-[72px] font-heading font-bold tracking-[-0.025em] text-foreground leading-[0.92] mb-10">
-            See it in action.
+            Built for real life — not demos.
           </h2>
         </AnimatedSection>
 

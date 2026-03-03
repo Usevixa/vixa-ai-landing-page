@@ -17,9 +17,9 @@ const FinalCTA = () => {
         <AnimatedSection animation="fade-up" delay={200}>
           <a
             href="#"
-            className="inline-flex items-center px-10 py-4 rounded-xl bg-primary text-primary-foreground font-bold text-base hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/15 transition-all duration-300"
+            className="inline-flex items-center px-10 py-4 rounded-xl bg-primary text-primary-foreground font-bold text-base transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.15)] hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.15),0_0_20px_rgba(14,143,106,0.25)] hover:scale-[1.03]"
           >
-            Launch VIXA on WhatsApp
+            Enter the VIXA Network
           </a>
         </AnimatedSection>
       </div>

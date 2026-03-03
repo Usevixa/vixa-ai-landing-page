@@ -1,10 +1,10 @@
 import HeroSection from "@/components/HeroSection";
+import StatementBlock from "@/components/StatementBlock";
 import WhyVixa from "@/components/WhyVixa";
-import HowItWorks from "@/components/HowItWorks";
-import IntelligenceStack from "@/components/IntelligenceStack";
 import AfricaNetwork from "@/components/AfricaNetwork";
-import ImageStrip from "@/components/ImageStrip";
+import HowItWorks from "@/components/HowItWorks";
 import SafetyEngine from "@/components/SafetyEngine";
+import IntelligenceStack from "@/components/IntelligenceStack";
 import LiveChatDemo from "@/components/LiveChatDemo";
 import FinalCTA from "@/components/FinalCTA";
 
@@ -39,36 +39,34 @@ const Index = () => {
       </nav>
 
       <HeroSection />
-      <Divider />
+
+      <div style={{ backgroundColor: "#F3F2ED" }}>
+        <StatementBlock />
+      </div>
 
       <div id="whyvixa">
         <WhyVixa />
       </div>
-      <Divider />
+
+      <div id="coverage" style={{ backgroundColor: "#F3F2ED" }}>
+        <AfricaNetwork />
+      </div>
 
       <div id="howitworks">
         <HowItWorks />
       </div>
-      <Divider />
 
-      <div className="section-alt">
+      <div style={{ backgroundColor: "#F3F2ED" }}>
+        <SafetyEngine />
+      </div>
+
+      <div style={{ backgroundColor: "#FFFFFF" }}>
         <IntelligenceStack />
       </div>
-      <Divider />
 
-      <div id="coverage">
-        <AfricaNetwork />
+      <div style={{ backgroundColor: "#F3F2ED" }}>
+        <LiveChatDemo />
       </div>
-      <Divider />
-
-      <ImageStrip />
-      <Divider />
-
-      <SafetyEngine />
-      <Divider />
-
-      <LiveChatDemo />
-      <Divider />
 
       <div id="cta">
         <FinalCTA />

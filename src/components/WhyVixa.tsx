@@ -6,9 +6,9 @@ const lines = [
   "Africa runs on conversation.",
   "Money systems don't.",
   "Stablecoins move fast — local rails don't speak crypto.",
-  "Apps are optional — WhatsApp is universal.",
-  "VIXA makes chat become execution.",
-  "And every movement is PIN-confirmed.",
+  "Apps are optional — WhatsApp is everywhere.",
+  "VIXA turns chat into execution.",
+  "And every move is PIN-confirmed.",
 ];
 
 /* ── Scene A: Disconnected blocks ── */
