@@ -77,4 +77,9 @@
   }
 
   .animate-pulse-dot { animation: pulse-dot 3s ease-in-out infinite; }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
 }
