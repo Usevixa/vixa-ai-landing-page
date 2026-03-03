@@ -1,9 +1,7 @@
 import HeroSection from "@/components/HeroSection";
-import StatementBlock from "@/components/StatementBlock";
 import HowItWorks from "@/components/HowItWorks";
 import IntelligenceStack from "@/components/IntelligenceStack";
-import AfricaNetwork from "@/components/AfricaNetwork";
-import ForBuilders from "@/components/ForBuilders";
+import WhyVixa from "@/components/WhyVixa";
 import FinalCTA from "@/components/FinalCTA";
 
 const SectionDivider = () => (
@@ -23,7 +21,7 @@ const Index = () => {
               VIXA
             </a>
             <div className="hidden md:flex items-center gap-8">
-              {['How It Works', 'Stack', 'Network', 'API'].map((item) => (
+              {['How It Works', 'Stack', 'Why VIXA'].map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase().replace(/\s+/g, '')}`}
@@ -42,8 +40,6 @@ const Index = () => {
 
       <HeroSection />
       <SectionDivider />
-      <StatementBlock />
-      <SectionDivider />
       <div id="howitworks">
         <HowItWorks />
       </div>
@@ -52,14 +48,9 @@ const Index = () => {
         <IntelligenceStack />
       </div>
       <SectionDivider />
-      <div id="network">
-        <AfricaNetwork />
+      <div id="whyvixa">
+        <WhyVixa />
       </div>
-      <SectionDivider />
-      <div id="api" className="bg-muted/40">
-        <ForBuilders />
-      </div>
-      <SectionDivider />
       <div id="cta">
         <FinalCTA />
       </div>
