@@ -2,35 +2,38 @@ import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const countries = [
-  { label: "Nigeria", x: 33, y: 42, bank: true, mobile: false, currency: "NGN" },
-  { label: "Ghana", x: 27, y: 44, bank: true, mobile: false, currency: "GHS" },
-  { label: "Kenya", x: 60, y: 50, bank: true, mobile: false, currency: "KES" },
-  { label: "South Africa", x: 48, y: 80, bank: true, mobile: false, currency: "ZAR" },
-  { label: "Senegal", x: 18, y: 36, bank: false, mobile: false, currency: "XOF", comingSoon: true },
-  { label: "Mali", x: 26, y: 34, bank: false, mobile: false, currency: "XOF" },
-  { label: "Burkina Faso", x: 28, y: 38, bank: false, mobile: false, currency: "XOF" },
-  { label: "Ivory Coast", x: 24, y: 42, bank: true, mobile: false, currency: "XOF" },
-  { label: "Togo", x: 30, y: 43, bank: true, mobile: false, currency: "XOF" },
-  { label: "Benin", x: 31, y: 43, bank: true, mobile: false, currency: "XOF" },
-  { label: "Cameroon", x: 36, y: 46, bank: true, mobile: false, currency: "XAF" },
-  { label: "Gabon", x: 36, y: 52, bank: true, mobile: false, currency: "XAF" },
-  { label: "Congo Brazzaville", x: 40, y: 54, bank: true, mobile: false, currency: "XAF" },
-  { label: "DR Congo", x: 44, y: 56, bank: false, mobile: false, currency: "" },
-  { label: "Uganda", x: 56, y: 50, bank: true, mobile: true, currency: "UGX" },
-  { label: "Rwanda", x: 54, y: 54, bank: true, mobile: true, currency: "RWF" },
-  { label: "Tanzania", x: 58, y: 58, bank: true, mobile: true, currency: "TZS" },
-  { label: "Malawi", x: 56, y: 64, bank: true, mobile: true, currency: "MWK" },
-  { label: "Zambia", x: 50, y: 66, bank: false, mobile: false, currency: "ZMW" },
-  { label: "Botswana", x: 46, y: 74, bank: true, mobile: true, currency: "BWP" },
+  { label: "Nigeria", x: 38, y: 44, bank: true, mobile: false, currency: "NGN" },
+  { label: "Kenya", x: 68, y: 52, bank: true, mobile: false, currency: "KES" },
+  { label: "South Africa", x: 52, y: 82, bank: true, mobile: false, currency: "ZAR" },
+  { label: "Senegal", x: 22, y: 38, bank: false, mobile: false, currency: "XOF", comingSoon: true },
+  { label: "Mali", x: 30, y: 35, bank: false, mobile: false, currency: "XOF" },
+  { label: "Burkina Faso", x: 32, y: 40, bank: false, mobile: false, currency: "XOF" },
+  { label: "Ivory Coast", x: 27, y: 45, bank: true, mobile: false, currency: "XOF" },
+  { label: "Togo", x: 34, y: 46, bank: true, mobile: false, currency: "XOF" },
+  { label: "Benin", x: 36, y: 46, bank: true, mobile: false, currency: "XOF" },
+  { label: "Cameroon", x: 42, y: 50, bank: true, mobile: false, currency: "XAF" },
+  { label: "Gabon", x: 42, y: 56, bank: true, mobile: false, currency: "XAF" },
+  { label: "Congo Brazzaville", x: 46, y: 58, bank: true, mobile: false, currency: "XAF" },
+  { label: "Uganda", x: 62, y: 52, bank: true, mobile: true, currency: "UGX" },
+  { label: "Rwanda", x: 60, y: 56, bank: true, mobile: true, currency: "RWF" },
+  { label: "Tanzania", x: 64, y: 60, bank: true, mobile: true, currency: "TZS" },
+  { label: "Malawi", x: 62, y: 66, bank: true, mobile: true, currency: "MWK" },
+  { label: "Zambia", x: 56, y: 68, bank: false, mobile: false, currency: "ZMW" },
+  { label: "Botswana", x: 52, y: 76, bank: true, mobile: true, currency: "BWP" },
 ];
 
 const connections = [
-  [18, 36, 26, 34], [26, 34, 28, 38], [28, 38, 27, 44], [27, 44, 30, 43],
-  [30, 43, 31, 43], [31, 43, 33, 42], [33, 42, 36, 46],
-  [36, 46, 36, 52], [36, 52, 40, 54], [40, 54, 44, 56],
-  [56, 50, 60, 50], [56, 50, 54, 54], [54, 54, 58, 58], [58, 58, 56, 64],
-  [56, 64, 50, 66], [50, 66, 48, 80], [48, 80, 46, 74],
-  [33, 42, 60, 50], [44, 56, 56, 50], [50, 66, 44, 56],
+  // West Africa chain
+  [22, 38, 30, 35], [30, 35, 32, 40], [32, 40, 27, 45], [27, 45, 34, 46],
+  [34, 46, 36, 46], [36, 46, 38, 44], [38, 44, 42, 50],
+  // Central
+  [42, 50, 42, 56], [42, 56, 46, 58],
+  // East Africa chain
+  [62, 52, 68, 52], [62, 52, 60, 56], [60, 56, 64, 60], [64, 60, 62, 66],
+  // Southern chain
+  [62, 66, 56, 68], [56, 68, 52, 82], [52, 82, 52, 76],
+  // Cross-continental links
+  [38, 44, 68, 52], [46, 58, 62, 52], [56, 68, 46, 58],
 ];
 
 const AfricaNetwork = () => {
@@ -60,22 +63,23 @@ const AfricaNetwork = () => {
         </AnimatedSection>
 
         <AnimatedSection animation="fade-up" delay={80}>
-          <div className="relative w-full max-w-3xl mx-auto aspect-[4/3] mt-6">
+          <div className="relative w-full max-w-5xl mx-auto aspect-[4/4] sm:aspect-[4/3.5] mt-6">
             <svg viewBox="0 0 100 100" className="w-full h-full">
-              {/* Africa silhouette */}
+              {/* Africa silhouette — bold filled */}
               <path
-                d="M28 18 C22 20 18 26 16 32 C14 38 13 44 15 50 C17 56 19 62 22 67 C25 73 30 78 36 82 C40 85 46 87 50 86 C54 85 58 82 61 77 C63 72 65 66 64 60 C63 54 62 48 60 42 C58 36 56 30 52 25 C48 20 42 17 36 16 C32 15 30 17 28 18Z"
-                fill="none"
-                stroke="hsl(var(--foreground))"
-                strokeWidth="0.4"
-                opacity="0.08"
+                d="M30 12 C26 14 23 18 21 23 C19 28 18 33 17 38 C16 43 15 48 16 53 C17 58 19 63 22 68 C25 73 28 77 32 81 C36 85 40 88 45 89 C50 90 55 88 59 84 C63 80 66 75 68 69 C70 63 71 57 70 51 C69 45 67 39 64 34 C61 29 57 24 52 20 C47 16 42 13 37 12 C34 11 32 11 30 12Z"
+                fill="hsl(var(--primary))"
+                fillOpacity="0.06"
+                stroke="hsl(var(--primary))"
+                strokeWidth="0.8"
+                opacity="0.35"
               />
 
               {/* Connection lines + traveling dots */}
               {connections.map(([x1, y1, x2, y2], i) => (
                 <g key={`conn-${i}`}>
-                  <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="hsl(var(--primary))" strokeWidth="0.18" opacity="0.13" />
-                  <circle r="0.4" fill="hsl(var(--primary))" opacity="0.4">
+                  <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="hsl(var(--primary))" strokeWidth="0.22" opacity="0.18" />
+                  <circle r="0.45" fill="hsl(var(--primary))" opacity="0.5">
                     <animateMotion dur={`${6 + (i % 3) * 2}s`} repeatCount="indefinite" begin={`${i * 0.3}s`}>
                       <mpath xlinkHref={`#path-${i}`} />
                     </animateMotion>
@@ -99,16 +103,16 @@ const AfricaNetwork = () => {
                     className="cursor-pointer"
                   >
                     {/* Pulse ring */}
-                    <circle cx={c.x} cy={c.y} r={isHovered ? 2.8 : 2} fill="hsl(var(--primary))" opacity="0.10">
-                      <animate attributeName="opacity" values="0.06;0.22;0.06" dur="3s" repeatCount="indefinite" begin={`${i * 0.15}s`} />
-                      <animate attributeName="r" values={isHovered ? "2.8;3.4;2.8" : "2;2.6;2"} dur="3s" repeatCount="indefinite" begin={`${i * 0.15}s`} />
+                    <circle cx={c.x} cy={c.y} r={isHovered ? 3 : 2.2} fill="hsl(var(--primary))" opacity="0.10">
+                      <animate attributeName="opacity" values="0.06;0.25;0.06" dur="3s" repeatCount="indefinite" begin={`${i * 0.15}s`} />
+                      <animate attributeName="r" values={isHovered ? "3;3.8;3" : "2.2;2.8;2.2"} dur="3s" repeatCount="indefinite" begin={`${i * 0.15}s`} />
                     </circle>
 
-                    {/* Core dot — larger for bank+mobile, medium for bank, smaller otherwise */}
+                    {/* Core dot */}
                     <circle
                       cx={c.x}
                       cy={c.y}
-                      r={hasBank && hasMobile ? 1.0 : hasBank ? 0.8 : 0.55}
+                      r={hasBank && hasMobile ? 1.2 : hasBank ? 0.9 : 0.65}
                       fill={c.comingSoon ? "hsl(var(--muted-foreground))" : "hsl(var(--primary))"}
                       opacity={c.comingSoon ? 0.5 : 1}
                     />
@@ -116,12 +120,12 @@ const AfricaNetwork = () => {
                     {/* Always-visible country label */}
                     <text
                       x={c.x}
-                      y={c.y - 2.6}
+                      y={c.y - 3}
                       textAnchor="middle"
-                      fontSize="1.6"
-                      fontWeight="700"
+                      fontSize="1.8"
+                      fontWeight="800"
                       fill="hsl(var(--foreground))"
-                      opacity={isHovered ? 1 : 0.55}
+                      opacity={isHovered ? 1 : 0.6}
                       style={{ transition: "opacity 0.2s" }}
                     >
                       {c.label}
@@ -132,7 +136,7 @@ const AfricaNetwork = () => {
                       <g>
                         <rect
                           x={c.x - 14}
-                          y={c.y + 2}
+                          y={c.y + 2.5}
                           width="28"
                           height={3 + tooltipLines.length * 2.8}
                           rx="1.5"
@@ -145,9 +149,9 @@ const AfricaNetwork = () => {
                           <text
                             key={li}
                             x={c.x}
-                            y={c.y + 4.8 + li * 2.8}
+                            y={c.y + 5.3 + li * 2.8}
                             textAnchor="middle"
-                            fontSize={li === 0 ? "2" : "1.6"}
+                            fontSize={li === 0 ? "2.2" : "1.7"}
                             fontWeight={li === 0 ? "800" : "600"}
                             fill={li === 0 ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))"}
                           >
