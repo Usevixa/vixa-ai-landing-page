@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const HeroPhone = () => {
@@ -10,13 +11,12 @@ const HeroPhone = () => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[300px] mx-auto animate-hero-float">
+    <div className="relative w-full max-w-[280px] mx-auto animate-hero-float">
       <div
         className="bg-foreground rounded-[2.5rem] p-2"
         style={{
           transform: "rotate(3deg)",
-          boxShadow:
-            "0 40px 80px -20px rgba(0,0,0,0.18), 0 16px 40px -10px rgba(0,0,0,0.10)",
+          boxShadow: "0 40px 80px -20px rgba(0,0,0,0.18), 0 16px 40px -10px rgba(0,0,0,0.10)",
         }}
       >
         <div className="bg-background rounded-[2rem] overflow-hidden">
@@ -37,7 +37,7 @@ const HeroPhone = () => {
               <p className="text-[10px] text-muted-foreground">Online</p>
             </div>
           </div>
-          <div className="p-3 space-y-2.5 min-h-[280px]">
+          <div className="p-3 space-y-2.5 min-h-[240px]">
             <div className="flex justify-end">
               <div className="bg-primary text-primary-foreground px-3 py-2 rounded-xl rounded-br-sm max-w-[80%]">
                 <p className="text-xs">Send 200 USDT to Ghana</p>
@@ -69,63 +69,21 @@ const HeroPhone = () => {
   );
 };
 
-const ConversionCard = () => (
-  <div
-    className="absolute -left-16 top-[15%] bg-card border border-border rounded-2xl px-4 py-3 shadow-lg animate-fade-in z-10"
-    style={{ animationDelay: "600ms", minWidth: 150 }}
-  >
-    <p className="text-[10px] text-muted-foreground font-medium tracking-wide uppercase mb-1">Live Rate</p>
-    <p className="text-sm font-heading font-bold text-foreground">USDT → GHS</p>
-    <p className="text-xs text-primary font-semibold mt-0.5">1 USDT = 14.70 GHS</p>
-  </div>
-);
-
-const SecurityPill = () => (
-  <div
-    className="absolute -right-10 top-[10%] bg-card border border-border rounded-full px-4 py-2 shadow-md flex items-center gap-2 animate-fade-in z-10"
-    style={{ animationDelay: "900ms" }}
-  >
-    <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-    <span className="text-[11px] font-semibold text-foreground">PIN Required</span>
-  </div>
-);
-
-const IntentBadge = () => (
-  <div
-    className="absolute -right-14 bottom-[22%] bg-card border border-border rounded-2xl px-4 py-2.5 shadow-md animate-fade-in z-10"
-    style={{ animationDelay: "1200ms" }}
-  >
-    <p className="text-[10px] text-muted-foreground font-medium tracking-wide uppercase mb-0.5">Status</p>
-    <p className="text-xs font-semibold text-foreground">Intent Recognized <span className="text-primary">✓</span></p>
-  </div>
-);
-
-const MiniMap = () => (
-  <div
-    className="absolute -left-12 bottom-[18%] bg-card border border-border rounded-2xl p-3 shadow-md animate-fade-in z-10"
-    style={{ animationDelay: "1500ms", width: 80, height: 80 }}
-  >
-    <svg viewBox="0 0 100 100" className="w-full h-full">
-      <path
-        d="M35 12 C28 14 22 20 20 28 C18 35 16 42 18 48 C20 55 22 60 25 65 C28 72 32 78 38 82 C42 85 48 86 52 84 C56 82 58 78 60 73 C62 68 64 62 63 56 C62 50 60 44 58 38 C56 32 54 26 50 22 C46 17 40 13 35 12Z"
-        fill="none"
-        stroke="hsl(var(--foreground))"
-        strokeWidth="1.2"
-        opacity="0.15"
-      />
-      <circle cx="28" cy="46" r="3" fill="hsl(var(--primary))" className="animate-pulse-dot" />
-    </svg>
-  </div>
-);
+const systemWidgets = [
+  { label: "Intent: Send Money ✓", position: "-left-20 top-[12%]", delay: 0.6 },
+  { label: "Convert: USDT → GHS", position: "-right-16 top-[35%]", delay: 0.9 },
+  { label: "Security: PIN Required", position: "-left-14 bottom-[25%]", delay: 1.2 },
+];
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-[120px] pb-[100px] px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center pt-[120px] pb-[80px] px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Grid background */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(hsl(var(--foreground) / 0.03) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground) / 0.03) 1px, transparent 1px)",
+            "linear-gradient(hsl(var(--foreground) / 0.02) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground) / 0.02) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -134,15 +92,15 @@ const HeroSection = () => {
       <div className="container mx-auto relative z-10">
         <div className="grid lg:grid-cols-[55%_45%] gap-12 lg:gap-8 items-center">
           {/* Left */}
-          <div className="space-y-6">
+          <div className="space-y-5">
             <AnimatedSection animation="fade-up">
               <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">
-                VIXA AI &bull; Financial Intelligence Layer
+                VIXA AI &bull; Financial Intelligence for Africa
               </p>
             </AnimatedSection>
 
-            <AnimatedSection animation="fade-up" delay={100}>
-              <h1 className="text-[48px] sm:text-[80px] lg:text-[100px] xl:text-[120px] font-heading font-bold leading-[0.9] tracking-[-0.03em] text-foreground">
+            <AnimatedSection animation="fade-up" delay={80}>
+              <h1 className="text-[52px] sm:text-[80px] lg:text-[100px] xl:text-[120px] font-heading font-bold leading-[0.9] tracking-[-0.03em] text-foreground">
                 AI for
                 <br />
                 African
@@ -151,31 +109,29 @@ const HeroSection = () => {
               </h1>
             </AnimatedSection>
 
-            <AnimatedSection animation="fade-up" delay={200}>
+            <AnimatedSection animation="fade-up" delay={160}>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-[520px] leading-relaxed">
-                Turn WhatsApp conversations into real financial execution.
+                Move value across Africa from WhatsApp — stablecoin core, local rails, PIN-gated execution.
               </p>
             </AnimatedSection>
 
-            {/* Bullet points */}
-            <AnimatedSection animation="fade-up" delay={250}>
-              <ul className="space-y-2 max-w-[480px]">
-                <li className="flex items-center gap-3 text-sm text-foreground/70">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                  Voice, text & pidgin — one AI understands all
-                </li>
-                <li className="flex items-center gap-3 text-sm text-foreground/70">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                  Stablecoin conversion with local payout rails
-                </li>
-                <li className="flex items-center gap-3 text-sm text-foreground/70">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                  PIN-gated execution — AI suggests, you approve
-                </li>
-              </ul>
+            {/* 3-point strip */}
+            <AnimatedSection animation="fade-up" delay={220}>
+              <div className="space-y-2 max-w-[480px]">
+                {[
+                  "Talk like a human.",
+                  "Execute like infrastructure.",
+                  "Secure like a bank.",
+                ].map((line, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                    <span className="text-sm font-semibold text-foreground/70">{line}</span>
+                  </div>
+                ))}
+              </div>
             </AnimatedSection>
 
-            <AnimatedSection animation="fade-up" delay={300}>
+            <AnimatedSection animation="fade-up" delay={280}>
               <div className="flex flex-wrap gap-4">
                 <a
                   href="#"
@@ -184,32 +140,41 @@ const HeroSection = () => {
                   Launch VIXA on WhatsApp
                 </a>
                 <a
-                  href="#howitworks"
+                  href="#whyvixa"
                   className="inline-flex items-center px-8 py-4 rounded-[14px] border-2 border-foreground/15 text-foreground font-semibold text-base hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-lg transition-all duration-500"
                 >
-                  See How It Works
+                  See Why VIXA
                 </a>
               </div>
             </AnimatedSection>
 
-            <AnimatedSection animation="fade-up" delay={350}>
-              <div className="flex flex-wrap items-center gap-3 text-[12px] text-muted-foreground font-medium">
-                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60 text-[11px] font-semibold">Stablecoin Core</span>
-                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60 text-[11px] font-semibold">PIN-Gated</span>
-                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60 text-[11px] font-semibold">Africa-First Rails</span>
+            <AnimatedSection animation="fade-up" delay={340}>
+              <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground font-semibold">
+                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60">Stablecoin Core</span>
+                <span className="text-foreground/20">•</span>
+                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60">PIN Required</span>
+                <span className="text-foreground/20">•</span>
+                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60">Audit Trail</span>
               </div>
             </AnimatedSection>
           </div>
 
           {/* Right — Visual cluster */}
-          <AnimatedSection animation="fade-up" delay={350}>
+          <AnimatedSection animation="fade-up" delay={300}>
             <div className="relative flex justify-center lg:justify-end">
               <div className="relative">
                 <HeroPhone />
-                <ConversionCard />
-                <SecurityPill />
-                <IntentBadge />
-                <MiniMap />
+                {systemWidgets.map((w, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: w.delay, duration: 0.55, ease: "easeOut" }}
+                    className={`absolute ${w.position} bg-card border border-border rounded-xl px-3 py-2 shadow-md z-10 hidden sm:block`}
+                  >
+                    <span className="text-[11px] font-semibold text-foreground whitespace-nowrap">{w.label}</span>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </AnimatedSection>
