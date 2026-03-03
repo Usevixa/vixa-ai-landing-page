@@ -11,7 +11,6 @@ const HeroPhone = () => {
 
   return (
     <div className="relative w-full max-w-[300px] mx-auto animate-hero-float">
-      {/* Phone frame — slight tilt */}
       <div
         className="bg-foreground rounded-[2.5rem] p-2"
         style={{
@@ -21,7 +20,6 @@ const HeroPhone = () => {
         }}
       >
         <div className="bg-background rounded-[2rem] overflow-hidden">
-          {/* Status bar */}
           <div className="px-6 py-2 flex justify-between items-center text-[10px] text-muted-foreground font-medium">
             <span>9:41</span>
             <div className="flex gap-1">
@@ -30,8 +28,6 @@ const HeroPhone = () => {
               <div className="w-3 h-1.5 rounded-sm bg-foreground/80" />
             </div>
           </div>
-
-          {/* Chat header */}
           <div className="px-4 py-2.5 border-b border-border flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
               <span className="text-primary font-bold text-[10px]">VA</span>
@@ -41,8 +37,6 @@ const HeroPhone = () => {
               <p className="text-[10px] text-muted-foreground">Online</p>
             </div>
           </div>
-
-          {/* Messages */}
           <div className="p-3 space-y-2.5 min-h-[280px]">
             <div className="flex justify-end">
               <div className="bg-primary text-primary-foreground px-3 py-2 rounded-xl rounded-br-sm max-w-[80%]">
@@ -74,8 +68,6 @@ const HeroPhone = () => {
     </div>
   );
 };
-
-/* ---------- Floating system widgets ---------- */
 
 const ConversionCard = () => (
   <div
@@ -121,18 +113,14 @@ const MiniMap = () => (
         strokeWidth="1.2"
         opacity="0.15"
       />
-      {/* Ghana node */}
       <circle cx="28" cy="46" r="3" fill="hsl(var(--primary))" className="animate-pulse-dot" />
     </svg>
   </div>
 );
 
-/* ---------- Main Hero ---------- */
-
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-[140px] pb-[140px] px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Subtle grid */}
+    <section className="relative min-h-[90vh] flex items-center pt-[120px] pb-[100px] px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -141,23 +129,20 @@ const HeroSection = () => {
           backgroundSize: "60px 60px",
         }}
       />
-      {/* Radial glow behind right side */}
       <div className="absolute top-1/2 right-[15%] -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/[0.04] blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
         <div className="grid lg:grid-cols-[55%_45%] gap-12 lg:gap-8 items-center">
           {/* Left */}
-          <div className="space-y-8">
-            {/* Micro label */}
+          <div className="space-y-6">
             <AnimatedSection animation="fade-up">
               <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">
                 VIXA AI &bull; Financial Intelligence Layer
               </p>
             </AnimatedSection>
 
-            {/* Headline */}
             <AnimatedSection animation="fade-up" delay={100}>
-              <h1 className="text-[40px] sm:text-[64px] lg:text-[88px] xl:text-[100px] font-heading font-bold leading-[0.95] tracking-[-0.02em] text-foreground">
+              <h1 className="text-[48px] sm:text-[80px] lg:text-[100px] xl:text-[120px] font-heading font-bold leading-[0.9] tracking-[-0.03em] text-foreground">
                 AI for
                 <br />
                 African
@@ -166,14 +151,30 @@ const HeroSection = () => {
               </h1>
             </AnimatedSection>
 
-            {/* Subhead */}
             <AnimatedSection animation="fade-up" delay={200}>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-[520px] leading-relaxed">
                 Turn WhatsApp conversations into real financial execution.
               </p>
             </AnimatedSection>
 
-            {/* CTA */}
+            {/* Bullet points */}
+            <AnimatedSection animation="fade-up" delay={250}>
+              <ul className="space-y-2 max-w-[480px]">
+                <li className="flex items-center gap-3 text-sm text-foreground/70">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  Voice, text & pidgin — one AI understands all
+                </li>
+                <li className="flex items-center gap-3 text-sm text-foreground/70">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  Stablecoin conversion with local payout rails
+                </li>
+                <li className="flex items-center gap-3 text-sm text-foreground/70">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  PIN-gated execution — AI suggests, you approve
+                </li>
+              </ul>
+            </AnimatedSection>
+
             <AnimatedSection animation="fade-up" delay={300}>
               <div className="flex flex-wrap gap-4">
                 <a
@@ -191,14 +192,11 @@ const HeroSection = () => {
               </div>
             </AnimatedSection>
 
-            {/* Trust bar */}
-            <AnimatedSection animation="fade-up" delay={400}>
+            <AnimatedSection animation="fade-up" delay={350}>
               <div className="flex flex-wrap items-center gap-3 text-[12px] text-muted-foreground font-medium">
-                <span>Stablecoin Core</span>
-                <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-                <span>PIN-Gated Execution</span>
-                <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-                <span>Africa-First Rails</span>
+                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60 text-[11px] font-semibold">Stablecoin Core</span>
+                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60 text-[11px] font-semibold">PIN-Gated</span>
+                <span className="px-2.5 py-1 rounded-md bg-muted text-foreground/60 text-[11px] font-semibold">Africa-First Rails</span>
               </div>
             </AnimatedSection>
           </div>
@@ -218,7 +216,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
         <div className="w-px h-8 bg-foreground/10 animate-pulse" />
       </div>
