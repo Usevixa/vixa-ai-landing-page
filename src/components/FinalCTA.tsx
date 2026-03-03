@@ -1,33 +1,25 @@
-import { motion } from 'framer-motion';
-import AnimatedSection from './AnimatedSection';
+import AnimatedSection from "@/components/AnimatedSection";
 
 const FinalCTA = () => {
   return (
-    <section className="relative py-[140px] px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Gradient glow background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/8 blur-[120px] rounded-full" />
-      </div>
-
-      <div className="container mx-auto max-w-3xl text-center relative z-10">
+    <section className="py-[120px] sm:py-[160px] px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto max-w-3xl text-center">
         <AnimatedSection animation="fade-up">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-[-0.02em] leading-[1.1] mb-6">
-            Talk to your wallet
-            <br />
-            <span className="text-gradient-emerald">like you talk to a friend.</span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold tracking-[-0.02em] text-foreground leading-[1.05] mb-5">
+            Talk to your wallet.
           </h2>
         </AnimatedSection>
 
         <AnimatedSection animation="fade-up" delay={150}>
-          <p className="text-lg text-muted-foreground mb-12">
-            And let intelligence handle the rest.
+          <p className="text-lg sm:text-xl text-muted-foreground mb-12">
+            Let intelligence handle the rest.
           </p>
         </AnimatedSection>
 
         <AnimatedSection animation="fade-up" delay={300}>
-          <button className="px-10 py-4 rounded-lg bg-primary text-primary-foreground font-semibold text-lg glow-emerald hover:shadow-[0_0_50px_hsl(var(--primary)/0.4)] hover:-translate-y-0.5 transition-all duration-500">
-            Launch VIXA on WhatsApp
-          </button>
+          <a href="#" className="inline-flex items-center px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold text-lg hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20 transition-all duration-500">
+            Get Early Access
+          </a>
         </AnimatedSection>
       </div>
     </section>

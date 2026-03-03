@@ -1,74 +1,91 @@
-import { motion } from 'framer-motion';
-import NeuralBackground from './NeuralBackground';
-import HeroPhone from './HeroPhone';
+import AnimatedSection from "@/components/AnimatedSection";
+
+const HeroPhone = () => {
+  return (
+    <div className="relative w-full max-w-[280px] mx-auto">
+      {/* Phone frame */}
+      <div className="bg-foreground rounded-[2.5rem] p-2 shadow-2xl">
+        <div className="bg-background rounded-[2rem] overflow-hidden">
+          {/* Status bar */}
+          <div className="px-6 py-2 flex justify-between items-center text-[10px] text-muted-foreground font-medium">
+            <span>9:41</span>
+            <div className="flex gap-1">
+              <div className="w-3 h-1.5 rounded-sm bg-foreground/20" />
+              <div className="w-3 h-1.5 rounded-sm bg-foreground/40" />
+              <div className="w-3 h-1.5 rounded-sm bg-foreground/80" />
+            </div>
+          </div>
+
+          {/* Chat header */}
+          <div className="px-4 py-2.5 border-b border-border flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-primary font-bold text-[10px]">VA</span>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-foreground">VIXA AI</p>
+              <p className="text-[10px] text-muted-foreground">Online</p>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div className="p-3 space-y-2.5 min-h-[300px]">
+            <div className="flex justify-end">
+              <div className="bg-primary text-primary-foreground px-3 py-2 rounded-xl rounded-br-sm max-w-[80%]">
+                <p className="text-xs">Send 200 USDT to Ghana</p>
+              </div>
+            </div>
+            <div className="flex justify-start">
+              <div className="bg-muted px-3 py-2 rounded-xl rounded-bl-sm max-w-[80%]">
+                <p className="text-[10px] text-primary font-semibold mb-0.5">VIXA AI</p>
+                <p className="text-xs text-foreground/80">200 USDT ≈ 2,940 GHS.</p>
+                <p className="text-xs text-foreground/80">Enter PIN to confirm.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
-      <NeuralBackground />
-      
-      {/* Faint Africa silhouette */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-        <svg viewBox="0 0 400 500" className="w-[600px] h-[750px]" fill="hsl(var(--primary))">
-          <path d="M200 10c-20 5-40 15-55 30-15 20-25 40-35 65-5 15-15 30-30 40-20 15-35 35-40 60-5 25 0 50 5 75 5 20 10 40 20 55 10 20 25 35 35 50 15 20 25 45 30 70 5 20 15 35 30 45 15 10 30 15 50 15 15 0 30-5 45-15 10-10 20-25 25-40 10-20 15-45 15-70 0-20-5-40-15-55-10-20-15-40-10-60 5-15 15-30 30-40 15-10 25-25 30-45 5-15 5-35 0-50-5-20-15-35-30-45-15-15-35-25-55-30-10-3-20-5-30-5z"/>
-        </svg>
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left Content */}
+    <section className="min-h-screen flex items-center pt-20 pb-24 px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
           <div className="space-y-8">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] font-heading font-bold leading-[0.95] tracking-[-0.02em]"
-            >
-              <span className="text-gradient-emerald">Intelligence</span>
-              <br />
-              <span className="text-foreground">for African</span>
-              <br />
-              <span className="text-foreground">Money Movement.</span>
-            </motion.h1>
+            <AnimatedSection animation="fade-up">
+              <h1 className="text-[42px] sm:text-[64px] lg:text-[80px] xl:text-[96px] font-heading font-bold leading-[0.95] tracking-[-0.02em] text-foreground">
+                AI for
+                <br />
+                African
+                <br />
+                Money.
+              </h1>
+            </AnimatedSection>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-lg"
-            >
-              VIXA AI transforms WhatsApp conversations into real financial infrastructure.
-            </motion.p>
+            <AnimatedSection animation="fade-up" delay={150}>
+              <p className="text-lg sm:text-xl text-muted-foreground max-w-md leading-relaxed">
+                Turn WhatsApp messages into real financial execution.
+              </p>
+            </AnimatedSection>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex flex-wrap gap-4"
-            >
-              <button className="px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-semibold text-base glow-emerald-sm hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] hover:-translate-y-0.5 transition-all duration-500">
-                Launch VIXA on WhatsApp
-              </button>
-              <button className="px-8 py-3.5 rounded-lg border border-primary/40 text-primary font-semibold text-base hover:border-primary hover:bg-primary/5 hover:-translate-y-0.5 transition-all duration-500">
-                Learn More
-              </button>
-            </motion.div>
+            <AnimatedSection animation="fade-up" delay={300}>
+              <div className="flex flex-wrap gap-4">
+                <a href="#" className="inline-flex items-center px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold text-base hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20 transition-all duration-500">
+                  Launch VIXA on WhatsApp
+                </a>
+                <a href="#how" className="inline-flex items-center px-8 py-4 rounded-2xl border-2 border-foreground/15 text-foreground font-semibold text-base hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-lg transition-all duration-500">
+                  See How It Works
+                </a>
+              </div>
+            </AnimatedSection>
           </div>
 
-          {/* Right — Phone */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
+          <AnimatedSection animation="fade-up" delay={400}>
             <HeroPhone />
-          </motion.div>
+          </AnimatedSection>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-        <div className="w-2 h-2 rounded-full bg-primary animate-scroll-bounce" />
       </div>
     </section>
   );
