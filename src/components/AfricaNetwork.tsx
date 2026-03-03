@@ -125,7 +125,7 @@ const AfricaNetwork = () => {
           </p>
         </AnimatedSection>
 
-        <div className="relative w-full max-w-2xl mx-auto mt-8">
+        <div className="relative w-full max-w-sm mx-auto mt-8">
           <svg
             viewBox={`0 0 ${SVG_W} ${SVG_H}`}
             className="w-full h-auto"
