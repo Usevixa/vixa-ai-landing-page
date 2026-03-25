@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import AnimatedSection from "@/components/AnimatedSection";
 
 const lines = [
   "Africa runs on conversation.",
@@ -11,7 +10,6 @@ const lines = [
   "And every move is PIN-confirmed.",
 ];
 
-/* ── Scene A: Disconnected blocks ── */
 const SceneA = () => {
   const blocks = [
     { label: "Bank", x: 8, y: 10 },
@@ -23,23 +21,20 @@ const SceneA = () => {
     <div className="relative w-full aspect-square">
       {blocks.map((b, i) => (
         <div key={i} className="absolute" style={{ left: `${b.x}%`, top: `${b.y}%` }}>
-          <div className="px-3 py-2 rounded-lg border border-foreground/10 bg-card text-xs font-heading font-bold text-foreground/50">
+          <div className="px-3 py-2 rounded-lg border border-border bg-card text-xs font-heading font-bold text-muted-foreground">
             {b.label}
           </div>
         </div>
       ))}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
         {[[22, 18, 60, 14], [16, 26, 16, 60], [64, 20, 66, 56]].map(([x1, y1, x2, y2], i) => (
-          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="hsl(var(--foreground))" strokeWidth="0.3" strokeDasharray="2 2" opacity="0.06">
-            <animate attributeName="opacity" values="0.1;0.01;0.1" dur="6s" repeatCount="indefinite" begin={`${i}s`} />
-          </line>
+          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="hsl(var(--foreground))" strokeWidth="0.3" strokeDasharray="2 2" opacity="0.08" />
         ))}
       </svg>
     </div>
   );
 };
 
-/* ── Scene B: Connected pipeline ── */
 const SceneB = () => {
   const nodes = ["Bank", "Mobile Money", "Stablecoin", "Chat"];
   return (
@@ -65,7 +60,6 @@ const SceneB = () => {
   );
 };
 
-/* ── Scene C: Execution flow ── */
 const SceneC = () => {
   const [step, setStep] = useState(0);
   useEffect(() => {
@@ -73,9 +67,9 @@ const SceneC = () => {
     return () => clearInterval(interval);
   }, []);
   const items = [
-    { text: '"Send 200 USDT to Ghana"', active: step >= 0 },
+    { text: '"Send 200 USDT to Kenya"', active: step >= 0 },
     { text: "Intent recognized", active: step >= 1 },
-    { text: "USDT → 2,940 GHS", active: step >= 2 },
+    { text: "USDT → 6,450 KES", active: step >= 2 },
     { text: "PIN required", active: step >= 3 },
     { text: "✓ Success", active: step >= 4 },
   ];
@@ -88,8 +82,8 @@ const SceneC = () => {
           transition={{ duration: 0.3 }}
           className="flex items-center gap-2.5"
         >
-          <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.active ? "bg-primary" : "bg-foreground/10"}`} />
-          <span className={`text-xs font-heading font-bold ${item.active ? "text-foreground" : "text-foreground/25"}`}>
+          <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.active ? "bg-primary" : "bg-muted-foreground/20"}`} />
+          <span className={`text-xs font-heading font-bold ${item.active ? "text-foreground" : "text-muted-foreground/30"}`}>
             {item.text}
           </span>
         </motion.div>
@@ -117,8 +111,6 @@ const WhyVixa = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Which line is "active" — the one currently in focus
-  // Normalize so animations complete at ~80% scroll
   const normalized = Math.min(1, scrollProgress / 0.8);
   const activeLine = Math.min(lines.length - 1, Math.floor(normalized * lines.length));
   const activeScene = Math.min(2, Math.floor(normalized * 3));
@@ -126,19 +118,14 @@ const WhyVixa = () => {
 
   return (
     <section ref={sectionRef} className="relative lg:h-[115vh]">
-      {/* Desktop: sticky scroll narrative */}
       <div className="hidden lg:flex sticky top-0 h-screen items-center overflow-hidden">
         <div className="absolute inset-0 grid-overlay pointer-events-none" />
-
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left — Text with Onboard-style active line emphasis */}
             <div>
-              <AnimatedSection animation="fade-up">
-                <h2 className="text-[42px] sm:text-[56px] lg:text-[68px] xl:text-[80px] font-heading font-bold tracking-[-0.025em] text-foreground leading-[0.92] mb-8">
-                  Why VIXA.
-                </h2>
-              </AnimatedSection>
+              <h2 className="text-[42px] sm:text-[56px] lg:text-[68px] xl:text-[80px] font-heading font-bold tracking-[-0.025em] text-foreground leading-[0.92] mb-8 uppercase">
+                Why VIXA.
+              </h2>
               <div className="space-y-2">
                 {lines.map((line, i) => {
                   const isActive = i === activeLine;
@@ -147,20 +134,16 @@ const WhyVixa = () => {
                     <motion.div
                       key={i}
                       animate={{
-                        opacity: isActive ? 1 : isPast ? 0.7 : 0.35,
-                        scale: isActive ? 1.01 : 1,
+                        opacity: isActive ? 1 : isPast ? 0.6 : 0.2,
+                        x: isActive ? 0 : -2,
                       }}
                       transition={{ duration: 0.35, ease: "easeOut" }}
-                      className="relative"
                     >
-                      <p
-                        className={`text-base sm:text-lg lg:text-xl font-heading leading-snug transition-all duration-300 ${
-                          isActive ? "font-bold text-foreground" : isPast ? "font-semibold text-foreground/70" : "font-medium text-foreground/40"
-                        }`}
-                      >
+                      <p className={`text-base sm:text-lg lg:text-xl font-heading leading-snug transition-colors duration-300 ${
+                        isActive ? "font-bold text-foreground" : isPast ? "font-semibold text-foreground/60" : "font-medium text-muted-foreground/40"
+                      }`}>
                         {line}
                       </p>
-                      {/* Active underline bar */}
                       <motion.div
                         animate={{ scaleX: isActive ? 1 : 0 }}
                         transition={{ duration: 0.4, ease: "easeOut" }}
@@ -173,7 +156,6 @@ const WhyVixa = () => {
               </div>
             </div>
 
-            {/* Right — Animated visual scenes */}
             <div className="flex items-center justify-center">
               <motion.div
                 key={activeScene}
@@ -189,15 +171,14 @@ const WhyVixa = () => {
         </div>
       </div>
 
-      {/* Mobile/tablet: normal flow, no sticky */}
       <div className="lg:hidden py-16 px-4 sm:px-6">
         <div className="container mx-auto">
-          <h2 className="text-[36px] sm:text-[48px] font-heading font-bold tracking-[-0.025em] text-foreground leading-[0.92] mb-6">
+          <h2 className="text-[36px] sm:text-[48px] font-heading font-bold tracking-[-0.025em] text-foreground leading-[0.92] mb-6 uppercase">
             Why VIXA.
           </h2>
           <div className="space-y-2">
             {lines.map((line, i) => (
-              <p key={i} className="text-base sm:text-lg font-heading font-semibold text-foreground/80 leading-snug">
+              <p key={i} className="text-base sm:text-lg font-heading font-semibold text-foreground/70 leading-snug">
                 {line}
               </p>
             ))}
