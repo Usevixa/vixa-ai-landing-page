@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { geoMercator, geoPath } from "d3-geo";
 import type { GeoPermissibleObjects } from "d3-geo";
-import AnimatedSection from "@/components/AnimatedSection";
+import { motion } from "framer-motion";
 
 const AFRICA_GEOJSON: GeoPermissibleObjects = {
   type: "Feature",
@@ -62,7 +62,6 @@ const connectionPairs: [string, string][] = [
   ["TG", "BJ"], ["BJ", "NG"], ["NG", "CM"], ["CM", "GA"], ["GA", "CG"],
   ["RW", "UG"], ["UG", "KE"], ["UG", "ET"], ["KE", "ET"], ["KE", "TZ"],
   ["TZ", "MW"], ["MW", "ZM"], ["ZM", "BW"], ["BW", "ZA"],
-  // Cross links
   ["NG", "KE"], ["CG", "TZ"], ["ZM", "TZ"], ["CG", "RW"],
 ];
 
@@ -96,12 +95,10 @@ const AfricaNetwork = () => {
     const pathGen = geoPath(proj);
     const d = pathGen(AFRICA_GEOJSON) || "";
     const c = pathGen.centroid(AFRICA_GEOJSON as any);
-
     const pts = countries.map((country) => {
       const [x, y] = proj([country.lon, country.lat]) || [0, 0];
       return { ...country, x, y };
     });
-
     return { africaPath: d, projected: pts, centroid: c };
   }, []);
 
@@ -111,7 +108,6 @@ const AfricaNetwork = () => {
     return m;
   }, [projected]);
 
-  // Generate curved path between two points
   const getCurvedPath = (x1: number, y1: number, x2: number, y2: number) => {
     const mx = (x1 + x2) / 2;
     const my = (y1 + y2) / 2;
@@ -125,16 +121,22 @@ const AfricaNetwork = () => {
   };
 
   return (
-    <section ref={sectionRef} className="pt-0 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <section ref={sectionRef} className="py-[60px] sm:py-[80px] px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="container mx-auto">
-        <AnimatedSection animation="fade-up">
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight text-foreground leading-[0.92] mb-3 text-center">
-            Local rails. Intelligent execution.
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-6"
+        >
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight text-foreground leading-[0.92] mb-3 uppercase">
+            Local Rails.<br />Intelligent Execution.
           </h2>
-          <p className="text-center text-muted-foreground text-sm sm:text-base max-w-xl mx-auto mb-2">
-            Powered across Africa.
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
+            Powered across 19 African countries.
           </p>
-        </AnimatedSection>
+        </motion.div>
 
         <div className="relative w-full max-w-3xl mx-auto mt-4">
           <svg
@@ -147,23 +149,16 @@ const AfricaNetwork = () => {
                 <path d={africaPath} />
               </clipPath>
               <radialGradient id="africa-gradient" cx={centroid[0] / SVG_W} cy={centroid[1] / SVG_H} r="0.5">
-                <stop offset="0%" stopColor="#0E8F6A" stopOpacity="0.12" />
-                <stop offset="60%" stopColor="#0E8F6A" stopOpacity="0.04" />
-                <stop offset="100%" stopColor="#0E8F6A" stopOpacity="0" />
+                <stop offset="0%" stopColor="hsl(75, 85%, 55%)" stopOpacity="0.08" />
+                <stop offset="60%" stopColor="hsl(75, 85%, 55%)" stopOpacity="0.02" />
+                <stop offset="100%" stopColor="hsl(75, 85%, 55%)" stopOpacity="0" />
               </radialGradient>
               <pattern id="dot-grid" width="12" height="12" patternUnits="userSpaceOnUse">
-                <circle cx="6" cy="6" r="0.6" fill="#0E8F6A" opacity="0.08" />
+                <circle cx="6" cy="6" r="0.5" fill="hsl(75, 85%, 55%)" opacity="0.06" />
               </pattern>
-              <filter id="node-glow">
-                <feGaussianBlur stdDeviation="3" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
               <filter id="africa-inner-glow" x="-10%" y="-10%" width="120%" height="120%">
                 <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur" />
-                <feFlood floodColor="#0E8F6A" floodOpacity="0.08" result="color" />
+                <feFlood floodColor="hsl(75, 85%, 55%)" floodOpacity="0.06" result="color" />
                 <feComposite in="color" in2="blur" operator="in" result="glow" />
                 <feMerge>
                   <feMergeNode in="glow" />
@@ -173,7 +168,7 @@ const AfricaNetwork = () => {
               <filter id="card-shadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur" />
                 <feOffset dy="2" result="offset" />
-                <feFlood floodColor="#000" floodOpacity="0.08" result="color" />
+                <feFlood floodColor="#000" floodOpacity="0.3" result="color" />
                 <feComposite in="color" in2="offset" operator="in" result="shadow" />
                 <feMerge>
                   <feMergeNode in="shadow" />
@@ -182,23 +177,13 @@ const AfricaNetwork = () => {
               </filter>
             </defs>
 
-            {/* Africa silhouette with gradient + grid */}
+            {/* Africa silhouette */}
             <g filter="url(#africa-inner-glow)">
-              <path
-                d={africaPath}
-                fill="url(#africa-gradient)"
-                stroke="#0E8F6A"
-                strokeWidth="1.5"
-                strokeOpacity="0.18"
-              />
-              <path
-                d={africaPath}
-                fill="url(#dot-grid)"
-                clipPath="url(#africa-clip)"
-              />
+              <path d={africaPath} fill="url(#africa-gradient)" stroke="hsl(75, 85%, 55%)" strokeWidth="1" strokeOpacity="0.15" />
+              <path d={africaPath} fill="url(#dot-grid)" clipPath="url(#africa-clip)" />
             </g>
 
-            {/* Curved connection lines */}
+            {/* Curved connections */}
             <g clipPath="url(#africa-clip)">
               {connectionPairs.map(([a, b], i) => {
                 const from = countryMap[a];
@@ -211,23 +196,16 @@ const AfricaNetwork = () => {
                     <path
                       d={pathD}
                       fill="none"
-                      stroke="#0E8F6A"
-                      strokeWidth="0.8"
-                      strokeOpacity="0.15"
+                      stroke="hsl(75, 85%, 55%)"
+                      strokeWidth="0.6"
+                      strokeOpacity="0.12"
                       strokeDasharray={length}
                       strokeDashoffset={isVisible ? 0 : length}
-                      style={{
-                        transition: `stroke-dashoffset 1.5s ease-out ${0.3 + i * 0.08}s`,
-                      }}
+                      style={{ transition: `stroke-dashoffset 1.5s ease-out ${0.3 + i * 0.08}s` }}
                     />
                     {isVisible && (
-                      <circle r="1.5" fill="#0E8F6A" opacity="0.35">
-                        <animateMotion
-                          dur={`${5 + (i % 3) * 2}s`}
-                          repeatCount="indefinite"
-                          begin={`${i * 0.4}s`}
-                          path={pathD}
-                        />
+                      <circle r="1.5" fill="hsl(75, 85%, 55%)" opacity="0.3">
+                        <animateMotion dur={`${5 + (i % 3) * 2}s`} repeatCount="indefinite" begin={`${i * 0.4}s`} path={pathD} />
                       </circle>
                     )}
                   </g>
@@ -240,8 +218,7 @@ const AfricaNetwork = () => {
               const isHovered = hoveredNode === c.code;
               const offset = labelOffsets[c.code] || [0, -7];
               const r = c.bank && c.mobile ? 6 : c.bank || c.mobile ? 5 : 4;
-              const dotColor = c.comingSoon ? "#D97706" : "#0E8F6A";
-              const dotOpacity = c.comingSoon ? 0.55 : 0.9;
+              const dotColor = c.comingSoon ? "hsl(40, 90%, 55%)" : "hsl(75, 85%, 55%)";
 
               return (
                 <g
@@ -256,29 +233,15 @@ const AfricaNetwork = () => {
                     transition: `opacity 0.5s ease-out ${0.2 + i * 0.06}s, transform 0.5s ease-out ${0.2 + i * 0.06}s`,
                   }}
                 >
-                  {/* Pulse ring */}
                   {!c.comingSoon && (
                     <circle cx={c.x} cy={c.y} r={r + 4} fill={dotColor} opacity="0">
                       <animate attributeName="r" values={`${r};${r + 8};${r}`} dur="3s" repeatCount="indefinite" begin={`${i * 0.2}s`} />
-                      <animate attributeName="opacity" values="0.12;0;0.12" dur="3s" repeatCount="indefinite" begin={`${i * 0.2}s`} />
+                      <animate attributeName="opacity" values="0.1;0;0.1" dur="3s" repeatCount="indefinite" begin={`${i * 0.2}s`} />
                     </circle>
                   )}
+                  <circle cx={c.x} cy={c.y} r={r + 2} fill={dotColor} fillOpacity="0.06" stroke={dotColor} strokeWidth="0.5" strokeOpacity="0.15" />
+                  <circle cx={c.x} cy={c.y} r={r} fill={dotColor} opacity={c.comingSoon ? 0.5 : 0.85} />
 
-                  {/* Outer ring */}
-                  <circle
-                    cx={c.x} cy={c.y} r={r + 2}
-                    fill={dotColor} fillOpacity="0.08"
-                    stroke={dotColor} strokeWidth="0.5" strokeOpacity="0.2"
-                  />
-
-                  {/* Core dot */}
-                  <circle
-                    cx={c.x} cy={c.y} r={r}
-                    fill={dotColor}
-                    opacity={dotOpacity}
-                  />
-
-                  {/* Label */}
                   <text
                     x={c.x + offset[0]}
                     y={c.y + offset[1]}
@@ -286,20 +249,17 @@ const AfricaNetwork = () => {
                     fontSize="10"
                     fontWeight="700"
                     fill="hsl(var(--foreground))"
-                    opacity={isHovered ? 1 : 0.65}
+                    opacity={isHovered ? 1 : 0.5}
                     style={{ transition: "opacity 0.2s", fontFamily: "inherit" }}
                   >
                     {c.name}
                   </text>
 
-                  {/* Hover tooltip */}
                   {isHovered && (
                     <g>
                       <rect
-                        x={c.x - 68}
-                        y={c.y + 14}
-                        width="136"
-                        height={c.comingSoon ? 38 : 48}
+                        x={c.x - 68} y={c.y + 14}
+                        width="136" height={c.comingSoon ? 38 : 48}
                         rx="8"
                         fill="hsl(var(--card))"
                         fillOpacity="0.95"
@@ -307,53 +267,14 @@ const AfricaNetwork = () => {
                         strokeWidth="0.5"
                         filter="url(#card-shadow)"
                       />
-                      <text
-                        x={c.x}
-                        y={c.y + 29}
-                        textAnchor="middle"
-                        fontSize="11"
-                        fontWeight="700"
-                        fill="hsl(var(--foreground))"
-                      >
+                      <text x={c.x} y={c.y + 29} textAnchor="middle" fontSize="11" fontWeight="700" fill="hsl(var(--foreground))">
                         {c.name} ({c.currency})
                       </text>
-                      {c.comingSoon ? (
-                        <text
-                          x={c.x}
-                          y={c.y + 43}
-                          textAnchor="middle"
-                          fontSize="9.5"
-                          fontWeight="600"
-                          fill="#D97706"
-                        >
-                          Coming Soon
-                        </text>
-                      ) : (
-                        <>
-                          <text
-                            x={c.x}
-                            y={c.y + 43}
-                            textAnchor="middle"
-                            fontSize="9.5"
-                            fontWeight="600"
-                            fill="hsl(var(--muted-foreground))"
-                          >
-                            {[c.bank && "Bank", c.mobile && (c.networkName || "Mobile Money")].filter(Boolean).join(" · ") || "—"}
-                          </text>
-                          {c.mobile && c.networkName && c.networkName !== "Mobile Money" && (
-                            <text
-                              x={c.x}
-                              y={c.y + 55}
-                              textAnchor="middle"
-                              fontSize="8.5"
-                              fontWeight="500"
-                              fill="#0E8F6A"
-                            >
-                              via {c.networkName}
-                            </text>
-                          )}
-                        </>
-                      )}
+                      <text x={c.x} y={c.y + 43} textAnchor="middle" fontSize="9.5" fontWeight="600"
+                        fill={c.comingSoon ? "hsl(40, 90%, 55%)" : "hsl(var(--muted-foreground))"}
+                      >
+                        {c.comingSoon ? "Coming Soon" : [c.bank && "Bank", c.mobile && (c.networkName || "Mobile Money")].filter(Boolean).join(" · ") || "—"}
+                      </text>
                     </g>
                   )}
                 </g>
@@ -363,36 +284,26 @@ const AfricaNetwork = () => {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-6 mt-4 mb-2">
+        <div className="flex items-center justify-center gap-6 mt-6 mb-3">
           {[
-            { color: "#0E8F6A", label: "Active" },
-            { color: "#D97706", label: "Coming Soon" },
-          ].map(({ color, label }) => (
+            { color: "hsl(75, 85%, 55%)", label: "Active" },
+            { color: "hsl(40, 90%, 55%)", label: "Coming Soon", dim: true },
+          ].map(({ color, label, dim }) => (
             <span key={label} className="flex items-center gap-1.5 text-xs font-heading font-semibold text-muted-foreground">
-              <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color, opacity: label === "Coming Soon" ? 0.6 : 0.9 }} />
+              <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color, opacity: dim ? 0.55 : 0.85 }} />
               {label}
             </span>
           ))}
-          <span className="flex items-center gap-1.5 text-xs font-heading font-semibold text-muted-foreground">
-            <span className="inline-block w-2.5 h-2.5 rounded-full border border-current opacity-40" />
-            Bank
-          </span>
-          <span className="flex items-center gap-1.5 text-xs font-heading font-semibold text-muted-foreground">
-            <span className="inline-block w-3 h-2.5 rounded-sm border border-current opacity-40" />
-            Mobile Money
-          </span>
         </div>
 
-        <AnimatedSection animation="fade-up" delay={160}>
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-2 text-xs sm:text-sm font-heading font-bold text-foreground/50">
-            {["19-country coverage", "Stablecoin core", "Instant where available", "PIN-gated"].map((t, i) => (
-              <span key={i} className="flex items-center gap-1.5">
-                {i > 0 && <span className="text-border">•</span>}
-                {t}
-              </span>
-            ))}
-          </div>
-        </AnimatedSection>
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-2 text-xs sm:text-sm font-heading font-bold text-muted-foreground/60">
+          {["19-country coverage", "Stablecoin core", "Instant where available", "PIN-gated"].map((t, i) => (
+            <span key={i} className="flex items-center gap-1.5">
+              {i > 0 && <span className="text-border">•</span>}
+              {t}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
