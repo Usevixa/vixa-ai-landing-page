@@ -1,164 +1,150 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import AnimatedSection from "@/components/AnimatedSection";
 
-const HeroPhone = () => {
-  const [showResponse, setShowResponse] = useState(false);
+const notifications = [
+  { icon: "🟢", title: "Transfer complete", detail: "+200 USDT", time: "12m ago" },
+  { icon: "🔄", title: "Converting USDT → KES", detail: "Processing", time: "Just now" },
+];
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowResponse(true), 1800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <div className="relative w-full max-w-[260px] mx-auto animate-hero-float">
-      <div
-        className="bg-foreground rounded-[2.5rem] p-2"
-        style={{
-          boxShadow: "0 40px 80px -20px rgba(0,0,0,0.15), 0 16px 40px -10px rgba(0,0,0,0.08)",
-        }}
-      >
-        <div className="bg-background rounded-[2rem] overflow-hidden">
-          <div className="px-5 py-1.5 flex justify-between items-center text-[9px] text-muted-foreground font-medium">
-            <span>9:41</span>
-            <div className="flex gap-1">
-              <div className="w-2.5 h-1 rounded-sm bg-foreground/20" />
-              <div className="w-2.5 h-1 rounded-sm bg-foreground/40" />
-              <div className="w-2.5 h-1 rounded-sm bg-foreground/80" />
-            </div>
-          </div>
-          <div className="px-3 py-2 border-b border-border flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-              <span className="text-primary font-bold text-[9px]">VA</span>
-            </div>
-            <div>
-              <p className="text-[11px] font-bold text-foreground leading-tight">VIXA AI</p>
-              <p className="text-[9px] text-muted-foreground">Online</p>
-            </div>
-          </div>
-          <div className="p-3 space-y-2 min-h-[200px]">
-            <div className="flex justify-end">
-              <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-xl rounded-br-sm max-w-[82%]">
-                <p className="text-[11px]">Send 200 USDT to Ghana</p>
-              </div>
-            </div>
-            {showResponse ? (
-              <div className="flex justify-start animate-fade-in">
-                <div className="bg-muted px-3 py-1.5 rounded-xl rounded-bl-sm max-w-[82%]">
-                  <p className="text-[9px] text-primary font-bold mb-0.5">VIXA AI</p>
-                  <p className="text-[11px] text-foreground/80">200 USDT ≈ 2,940 GHS.</p>
-                  <p className="text-[11px] text-foreground/80">Reply with PIN to confirm.</p>
-                </div>
-              </div>
-            ) : (
-              <div className="flex justify-start">
-                <div className="bg-muted px-3 py-2 rounded-xl rounded-bl-sm">
-                  <div className="flex gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-bounce" style={{ animationDelay: "300ms" }} />
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const systemWidgets = [
-  { label: "Intent recognized ✓", position: "-left-24 top-[10%]", delay: 0.6 },
-  { label: "Convert: USDT → GHS", position: "-right-20 top-[38%]", delay: 0.9 },
-  { label: "Security: PIN required", position: "-left-16 bottom-[22%]", delay: 1.2 },
+const marqueeItems = [
+  "STABLECOIN CORE", "MOBILE MONEY", "BANK TRANSFERS", "PIN-GATED",
+  "19 COUNTRIES", "INSTANT SETTLEMENT", "WHATSAPP NATIVE", "AI-POWERED",
 ];
 
 const HeroSection = () => {
+  const [showNotifs, setShowNotifs] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowNotifs(true), 1200);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-[100px] pb-[60px] px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="absolute inset-0 grid-overlay pointer-events-none" />
-      <div className="absolute top-1/2 right-[10%] -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-primary/[0.03] blur-[100px] pointer-events-none" />
+    <section className="relative min-h-screen flex flex-col justify-between overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-primary/[0.04] blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-primary/[0.03] blur-[100px]" />
+        <div className="absolute inset-0 grid-overlay" />
+      </div>
 
-      <div className="container mx-auto relative z-10">
-        <div className="grid lg:grid-cols-[55%_45%] gap-10 lg:gap-6 items-center">
-          {/* Left */}
-          <div className="space-y-6">
-            <AnimatedSection animation="fade-up">
-              <p className="text-[10px] font-bold tracking-[0.22em] uppercase text-muted-foreground">
-                VIXA AI &bull; Financial Intelligence for Africa
-              </p>
-            </AnimatedSection>
+      {/* Main content */}
+      <div className="flex-1 flex items-center pt-20 pb-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="container mx-auto">
+          <div className="grid lg:grid-cols-[1fr_auto] gap-12 items-center">
+            {/* Left */}
+            <div className="space-y-8">
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground"
+              >
+                Africa's Financial Intelligence Layer
+              </motion.p>
 
-            <AnimatedSection animation="fade-up" delay={60}>
-              <h1 className="text-[42px] sm:text-[64px] lg:text-[80px] xl:text-[96px] font-heading font-bold leading-[0.92] tracking-[-0.025em] text-foreground">
-                AI for
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-[52px] sm:text-[72px] lg:text-[88px] xl:text-[104px] font-heading font-bold leading-[0.88] tracking-[-0.03em] text-foreground uppercase"
+              >
+                AI For
                 <br />
                 African
                 <br />
                 Money.
-              </h1>
-            </AnimatedSection>
+              </motion.h1>
 
-            <AnimatedSection animation="fade-up" delay={120}>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-[500px] leading-relaxed">
-                Move value across Africa from WhatsApp — stablecoin core, local rails, PIN-gated execution.
-              </p>
-            </AnimatedSection>
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="text-base sm:text-lg text-muted-foreground max-w-[480px] leading-relaxed"
+              >
+                Send money like you send a message.
+                <br />
+                VIXA understands you — and moves it securely across Africa.
+              </motion.p>
 
-            <AnimatedSection animation="fade-up" delay={160}>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-bold text-foreground/50">
-                {["Stablecoin Core", "PIN Required", "Audit Trail", "Fast Settlement"].map((t, i) => (
-                  <span key={i} className="flex items-center gap-1.5">
-                    {i > 0 && <span className="text-border">•</span>}
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </AnimatedSection>
-
-            <AnimatedSection animation="fade-up" delay={200}>
-              <div className="flex flex-wrap gap-3 pt-2">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="flex flex-wrap gap-3 pt-2"
+              >
                 <a
-                  href="#"
-                  className="inline-flex items-center px-7 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/15 transition-all duration-300"
+                  href="#cta"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wide hover:scale-[1.03] hover:shadow-[0_0_30px_hsl(75,85%,55%,0.25)] transition-all duration-300"
                 >
-                  Launch VIXA on WhatsApp
+                  Get Started
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
                 </a>
-                <a
-                  href="#whyvixa"
-                  className="inline-flex items-center px-7 py-3.5 rounded-xl border-2 border-foreground/15 text-foreground font-bold text-sm hover:-translate-y-0.5 hover:border-foreground/30 transition-all duration-300"
-                >
-                  Why VIXA
-                </a>
-              </div>
-            </AnimatedSection>
-          </div>
-
-          {/* Right */}
-          <AnimatedSection animation="fade-up" delay={250}>
-            <div className="relative flex justify-center lg:justify-end">
-              <div className="relative">
-                <HeroPhone />
-                {systemWidgets.map((w, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: w.delay, duration: 0.5, ease: "easeOut" }}
-                    className={`absolute ${w.position} bg-card border border-border rounded-lg px-3 py-1.5 shadow-sm z-10 hidden sm:block`}
-                  >
-                    <span className="text-[10px] font-bold text-foreground whitespace-nowrap">{w.label}</span>
-                  </motion.div>
-                ))}
-              </div>
+              </motion.div>
             </div>
-          </AnimatedSection>
+
+            {/* Right — floating notification cards */}
+            <div className="hidden lg:flex flex-col gap-3 w-[320px]">
+              {notifications.map((n, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: showNotifs ? 1 : 0, x: showNotifs ? 0 : 30 }}
+                  transition={{ delay: 0.2 + i * 0.3, duration: 0.5, ease: "easeOut" }}
+                  className="bg-card border border-border rounded-2xl px-4 py-3 flex items-center gap-3 animate-hero-float"
+                  style={{ animationDelay: `${i * 1.5}s` }}
+                >
+                  <span className="text-xl">{n.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-foreground truncate">{n.title}</p>
+                    <p className="text-xs text-muted-foreground">{n.time}</p>
+                  </div>
+                  <span className="text-sm font-bold text-primary whitespace-nowrap">{n.detail}</span>
+                </motion.div>
+              ))}
+
+              {/* Phone mockup hint */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: showNotifs ? 1 : 0, scale: showNotifs ? 1 : 0.95 }}
+                transition={{ delay: 1, duration: 0.6 }}
+                className="bg-card border border-border rounded-2xl p-4 mt-2"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-6 h-6 rounded-full bg-vixa-green/20 flex items-center justify-center">
+                    <span className="text-vixa-green font-bold text-[8px]">VA</span>
+                  </div>
+                  <span className="text-xs font-bold text-foreground">VIXA AI</span>
+                  <span className="text-[9px] text-muted-foreground ml-auto">Online</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-end">
+                    <div className="bg-vixa-green text-primary-foreground px-3 py-1.5 rounded-xl rounded-br-sm text-xs">
+                      Send 50 USDT to Kenya
+                    </div>
+                  </div>
+                  <div className="flex justify-start">
+                    <div className="bg-secondary px-3 py-1.5 rounded-xl rounded-bl-sm text-xs text-foreground/80">
+                      50 USDT ≈ 6,450 KES. Reply PIN to confirm.
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
-        <div className="w-px h-8 bg-foreground/10 animate-pulse" />
+      {/* Scrolling marquee */}
+      <div className="relative z-10 border-t border-border overflow-hidden">
+        <div className="flex animate-marquee whitespace-nowrap py-3">
+          {[...marqueeItems, ...marqueeItems].map((item, i) => (
+            <span key={i} className="mx-6 text-xs font-bold tracking-[0.15em] text-muted-foreground flex items-center gap-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
