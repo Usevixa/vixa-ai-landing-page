@@ -1,41 +1,59 @@
 
-Goal: remove the visible empty gap after the “Why VIXA” section while preserving the section’s narrative effect.
 
-1) Diagnose and target the real source of spacing
-- The gap is primarily from `WhyVixa` using a fixed sticky viewport section (`height: 130vh` + `h-screen`), especially at the current viewport width (889px) where the right visual is hidden (`hidden lg:flex`), making the extra sticky scroll feel like empty space.
-- Secondary contribution: `AfricaNetwork` starts with additional internal top spacing (`mt-8` before the map block).
+## Plan: Update Africa Map to Yellow Card Countries + Aesthetic Upgrade
 
-2) Tighten `WhyVixa` transition behavior (`src/components/WhyVixa.tsx`)
-- Keep sticky storytelling on desktop only.
-- Make tablet/mobile non-sticky (normal flow), so it doesn’t reserve viewport-height scroll space when the right-side visual is hidden.
-- Replace hardcoded inline height with responsive classes:
-  - Desktop (`lg`): keep a controlled sticky height (reduced from current value).
-  - Below `lg`: remove sticky lock and use compact vertical padding.
-- Reduce dead-tail scroll by normalizing progress so line/scene progression completes before section end (no long static phase).
+### Country Changes
 
-3) Reduce top air in coverage section (`src/components/AfricaNetwork.tsx`)
-- Tighten section intro spacing:
-  - Reduce/remove the `mt-8` gap above the SVG map block.
-  - Slightly reduce section bottom padding so spacing rhythm stays dense and consistent.
+Yellow Card supports **19 countries**. Compared to current map:
+- **Remove**: Ghana (GH), DR Congo (CD) — not in Yellow Card
+- **Add**: Ethiopia (ET) — in Yellow Card Payments (Bank Transfer, USD)
 
-4) Keep page wrappers clean (`src/pages/Index.tsx`)
-- Verify `#whyvixa` and `#coverage` wrappers introduce no extra spacing (no added margins/padding around those wrappers).
+### Final 19 Countries (from Yellow Card docs)
 
-5) Fix blocking TypeScript errors while applying this pass
-- `src/components/SafetyEngine.tsx`: replace `NodeJS.Timeout[]` with browser-safe timer types (`ReturnType<typeof setTimeout>[]`).
-- `src/components/LiveSimulation.tsx`: same timer typing update.
-- This removes `Cannot find namespace 'NodeJS'` and keeps the build green.
+| Country | Bank | Mobile | Currency |
+|---------|------|--------|----------|
+| Benin | - | Mobile Money | XOF |
+| Botswana | Bank | Mobile Money | BWP |
+| Burkina Faso | - | Coming soon | XOF |
+| Cameroon | - | Mobile Money | XAF |
+| Congo Brazzaville | - | Mobile Money | XAF |
+| Ethiopia | Bank | - | USD |
+| Gabon | Bank | Coming soon | XAF |
+| Ivory Coast | - | Mobile Money | XOF |
+| Kenya | Bank | Mobile Money | KES |
+| Mali | - | Coming soon | XOF |
+| Malawi | Bank | Mobile Money | MWK |
+| Nigeria | Bank | - | NGN |
+| Rwanda | Bank | Mobile Money | RWF |
+| Senegal | - | Coming soon | XOF |
+| South Africa | Bank | - | ZAR |
+| Tanzania | Bank | Mobile Money | TZS |
+| Togo | - | Mobile Money | XOF |
+| Uganda | Bank | Mobile Money | UGX |
+| Zambia | - | Mobile Money | ZMW |
 
-Technical details
-- Sticky behavior pattern:
-  - Desktop: `lg:sticky lg:top-0 lg:h-screen`
-  - Mobile/tablet: normal flow (`relative`, no sticky, compact `py-*`)
-- Progress normalization example:
-  - `normalized = Math.min(1, scrollProgress / 0.82)` then use `normalized` for active line/scene.
-- Spacing tuning targets:
-  - Why VIXA should hand off immediately to “Local rails. Intelligent execution.” with no perceived blank band at 889x488 and standard desktop widths.
+### Changes to `src/components/AfricaNetwork.tsx`
 
-Validation
-- Scroll from Why VIXA → Coverage at 889x488: no empty block between sections.
-- Repeat at desktop width (>=1024): sticky narrative still feels intentional.
-- Confirm no TS build errors from timer types.
+1. **Update `countries` array**: Remove Ghana/DR Congo, add Ethiopia (Addis Ababa: lat 9.0249, lon 38.7469). Update bank/mobile flags to match Yellow Card data exactly. Mark Burkina Faso, Gabon, Mali, Senegal with `comingSoon: true` for their "Coming soon" mobile money.
+
+2. **Update `connectionPairs`**: Remove all pairs referencing GH/CD, add connections for Ethiopia (ET connected to KE and UG), rebalance cross-links.
+
+3. **Update `labelOffsets`**: Remove GH/CD entries, add ET entry.
+
+4. **Aesthetic upgrades**:
+   - Add a subtle radial gradient fill inside the Africa silhouette (emerald center fading out)
+   - Add a dotted grid pattern overlay inside Africa at very low opacity
+   - Make connection lines curved (quadratic bezier) instead of straight lines for a more organic feel
+   - Add a subtle inner glow/shadow on the Africa outline
+   - Improve tooltip design: rounded corners, slight glassmorphism effect, show mobile network names
+   - Add a small legend below the map (Bank / Mobile Money / Coming Soon dot colors)
+   - Increase node differentiation: active countries get a brighter emerald, "coming soon" countries get a muted amber dot
+
+5. **Update bottom stats**: Change "20-country coverage" to "19-country coverage"
+
+### Technical Details
+- Ethiopia coordinates: lat 9.0249, lon 38.7469 (Addis Ababa)
+- Curved lines: replace `<line>` with `<path>` using quadratic bezier (`Q` command) with a midpoint offset
+- Radial gradient: SVG `<radialGradient>` centered on Africa's centroid
+- Legend: three small circles with labels below the map SVG
+
