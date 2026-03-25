@@ -1,53 +1,41 @@
 
+Goal: remove the visible empty gap after the “Why VIXA” section while preserving the section’s narrative effect.
 
-## Plan: Align Landing Page to Spec (Gap Fix)
+1) Diagnose and target the real source of spacing
+- The gap is primarily from `WhyVixa` using a fixed sticky viewport section (`height: 130vh` + `h-screen`), especially at the current viewport width (889px) where the right visual is hidden (`hidden lg:flex`), making the extra sticky scroll feel like empty space.
+- Secondary contribution: `AfricaNetwork` starts with additional internal top spacing (`mt-8` before the map block).
 
-Most of the page structure already exists but has several mismatches with the spec. Here are the specific changes needed:
+2) Tighten `WhyVixa` transition behavior (`src/components/WhyVixa.tsx`)
+- Keep sticky storytelling on desktop only.
+- Make tablet/mobile non-sticky (normal flow), so it doesn’t reserve viewport-height scroll space when the right-side visual is hidden.
+- Replace hardcoded inline height with responsive classes:
+  - Desktop (`lg`): keep a controlled sticky height (reduced from current value).
+  - Below `lg`: remove sticky lock and use compact vertical padding.
+- Reduce dead-tail scroll by normalizing progress so line/scene progression completes before section end (no long static phase).
 
-### 1. `src/pages/Index.tsx` — Fix section order, add StatementBlock, remove ImageStrip, add alternating backgrounds
+3) Reduce top air in coverage section (`src/components/AfricaNetwork.tsx`)
+- Tighten section intro spacing:
+  - Reduce/remove the `mt-8` gap above the SVG map block.
+  - Slightly reduce section bottom padding so spacing rhythm stays dense and consistent.
 
-Current order: Hero → WhyVixa → HowItWorks → IntelligenceStack → AfricaNetwork → ImageStrip → SafetyEngine → LiveChatDemo → FinalCTA
+4) Keep page wrappers clean (`src/pages/Index.tsx`)
+- Verify `#whyvixa` and `#coverage` wrappers introduce no extra spacing (no added margins/padding around those wrappers).
 
-**Correct order per spec:**
-Hero → StatementBlock → WhyVixa → AfricaNetwork → HowItWorks → SafetyEngine → IntelligenceStack → LiveChatDemo → FinalCTA
+5) Fix blocking TypeScript errors while applying this pass
+- `src/components/SafetyEngine.tsx`: replace `NodeJS.Timeout[]` with browser-safe timer types (`ReturnType<typeof setTimeout>[]`).
+- `src/components/LiveSimulation.tsx`: same timer typing update.
+- This removes `Cannot find namespace 'NodeJS'` and keeps the build green.
 
-- Import and add `StatementBlock` after Hero
-- Remove `ImageStrip` import and usage
-- Apply alternating background tints: `#F7F6F2` / `#F3F2ED` / `#FFFFFF` via inline styles or utility classes on wrapper divs
+Technical details
+- Sticky behavior pattern:
+  - Desktop: `lg:sticky lg:top-0 lg:h-screen`
+  - Mobile/tablet: normal flow (`relative`, no sticky, compact `py-*`)
+- Progress normalization example:
+  - `normalized = Math.min(1, scrollProgress / 0.82)` then use `normalized` for active line/scene.
+- Spacing tuning targets:
+  - Why VIXA should hand off immediately to “Local rails. Intelligent execution.” with no perceived blank band at 889x488 and standard desktop widths.
 
-### 2. `src/components/StatementBlock.tsx` — Fix copy
-
-Change text from "Built for Africa. Not adapted for Africa." to:
-- "Africa doesn't need another app."
-- "It needs execution."
-- Remove the `<span className="text-primary">` coloring — just plain bold black text
-
-### 3. `src/components/WhyVixa.tsx` — Fix line text
-
-Change "VIXA makes chat become execution." → "VIXA turns chat into execution."
-Change "Apps are optional — WhatsApp is universal." → "Apps are optional — WhatsApp is everywhere."
-Change "And every movement is PIN-confirmed." → "And every move is PIN-confirmed."
-
-### 4. `src/components/AfricaNetwork.tsx` — Make full-width
-
-Change `max-w-sm` → `max-w-3xl` and remove container constraint so the map feels continental-scale. Update title/subtext to match spec exactly.
-
-### 5. `src/components/IntelligenceStack.tsx` — Fix layer 04
-
-Change "Execution Layer" → "Settlement Rails"
-Change description to "Stablecoin core connected to local banks and mobile money."
-Update subtext to "Four layers working quietly behind every message."
-
-### 6. `src/components/LiveChatDemo.tsx` — Fix headline
-
-Change "See it in action." → "Built for real life — not demos."
-
-### 7. `src/components/FinalCTA.tsx` — Fix button text and styling
-
-Change button text "Launch VIXA on WhatsApp" → "Enter the VIXA Network"
-Add inner shadow, subtle glow on hover, 1.03x scale on hover (no bounce)
-
-### 8. `src/index.css` — Minor tweaks
-
-Ensure alternating section utility classes exist for `#F7F6F2`, `#F3F2ED`, `#FFFFFF`.
-
+Validation
+- Scroll from Why VIXA → Coverage at 889x488: no empty block between sections.
+- Repeat at desktop width (>=1024): sticky narrative still feels intentional.
+- Confirm no TS build errors from timer types.
