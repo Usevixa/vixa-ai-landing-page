@@ -6,6 +6,30 @@
 
 @layer base {
   :root {
+    --background: 50 20% 96%;
+    --foreground: 220 20% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+    --primary: 75 85% 45%;
+    --primary-foreground: 220 20% 6%;
+    --secondary: 50 10% 90%;
+    --secondary-foreground: 220 15% 25%;
+    --muted: 50 10% 92%;
+    --muted-foreground: 220 10% 42%;
+    --accent: 50 10% 88%;
+    --accent-foreground: 220 20% 10%;
+    --destructive: 0 80% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 10% 88%;
+    --input: 220 10% 88%;
+    --ring: 75 85% 45%;
+    --radius: 0.75rem;
+    --vixa-green: 157 82% 31%;
+  }
+
+  .dark {
     --background: 220 20% 6%;
     --foreground: 45 30% 94%;
     --card: 220 18% 10%;
@@ -35,6 +59,10 @@
     @apply border-border;
   }
 
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     scroll-behavior: smooth;
@@ -51,6 +79,10 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 256px 256px;
+  }
+
+  .dark body::before {
+    opacity: 0.02;
   }
 
   ::-webkit-scrollbar { width: 4px; }
