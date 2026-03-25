@@ -1,59 +1,50 @@
 
 
-## Plan: Update Africa Map to Yellow Card Countries + Aesthetic Upgrade
+## Plan: Add Light/Dark Theme Toggle (Sekiapp-style)
 
-### Country Changes
+### What You Get
+A smooth toggle switch in the navbar that switches the entire site between a light cream theme and the current dark theme. All text remains fully visible in both modes — no text disappearing against matching backgrounds.
 
-Yellow Card supports **19 countries**. Compared to current map:
-- **Remove**: Ghana (GH), DR Congo (CD) — not in Yellow Card
-- **Add**: Ethiopia (ET) — in Yellow Card Payments (Bank Transfer, USD)
+### Changes
 
-### Final 19 Countries (from Yellow Card docs)
+**1. Add light theme CSS variables (`src/index.css`)**
+- Current `:root` becomes the dark theme (move under `.dark` class)
+- New `:root` gets light theme values:
+  - Background: warm off-white (`60 20% 96%`)
+  - Foreground: near-black (`220 20% 10%`)
+  - Card: white (`0 0% 100%`)
+  - Muted-foreground: medium gray (readable on light)
+  - Primary stays lime-green but with dark foreground text
+  - Border: light gray
+  - vixa-green stays the same
+- Grain overlay opacity adapts (lighter in light mode)
 
-| Country | Bank | Mobile | Currency |
-|---------|------|--------|----------|
-| Benin | - | Mobile Money | XOF |
-| Botswana | Bank | Mobile Money | BWP |
-| Burkina Faso | - | Coming soon | XOF |
-| Cameroon | - | Mobile Money | XAF |
-| Congo Brazzaville | - | Mobile Money | XAF |
-| Ethiopia | Bank | - | USD |
-| Gabon | Bank | Coming soon | XAF |
-| Ivory Coast | - | Mobile Money | XOF |
-| Kenya | Bank | Mobile Money | KES |
-| Mali | - | Coming soon | XOF |
-| Malawi | Bank | Mobile Money | MWK |
-| Nigeria | Bank | - | NGN |
-| Rwanda | Bank | Mobile Money | RWF |
-| Senegal | - | Coming soon | XOF |
-| South Africa | Bank | - | ZAR |
-| Tanzania | Bank | Mobile Money | TZS |
-| Togo | - | Mobile Money | XOF |
-| Uganda | Bank | Mobile Money | UGX |
-| Zambia | - | Mobile Money | ZMW |
+**2. Create `ThemeProvider` context (`src/contexts/ThemeContext.tsx`)**
+- React context with `theme` state (`"light" | "dark"`)
+- Toggles `.dark` class on `<html>` element
+- Persists choice to `localStorage`
+- Defaults to dark (current look)
 
-### Changes to `src/components/AfricaNetwork.tsx`
+**3. Add toggle to navbar (`src/pages/Index.tsx`)**
+- Sekiapp-style: a small sun/moon icon toggle switch placed between nav links and "Get Started" button
+- Uses the existing `Switch` component from `src/components/ui/switch.tsx`
+- Smooth transition on background/foreground color changes via CSS `transition` on `body`
 
-1. **Update `countries` array**: Remove Ghana/DR Congo, add Ethiopia (Addis Ababa: lat 9.0249, lon 38.7469). Update bank/mobile flags to match Yellow Card data exactly. Mark Burkina Faso, Gabon, Mali, Senegal with `comingSoon: true` for their "Coming soon" mobile money.
+**4. Ensure all components stay readable in both themes**
+- Components already use semantic tokens (`text-foreground`, `bg-background`, `text-muted-foreground`, `bg-card`, `border-border`) so they auto-adapt
+- Hardcoded colors to audit and fix:
+  - `HeroSection`: `bg-primary/[0.04]` blurs — fine in both
+  - `AfricaNetwork`: SVG fills use hex colors — update stroke/fill to use CSS variables or ensure contrast
+  - `bg-vixa-green` chat bubbles — works on both
+  - `bg-secondary` elements — will adapt via variables
+- Add `transition-colors duration-300` to the root `<div>` for smooth switching
 
-2. **Update `connectionPairs`**: Remove all pairs referencing GH/CD, add connections for Ethiopia (ET connected to KE and UG), rebalance cross-links.
-
-3. **Update `labelOffsets`**: Remove GH/CD entries, add ET entry.
-
-4. **Aesthetic upgrades**:
-   - Add a subtle radial gradient fill inside the Africa silhouette (emerald center fading out)
-   - Add a dotted grid pattern overlay inside Africa at very low opacity
-   - Make connection lines curved (quadratic bezier) instead of straight lines for a more organic feel
-   - Add a subtle inner glow/shadow on the Africa outline
-   - Improve tooltip design: rounded corners, slight glassmorphism effect, show mobile network names
-   - Add a small legend below the map (Bank / Mobile Money / Coming Soon dot colors)
-   - Increase node differentiation: active countries get a brighter emerald, "coming soon" countries get a muted amber dot
-
-5. **Update bottom stats**: Change "20-country coverage" to "19-country coverage"
+**5. Tailwind config (`tailwind.config.ts`)**
+- Already has `darkMode: ["class"]` — no change needed
 
 ### Technical Details
-- Ethiopia coordinates: lat 9.0249, lon 38.7469 (Addis Ababa)
-- Curved lines: replace `<line>` with `<path>` using quadratic bezier (`Q` command) with a midpoint offset
-- Radial gradient: SVG `<radialGradient>` centered on Africa's centroid
-- Legend: three small circles with labels below the map SVG
+- Theme toggle: adds/removes `dark` class on `<html>`
+- CSS structure: `:root` = light defaults, `.dark` = dark overrides (standard shadcn pattern)
+- No text will disappear because all text uses `text-foreground` / `text-muted-foreground` which flip with the theme
+- Africa map SVG: update the silhouette fill and stroke colors to use `currentColor` or CSS custom properties so they adapt
 
