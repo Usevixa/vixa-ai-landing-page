@@ -27,7 +27,7 @@ const SafetyEngine = () => {
     if (!started) return;
     const loop = () => {
       setFilledDots(0);
-      const timers: NodeJS.Timeout[] = [];
+      const timers: ReturnType<typeof setTimeout>[] = [];
       for (let i = 0; i < 4; i++) {
         timers.push(setTimeout(() => setFilledDots(i + 1), (i + 1) * 400));
       }

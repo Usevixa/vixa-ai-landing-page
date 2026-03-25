@@ -114,7 +114,7 @@ const AfricaNetwork = () => {
   }, [projected]);
 
   return (
-    <section ref={sectionRef} className="pt-0 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <section ref={sectionRef} className="pt-0 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="container mx-auto">
         <AnimatedSection animation="fade-up">
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight text-foreground leading-[0.92] mb-3 text-center">
@@ -125,7 +125,7 @@ const AfricaNetwork = () => {
           </p>
         </AnimatedSection>
 
-        <div className="relative w-full max-w-3xl mx-auto mt-8">
+        <div className="relative w-full max-w-3xl mx-auto mt-4">
           <svg
             viewBox={`0 0 ${SVG_W} ${SVG_H}`}
             className="w-full h-auto"

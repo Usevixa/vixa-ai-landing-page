@@ -118,13 +118,16 @@ const WhyVixa = () => {
   }, []);
 
   // Which line is "active" — the one currently in focus
-  const activeLine = Math.min(lines.length - 1, Math.floor(scrollProgress * lines.length));
-  const activeScene = Math.min(2, Math.floor(scrollProgress * 3));
+  // Normalize so animations complete at ~80% scroll
+  const normalized = Math.min(1, scrollProgress / 0.8);
+  const activeLine = Math.min(lines.length - 1, Math.floor(normalized * lines.length));
+  const activeScene = Math.min(2, Math.floor(normalized * 3));
   const ActiveSceneComponent = scenes[activeScene];
 
   return (
-    <section ref={sectionRef} className="relative" style={{ height: "130vh" }}>
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+    <section ref={sectionRef} className="relative lg:h-[115vh]">
+      {/* Desktop: sticky scroll narrative */}
+      <div className="hidden lg:flex sticky top-0 h-screen items-center overflow-hidden">
         <div className="absolute inset-0 grid-overlay pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -182,6 +185,22 @@ const WhyVixa = () => {
                 <ActiveSceneComponent />
               </motion.div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile/tablet: normal flow, no sticky */}
+      <div className="lg:hidden py-16 px-4 sm:px-6">
+        <div className="container mx-auto">
+          <h2 className="text-[36px] sm:text-[48px] font-heading font-bold tracking-[-0.025em] text-foreground leading-[0.92] mb-6">
+            Why VIXA.
+          </h2>
+          <div className="space-y-2">
+            {lines.map((line, i) => (
+              <p key={i} className="text-base sm:text-lg font-heading font-semibold text-foreground/80 leading-snug">
+                {line}
+              </p>
+            ))}
           </div>
         </div>
       </div>
