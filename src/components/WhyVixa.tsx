@@ -174,7 +174,7 @@ const WhyVixa = () => {
             </div>
 
             {/* Right — Animated visual scenes */}
-            <div className="hidden lg:flex items-center justify-center">
+            <div className="flex items-center justify-center">
               <motion.div
                 key={activeScene}
                 initial={{ opacity: 0, y: 14 }}
