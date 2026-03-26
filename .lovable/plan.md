@@ -1,49 +1,54 @@
 
 
-## Plan: Redesign Hero Background — Cinematic African Urban Life
+## Plan: Beautify Statement Block + Revamp Why VIXA with Word-by-Word Bold Effect
 
-### Overview
-Replace the single static background image with a rich, layered composition: a desaturated urban African lifestyle photo, warm gradient overlays for text readability, subtle animated financial/chat overlays (ghost chat bubbles, flowing money-movement lines, pulsing activity nodes), slow parallax motion, and a radial glow behind the phone mockup. Layout, text, and chat demo remain untouched.
+### 1. Statement Block ("Africa doesn't need another app")
 
-### Changes
+**Current**: Plain centered text with basic fade-up animation.
 
-**1. Generate new hero background image (`src/assets/hero-bg.jpg`)**
-- Use AI image generation (Nano banana 2) to create a cinematic, warm-toned image of African urban life: people on smartphones in a modern market/street setting, natural light, slightly desaturated, editorial feel
-- Prompt focus: "African young adults using smartphones in a vibrant modern urban market, warm golden hour light, shallow depth of field, cinematic editorial style, not posed"
+**Upgrade**:
+- Add a subtle radial gradient glow behind the text (primary green, very low opacity ~5-8%) that pulses slowly
+- Add a decorative horizontal line element above and below the text block (thin, `border-primary/20`, max-width 120px, centered)
+- "Africa doesn't need another app." stays `text-foreground` (works in both themes)
+- "It needs execution." gets a subtle animated gradient text effect: `bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent` with a slow shimmer
+- Add a faint decorative pattern or subtle dot grid behind the section (low opacity, theme-adaptive)
+- Increase vertical spacing slightly for more breathing room
+- Both light and dark mode: foreground text auto-adapts via semantic tokens; the green accent provides contrast in both
 
-**2. Update background layers in `HeroSection.tsx`**
-- **Base image**: Apply CSS `filter: saturate(0.85)` for slight desaturation, `opacity-90`
-- **Warm gradient overlay**: Replace current dark gradient with a left-to-right warm fade (`bg-gradient-to-r from-[#F7F6F2]/90 via-[#F7F6F2]/40 to-transparent`) for light mode, and `from-black/80 via-black/50 to-transparent` for dark mode — ensures left text area stays clean
-- **Subtle dark unifier**: Add a `bg-black/[0.06]` overlay across the full image to unify tones
-- **Grain**: Already exists globally; boost to `opacity-0.03` within hero via a local overlay
+### 2. Why VIXA Section — Onboard-style Word-by-Word Bold
 
-**3. Add animated background overlay elements (new SVG/CSS layer)**
-- **Ghost chat bubbles**: 3-4 faint rounded-rect shapes at 10-12% opacity, positioned around the background, slowly drifting upward with CSS animation (`translateY` over 20s, infinite)
-- **Money flow lines**: 2-3 thin curved SVG paths (quadratic bezier) representing cross-Africa movement, animated with `stroke-dashoffset` for a flowing effect, at 8-10% opacity, using primary green color
-- **Pulsing activity nodes**: 5-6 small circles at fixed positions, pulsing gently (scale 1→1.3, opacity 0.1→0.2) on staggered 3-4s intervals
+**Current**: Scroll-driven line-by-line opacity reveal. Each full line goes bold.
 
-**4. Parallax motion**
-- Wrap background image in a div that uses `useEffect` + `scroll` listener to apply a subtle `translateY` (0 to -10px based on scroll position) for slow parallax
-- Add a very subtle CSS animation on the image: slow `scale(1) → scale(1.02)` over 30s, alternating — gives a "breathing" cinematic feel
+**New interaction model** (inspired by Onboard's "Why Onboard"):
+- All text is displayed as a single flowing paragraph/block of words
+- Each word starts at low opacity (`text-muted-foreground/30`) and normal weight
+- As user scrolls, words progressively "light up" — becoming **bold** (`font-weight: 700`) and full opacity (`text-foreground`) one word at a time
+- On hover, individual words also light up on cursor contact
+- Words that have been "passed" by scroll stay at medium opacity (`text-foreground/60`, `font-weight: 600`)
+- Uses `font-variation-settings` for smooth weight interpolation (Space Grotesk variable font already loaded)
 
-**5. Phone mockup glow**
-- Add a `div` behind the phone mockup with `bg-primary/10 blur-[80px]` as a soft radial glow, creating visual separation from the background
+**Layout changes**:
+- Remove the 3 scene components (SceneA, SceneB, SceneC) — they add complexity without matching the new interaction model
+- Single-column centered layout with the word cloud taking full width
+- "WHY VIXA." heading stays bold and uppercase above
+- Below the word block, add a single subtle accent element: a small animated line or primary-colored dot
 
-**6. Backdrop blur on text area**
-- Add `backdrop-blur-sm` to the left text column wrapper so the text floats cleanly over the image regardless of what's behind it
+**Technical approach**:
+- Split all lines into a flat array of words with sentence boundary markers
+- Track scroll progress to calculate `activeWordIndex`
+- Each word rendered as an inline `<span>` with:
+  - `transition: font-variation-settings 0.3s, opacity 0.3s, color 0.3s`
+  - `font-variation-settings: "wght" 300` (inactive) vs `"wght" 700` (active)
+  - `onMouseEnter` handler to temporarily bold on hover
+- Sticky scroll behavior retained (`lg:h-[200vh]` with `sticky top-0`)
+- Mobile: all words visible at medium weight, no scroll interaction
 
-**7. CSS additions (`src/index.css`)**
-- Add keyframes: `hero-drift` (slow upward float for ghost bubbles), `hero-breathe` (slow scale pulse for bg image), `hero-flow` (stroke-dashoffset animation for money lines)
-
-### Technical Details
-- Parallax: `window.addEventListener('scroll', ...)` with `requestAnimationFrame`, applying `transform: translateY(${offset}px)` — capped at 10px shift
-- Ghost bubbles: absolute-positioned `div`s with `rounded-2xl bg-white/10 border border-white/5` and CSS animation
-- Flow lines: inline SVG `<path>` elements with `stroke-dasharray: 200` and `stroke-dashoffset` animated from 400 to 0 over 8s
-- Activity nodes: `div`s with `animate-pulse-dot` (already defined in CSS), positioned absolutely
-- Dark/light adaptation: gradient overlay uses a CSS class that changes direction based on `.dark` parent
+**Theme adaptation**:
+- Active words: `text-foreground` (near-black in light, warm-white in dark)
+- Inactive words: `text-muted-foreground/30` (adapts automatically)
+- Past words: `text-foreground/60`
 
 ### Files Modified
-- `src/assets/hero-bg.jpg` — regenerated with new prompt
-- `src/components/HeroSection.tsx` — background layers restructured, overlay elements added, parallax hook added, phone glow added
-- `src/index.css` — new keyframes for hero animations
+- `src/components/StatementBlock.tsx` — decorative elements, gradient text, glow
+- `src/components/WhyVixa.tsx` — full rewrite: word-by-word bold interaction, remove scenes, centered layout
 
