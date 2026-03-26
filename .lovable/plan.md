@@ -1,46 +1,49 @@
 
 
-## Plan: Revamp Hero with Background Image + Interactive Demo
+## Plan: Redesign Hero Background — Cinematic African Urban Life
 
-### What You Get
-A stunning hero section with a cinematic African cityscape/nature background image, a dark overlay for text contrast, and an embedded interactive chat demo showing how VIXA works — all while keeping both light/dark themes working.
+### Overview
+Replace the single static background image with a rich, layered composition: a desaturated urban African lifestyle photo, warm gradient overlays for text readability, subtle animated financial/chat overlays (ghost chat bubbles, flowing money-movement lines, pulsing activity nodes), slow parallax motion, and a radial glow behind the phone mockup. Layout, text, and chat demo remain untouched.
 
 ### Changes
 
-**1. Background Image (`src/components/HeroSection.tsx`)**
-- Add a high-quality Unsplash image of an African cityscape/landscape as a full-bleed background (`object-cover`, `absolute inset-0`)
-- Layer a dark gradient overlay on top (`bg-gradient-to-b from-black/70 via-black/50 to-background`) so text remains crisp in both themes
-- Remove the current abstract gradient blurs and grid-overlay
-- Add a subtle parallax feel via CSS `background-attachment: fixed` on desktop
+**1. Generate new hero background image (`src/assets/hero-bg.jpg`)**
+- Use AI image generation (Nano banana 2) to create a cinematic, warm-toned image of African urban life: people on smartphones in a modern market/street setting, natural light, slightly desaturated, editorial feel
+- Prompt focus: "African young adults using smartphones in a vibrant modern urban market, warm golden hour light, shallow depth of field, cinematic editorial style, not posed"
 
-**2. Embedded Interactive Demo in Hero**
-- Replace the right-side floating notification cards with a live WhatsApp-style chat demo widget
-- The demo auto-plays a 3-step transaction sequence:
-  1. User types: "Send 50 USDT to Kenya"
-  2. VIXA AI replies: "50 USDT ≈ 6,450 KES via M-Pesa. Reply PIN to confirm."
-  3. User sends: "1234"
-  4. VIXA AI: "Done! Sent to +254****. Ref: VX-8291"
-- Each message appears with a typing indicator and staggered timing (500ms user → 800ms typing dots → AI reply)
-- The widget has a phone-frame look: rounded corners, status bar, WhatsApp-green header bar with "VIXA AI" title
-- On mobile (below `lg`), the demo appears below the headline text instead of hidden
+**2. Update background layers in `HeroSection.tsx`**
+- **Base image**: Apply CSS `filter: saturate(0.85)` for slight desaturation, `opacity-90`
+- **Warm gradient overlay**: Replace current dark gradient with a left-to-right warm fade (`bg-gradient-to-r from-[#F7F6F2]/90 via-[#F7F6F2]/40 to-transparent`) for light mode, and `from-black/80 via-black/50 to-transparent` for dark mode — ensures left text area stays clean
+- **Subtle dark unifier**: Add a `bg-black/[0.06]` overlay across the full image to unify tones
+- **Grain**: Already exists globally; boost to `opacity-0.03` within hero via a local overlay
 
-**3. Hero Text Adjustments**
-- Force hero text to white (`text-white`) since it's now over an image — bypasses theme color tokens for this section only
-- Subtitle and tagline also forced white with slight opacity for hierarchy
-- CTA button stays lime-green (`bg-primary`) — high contrast on the dark image overlay
-- Marquee bar at bottom: semi-transparent dark background strip so it reads over the image edge
+**3. Add animated background overlay elements (new SVG/CSS layer)**
+- **Ghost chat bubbles**: 3-4 faint rounded-rect shapes at 10-12% opacity, positioned around the background, slowly drifting upward with CSS animation (`translateY` over 20s, infinite)
+- **Money flow lines**: 2-3 thin curved SVG paths (quadratic bezier) representing cross-Africa movement, animated with `stroke-dashoffset` for a flowing effect, at 8-10% opacity, using primary green color
+- **Pulsing activity nodes**: 5-6 small circles at fixed positions, pulsing gently (scale 1→1.3, opacity 0.1→0.2) on staggered 3-4s intervals
 
-**4. Keep Marquee**
-- Marquee stays at the bottom of the hero
-- Add `bg-background/80 backdrop-blur-sm` to the marquee strip for readability over the background image
+**4. Parallax motion**
+- Wrap background image in a div that uses `useEffect` + `scroll` listener to apply a subtle `translateY` (0 to -10px based on scroll position) for slow parallax
+- Add a very subtle CSS animation on the image: slow `scale(1) → scale(1.02)` over 30s, alternating — gives a "breathing" cinematic feel
+
+**5. Phone mockup glow**
+- Add a `div` behind the phone mockup with `bg-primary/10 blur-[80px]` as a soft radial glow, creating visual separation from the background
+
+**6. Backdrop blur on text area**
+- Add `backdrop-blur-sm` to the left text column wrapper so the text floats cleanly over the image regardless of what's behind it
+
+**7. CSS additions (`src/index.css`)**
+- Add keyframes: `hero-drift` (slow upward float for ghost bubbles), `hero-breathe` (slow scale pulse for bg image), `hero-flow` (stroke-dashoffset animation for money lines)
 
 ### Technical Details
-- Background image: `https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=2400&q=80` (Nairobi skyline) — fetched lazily with `loading="eager"` since it's hero
-- Chat demo uses local state + `useEffect` timers (no external deps), similar pattern to existing `LiveChatDemo` component
-- Phone frame: a `div` with `rounded-[2rem] border-[6px] border-white/10 bg-black/80 backdrop-blur-md shadow-2xl` containing the chat sequence
-- Mobile: demo stacks below text with `max-w-[340px] mx-auto`
-- All other hero content (tagline, subtitle, CTA) uses `text-white` and `text-white/70` to ensure visibility regardless of theme
+- Parallax: `window.addEventListener('scroll', ...)` with `requestAnimationFrame`, applying `transform: translateY(${offset}px)` — capped at 10px shift
+- Ghost bubbles: absolute-positioned `div`s with `rounded-2xl bg-white/10 border border-white/5` and CSS animation
+- Flow lines: inline SVG `<path>` elements with `stroke-dasharray: 200` and `stroke-dashoffset` animated from 400 to 0 over 8s
+- Activity nodes: `div`s with `animate-pulse-dot` (already defined in CSS), positioned absolutely
+- Dark/light adaptation: gradient overlay uses a CSS class that changes direction based on `.dark` parent
 
 ### Files Modified
-- `src/components/HeroSection.tsx` — full rewrite
+- `src/assets/hero-bg.jpg` — regenerated with new prompt
+- `src/components/HeroSection.tsx` — background layers restructured, overlay elements added, parallax hook added, phone glow added
+- `src/index.css` — new keyframes for hero animations
 
