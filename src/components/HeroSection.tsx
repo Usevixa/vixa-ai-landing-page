@@ -144,7 +144,16 @@ const HeroSection = () => {
               >
                 Send money like you send a message.
                 <br />
-                VIXA understands you — and moves it securely across Africa.
+                Buy, sell, swap, or move crypto across Africa — VIXA handles the execution securely.
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.45 }}
+                className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground/70"
+              >
+                Send • Receive • Buy • Sell • Swap • Cross-border
               </motion.p>
 
               <motion.div
