@@ -1,6 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import heroBg from "@/assets/hero-bg.jpg";
+import HeroOverlays from "@/components/HeroOverlays";
 
 const marqueeItems = [
   "STABLECOIN CORE", "MOBILE MONEY", "BANK TRANSFERS", "PIN-GATED",
@@ -23,12 +24,12 @@ const HeroSection = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [typing, setTyping] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [parallaxY, setParallaxY] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const addNextMessage = useCallback(() => {
     if (currentIndex >= chatSequence.length) return;
-
     const msg = chatSequence[currentIndex];
-
     if (msg.from === "ai") {
       setTyping(true);
       setTimeout(() => {
@@ -44,43 +45,80 @@ const HeroSection = () => {
 
   useEffect(() => {
     if (currentIndex >= chatSequence.length) {
-      // Reset after a pause
       const t = setTimeout(() => {
         setMessages([]);
         setCurrentIndex(0);
       }, 4000);
       return () => clearTimeout(t);
     }
-
     const delay = currentIndex === 0 ? 1500 : 800;
     const t = setTimeout(addNextMessage, delay);
     return () => clearTimeout(t);
   }, [currentIndex, addNextMessage]);
 
+  // Parallax scroll
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          setParallaxY(Math.min(scrollY * 0.08, 10));
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex flex-col justify-between overflow-hidden">
-      {/* Background image */}
-      <div className="absolute inset-0">
+    <section ref={sectionRef} className="relative min-h-screen flex flex-col justify-between overflow-hidden">
+      {/* Background image with parallax + breathing */}
+      <div className="absolute inset-0 overflow-hidden">
         <img
           src={heroBg}
           alt=""
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover animate-hero-breathe"
           loading="eager"
+          width={1920}
+          height={1080}
+          style={{
+            filter: "saturate(0.85)",
+            opacity: 0.9,
+            transform: `translateY(${parallaxY}px)`,
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-[hsl(var(--background))]" />
+
+        {/* Warm gradient overlay — adapts to theme */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#F7F6F2]/90 via-[#F7F6F2]/40 to-transparent dark:from-black/80 dark:via-black/50 dark:to-transparent" />
+
+        {/* Subtle dark unifier */}
+        <div className="absolute inset-0 bg-black/[0.06]" />
+
+        {/* Local grain boost */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "256px 256px",
+        }} />
       </div>
+
+      {/* Animated overlay elements (ghost bubbles, flow lines, nodes) */}
+      <HeroOverlays />
 
       {/* Main content */}
       <div className="flex-1 flex items-center pt-20 pb-12 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-[1fr_400px] gap-12 lg:gap-16 items-center">
-            {/* Left — Text */}
-            <div className="space-y-8">
+            {/* Left — Text with backdrop blur */}
+            <div className="space-y-8 backdrop-blur-sm bg-white/5 dark:bg-black/5 rounded-3xl p-6 sm:p-8 -m-6 sm:-m-8">
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-[11px] font-bold tracking-[0.25em] uppercase text-white/50"
+                className="text-[11px] font-bold tracking-[0.25em] uppercase text-foreground/50"
               >
                 Africa's Financial Intelligence Layer
               </motion.p>
@@ -89,7 +127,7 @@ const HeroSection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-[48px] sm:text-[68px] lg:text-[84px] xl:text-[100px] font-heading font-bold leading-[0.88] tracking-[-0.03em] text-white uppercase"
+                className="text-[48px] sm:text-[68px] lg:text-[84px] xl:text-[100px] font-heading font-bold leading-[0.88] tracking-[-0.03em] text-foreground uppercase"
               >
                 AI For
                 <br />
@@ -102,7 +140,7 @@ const HeroSection = () => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-base sm:text-lg text-white/70 max-w-[480px] leading-relaxed"
+                className="text-base sm:text-lg text-muted-foreground max-w-[480px] leading-relaxed"
               >
                 Send money like you send a message.
                 <br />
@@ -125,14 +163,17 @@ const HeroSection = () => {
               </motion.div>
             </div>
 
-            {/* Right — Interactive Chat Demo */}
+            {/* Right — Interactive Chat Demo with glow */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.6 }}
-              className="w-full max-w-[340px] mx-auto lg:mx-0"
+              className="w-full max-w-[340px] mx-auto lg:mx-0 relative"
             >
-              <div className="rounded-[2rem] border border-white/10 bg-black/70 backdrop-blur-xl shadow-[0_25px_80px_-20px_rgba(0,0,0,0.8)] overflow-hidden">
+              {/* Radial glow behind phone */}
+              <div className="absolute -inset-12 bg-primary/10 blur-[80px] rounded-full pointer-events-none" />
+
+              <div className="relative rounded-[2rem] border border-white/10 dark:border-white/10 bg-black/70 backdrop-blur-xl shadow-[0_25px_80px_-20px_rgba(0,0,0,0.8)] overflow-hidden">
                 {/* Status bar */}
                 <div className="px-6 py-2.5 flex justify-between items-center text-[11px] text-white/40">
                   <span className="font-medium">9:41</span>
@@ -207,7 +248,7 @@ const HeroSection = () => {
       </div>
 
       {/* Scrolling marquee */}
-      <div className="relative z-10 border-t border-white/10 bg-background/80 backdrop-blur-sm overflow-hidden">
+      <div className="relative z-10 border-t border-border/50 bg-background/80 backdrop-blur-sm overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap py-3">
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <span key={i} className="mx-6 text-xs font-bold tracking-[0.15em] text-muted-foreground flex items-center gap-3">
