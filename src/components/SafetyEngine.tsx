@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { Check, Shield } from "lucide-react";
 
 const rows = [
   { title: "PIN Required", desc: "Every payout needs your confirmation." },
@@ -63,33 +64,52 @@ const SafetyEngine = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="py-5 border-b border-border group"
+                  className="py-5 border-b border-border group flex items-start gap-3"
                 >
-                  <p className="text-lg sm:text-xl font-heading font-bold text-foreground mb-0.5 group-hover:text-primary transition-colors duration-300">{row.title}</p>
-                  <p className="text-sm text-muted-foreground">{row.desc}</p>
+                  <div className="mt-1 w-4 h-4 flex-shrink-0 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                    <Check size={16} className="text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-lg sm:text-xl font-heading font-bold text-foreground mb-0.5 group-hover:text-primary transition-colors duration-300">{row.title}</p>
+                    <p className="text-sm text-muted-foreground">{row.desc}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
 
           <div className="flex flex-col items-center gap-8">
-            <div className="bg-card border border-border rounded-2xl p-10 w-full max-w-[280px] flex flex-col items-center gap-6">
-              <div className="flex gap-4">
-                {[0, 1, 2, 3].map((i) => (
-                  <motion.div
-                    key={i}
-                    animate={{
-                      backgroundColor: i < filledDots ? "hsl(75, 85%, 55%)" : "transparent",
-                      boxShadow: i < filledDots ? "0 0 16px hsl(75, 85%, 55%, 0.4)" : "none",
-                    }}
-                    transition={{ duration: 0.2 }}
-                    className="w-5 h-5 rounded-full border-2 border-primary/30"
-                  />
-                ))}
-              </div>
-              <p className="text-[10px] text-muted-foreground tracking-widest uppercase font-bold">
-                {filledDots >= 4 ? "✓ Verified & Secured" : "Enter PIN to confirm"}
-              </p>
+            <div className="relative">
+              {/* Shield watermark */}
+              <Shield size={120} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary/[0.04] pointer-events-none" />
+              
+              {/* Shimmer ring when verified */}
+              <motion.div
+                animate={{
+                  boxShadow: filledDots >= 4
+                    ? "0 0 0 2px hsl(var(--primary) / 0.2), 0 0 30px hsl(var(--primary) / 0.1)"
+                    : "0 0 0 0px transparent",
+                }}
+                transition={{ duration: 0.4 }}
+                className="bg-card border border-border rounded-2xl p-10 w-full max-w-[280px] flex flex-col items-center gap-6 relative"
+              >
+                <div className="flex gap-4">
+                  {[0, 1, 2, 3].map((i) => (
+                    <motion.div
+                      key={i}
+                      animate={{
+                        backgroundColor: i < filledDots ? "hsl(75, 85%, 55%)" : "transparent",
+                        boxShadow: i < filledDots ? "0 0 16px hsl(75, 85%, 55%, 0.4)" : "none",
+                      }}
+                      transition={{ duration: 0.2 }}
+                      className="w-5 h-5 rounded-full border-2 border-primary/30"
+                    />
+                  ))}
+                </div>
+                <p className="text-[10px] text-muted-foreground tracking-widest uppercase font-bold">
+                  {filledDots >= 4 ? "✓ Verified & Secured" : "Enter PIN to confirm"}
+                </p>
+              </motion.div>
             </div>
           </div>
         </div>

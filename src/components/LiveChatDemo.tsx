@@ -29,24 +29,38 @@ const ChatBubble = ({ scenario, index }: { scenario: typeof scenarios[0]; index:
   }, []);
 
   return (
-    <div ref={ref} className="bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/20 transition-colors duration-300">
+    <div ref={ref} className="bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/20 hover:shadow-[0_0_30px_hsl(var(--primary)/0.06)] transition-all duration-400">
       <div className="px-4 py-3 border-b border-border flex items-center gap-2">
         <div className="w-6 h-6 rounded-full bg-vixa-green/20 flex items-center justify-center">
           <span className="text-vixa-green font-bold text-[7px]">VA</span>
         </div>
         <span className="text-xs font-bold text-foreground">VIXA AI</span>
-        <span className="text-[9px] text-muted-foreground ml-auto">#{index + 1}</span>
+        {/* Live indicator */}
+        <div className="flex items-center gap-1 ml-auto">
+          <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-dot" />
+          <span className="text-[8px] text-muted-foreground uppercase tracking-wider font-bold">Live</span>
+        </div>
       </div>
       <div className="p-4 space-y-3 min-h-[110px]">
         {showUser && (
-          <div className="flex justify-end animate-fade-in">
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="flex justify-end"
+          >
             <div className="bg-vixa-green text-primary-foreground px-3 py-2 rounded-xl rounded-br-sm max-w-[85%]">
               <p className="text-xs font-medium">{scenario.user}</p>
             </div>
-          </div>
+          </motion.div>
         )}
         {showTyping && (
-          <div className="flex justify-start animate-fade-in">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="flex justify-start"
+          >
             <div className="bg-secondary px-3 py-2.5 rounded-xl rounded-bl-sm">
               <div className="flex gap-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-bounce" style={{ animationDelay: "0ms" }} />
@@ -54,15 +68,20 @@ const ChatBubble = ({ scenario, index }: { scenario: typeof scenarios[0]; index:
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-bounce" style={{ animationDelay: "300ms" }} />
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
         {showAi && (
-          <div className="flex justify-start animate-fade-in">
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="flex justify-start"
+          >
             <div className="bg-secondary px-3 py-2 rounded-xl rounded-bl-sm max-w-[85%]">
               <p className="text-[9px] text-primary font-bold mb-0.5">VIXA AI</p>
               <p className="text-xs text-foreground/80">{scenario.ai}</p>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
