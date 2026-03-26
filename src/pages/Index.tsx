@@ -24,8 +24,13 @@ const Index = () => {
             </a>
             <div className="hidden md:flex items-center gap-6">
               {[["Why VIXA", "#whyvixa"], ["How It Works", "#howitworks"], ["Coverage", "#coverage"]].map(([label, href]) => (
-                <a key={label} href={href} className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors duration-200 uppercase tracking-wide">
+                <a
+                  key={label}
+                  href={href}
+                  className="relative text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors duration-200 uppercase tracking-wide group"
+                >
                   {label}
+                  <span className="absolute -bottom-1 left-0 w-full h-[1.5px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </a>
               ))}
             </div>
@@ -89,9 +94,11 @@ const Index = () => {
         <FinalCTA />
       </div>
 
-      <footer className="py-6 px-4 border-t border-border">
+      <footer className="py-6 px-4 border-t border-border relative">
+        {/* Gradient line above footer */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         <div className="container mx-auto text-center text-muted-foreground text-xs">
-          <p>© 2025 VIXA. Intelligence for African money movement.</p>
+          <p className="tabular-nums">© 2025 VIXA. Intelligence for African money movement.</p>
         </div>
       </footer>
     </div>

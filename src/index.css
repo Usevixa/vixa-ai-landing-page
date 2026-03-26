@@ -144,4 +144,17 @@
   .animate-hero-breathe { animation: hero-breathe 30s ease-in-out infinite; }
   .animate-hero-flow { animation: hero-flow 8s linear infinite; }
   .animate-hero-node { animation: hero-node-pulse 4s ease-in-out infinite; }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .animate-shimmer { animation: shimmer 3s ease-in-out infinite; }
+  .animate-float { animation: float 6s ease-in-out infinite; }
 }
