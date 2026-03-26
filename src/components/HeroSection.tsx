@@ -109,11 +109,11 @@ const HeroSection = () => {
       <HeroOverlays />
 
       {/* Main content */}
-      <div className="flex-1 flex items-center pt-20 pb-12 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex-1 flex items-center pt-16 pb-6 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-[1fr_400px] gap-12 lg:gap-16 items-center">
             {/* Left — Text with backdrop blur */}
-            <div className="space-y-8 backdrop-blur-sm bg-white/5 dark:bg-black/5 rounded-3xl p-6 sm:p-8 -m-6 sm:-m-8">
+            <div className="space-y-5 backdrop-blur-sm bg-white/5 dark:bg-black/5 rounded-3xl p-6 sm:p-8 -m-6 sm:-m-8">
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -147,14 +147,6 @@ const HeroSection = () => {
                 Buy, sell, swap, or move crypto across Africa — VIXA handles the execution securely.
               </motion.p>
 
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.45 }}
-                className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground/70"
-              >
-                Send • Receive • Buy • Sell • Swap • Cross-border
-              </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
