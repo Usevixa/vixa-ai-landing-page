@@ -1,50 +1,46 @@
 
 
-## Plan: Add Light/Dark Theme Toggle (Sekiapp-style)
+## Plan: Revamp Hero with Background Image + Interactive Demo
 
 ### What You Get
-A smooth toggle switch in the navbar that switches the entire site between a light cream theme and the current dark theme. All text remains fully visible in both modes — no text disappearing against matching backgrounds.
+A stunning hero section with a cinematic African cityscape/nature background image, a dark overlay for text contrast, and an embedded interactive chat demo showing how VIXA works — all while keeping both light/dark themes working.
 
 ### Changes
 
-**1. Add light theme CSS variables (`src/index.css`)**
-- Current `:root` becomes the dark theme (move under `.dark` class)
-- New `:root` gets light theme values:
-  - Background: warm off-white (`60 20% 96%`)
-  - Foreground: near-black (`220 20% 10%`)
-  - Card: white (`0 0% 100%`)
-  - Muted-foreground: medium gray (readable on light)
-  - Primary stays lime-green but with dark foreground text
-  - Border: light gray
-  - vixa-green stays the same
-- Grain overlay opacity adapts (lighter in light mode)
+**1. Background Image (`src/components/HeroSection.tsx`)**
+- Add a high-quality Unsplash image of an African cityscape/landscape as a full-bleed background (`object-cover`, `absolute inset-0`)
+- Layer a dark gradient overlay on top (`bg-gradient-to-b from-black/70 via-black/50 to-background`) so text remains crisp in both themes
+- Remove the current abstract gradient blurs and grid-overlay
+- Add a subtle parallax feel via CSS `background-attachment: fixed` on desktop
 
-**2. Create `ThemeProvider` context (`src/contexts/ThemeContext.tsx`)**
-- React context with `theme` state (`"light" | "dark"`)
-- Toggles `.dark` class on `<html>` element
-- Persists choice to `localStorage`
-- Defaults to dark (current look)
+**2. Embedded Interactive Demo in Hero**
+- Replace the right-side floating notification cards with a live WhatsApp-style chat demo widget
+- The demo auto-plays a 3-step transaction sequence:
+  1. User types: "Send 50 USDT to Kenya"
+  2. VIXA AI replies: "50 USDT ≈ 6,450 KES via M-Pesa. Reply PIN to confirm."
+  3. User sends: "1234"
+  4. VIXA AI: "Done! Sent to +254****. Ref: VX-8291"
+- Each message appears with a typing indicator and staggered timing (500ms user → 800ms typing dots → AI reply)
+- The widget has a phone-frame look: rounded corners, status bar, WhatsApp-green header bar with "VIXA AI" title
+- On mobile (below `lg`), the demo appears below the headline text instead of hidden
 
-**3. Add toggle to navbar (`src/pages/Index.tsx`)**
-- Sekiapp-style: a small sun/moon icon toggle switch placed between nav links and "Get Started" button
-- Uses the existing `Switch` component from `src/components/ui/switch.tsx`
-- Smooth transition on background/foreground color changes via CSS `transition` on `body`
+**3. Hero Text Adjustments**
+- Force hero text to white (`text-white`) since it's now over an image — bypasses theme color tokens for this section only
+- Subtitle and tagline also forced white with slight opacity for hierarchy
+- CTA button stays lime-green (`bg-primary`) — high contrast on the dark image overlay
+- Marquee bar at bottom: semi-transparent dark background strip so it reads over the image edge
 
-**4. Ensure all components stay readable in both themes**
-- Components already use semantic tokens (`text-foreground`, `bg-background`, `text-muted-foreground`, `bg-card`, `border-border`) so they auto-adapt
-- Hardcoded colors to audit and fix:
-  - `HeroSection`: `bg-primary/[0.04]` blurs — fine in both
-  - `AfricaNetwork`: SVG fills use hex colors — update stroke/fill to use CSS variables or ensure contrast
-  - `bg-vixa-green` chat bubbles — works on both
-  - `bg-secondary` elements — will adapt via variables
-- Add `transition-colors duration-300` to the root `<div>` for smooth switching
-
-**5. Tailwind config (`tailwind.config.ts`)**
-- Already has `darkMode: ["class"]` — no change needed
+**4. Keep Marquee**
+- Marquee stays at the bottom of the hero
+- Add `bg-background/80 backdrop-blur-sm` to the marquee strip for readability over the background image
 
 ### Technical Details
-- Theme toggle: adds/removes `dark` class on `<html>`
-- CSS structure: `:root` = light defaults, `.dark` = dark overrides (standard shadcn pattern)
-- No text will disappear because all text uses `text-foreground` / `text-muted-foreground` which flip with the theme
-- Africa map SVG: update the silhouette fill and stroke colors to use `currentColor` or CSS custom properties so they adapt
+- Background image: `https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=2400&q=80` (Nairobi skyline) — fetched lazily with `loading="eager"` since it's hero
+- Chat demo uses local state + `useEffect` timers (no external deps), similar pattern to existing `LiveChatDemo` component
+- Phone frame: a `div` with `rounded-[2rem] border-[6px] border-white/10 bg-black/80 backdrop-blur-md shadow-2xl` containing the chat sequence
+- Mobile: demo stacks below text with `max-w-[340px] mx-auto`
+- All other hero content (tagline, subtitle, CTA) uses `text-white` and `text-white/70` to ensure visibility regardless of theme
+
+### Files Modified
+- `src/components/HeroSection.tsx` — full rewrite
 
