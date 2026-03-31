@@ -51,7 +51,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        gold: "hsl(var(--gold))",
+        "vixa-green": "hsl(var(--vixa-green))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -72,8 +72,8 @@ export default {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "hero-float": {
-          "0%, 100%": { transform: "rotate(3deg) translateY(0)" },
-          "50%": { transform: "rotate(3deg) translateY(-4px)" },
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-6px)" },
         },
       },
       animation: {

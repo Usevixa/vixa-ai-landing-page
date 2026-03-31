@@ -7,74 +7,98 @@ import SafetyEngine from "@/components/SafetyEngine";
 import IntelligenceStack from "@/components/IntelligenceStack";
 import LiveChatDemo from "@/components/LiveChatDemo";
 import FinalCTA from "@/components/FinalCTA";
-
-const Divider = () => (
-  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="h-px bg-border" />
-  </div>
-);
+import { useTheme } from "@/contexts/ThemeContext";
+import { Sun, Moon } from "lucide-react";
 
 const Index = () => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden transition-colors duration-300">
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border/50">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 transition-colors duration-300">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
-            <a href="/" className="font-heading font-bold text-lg tracking-tight text-foreground">
+            <a href="/" className="font-heading font-bold text-lg tracking-tight text-foreground uppercase">
               VIXA
             </a>
             <div className="hidden md:flex items-center gap-6">
               {[["Why VIXA", "#whyvixa"], ["How It Works", "#howitworks"], ["Coverage", "#coverage"]].map(([label, href]) => (
-                <a key={label} href={href} className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors duration-200">
+                <a
+                  key={label}
+                  href={href}
+                  className="relative text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors duration-200 uppercase tracking-wide group"
+                >
                   {label}
+                  <span className="absolute -bottom-1 left-0 w-full h-[1.5px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </a>
               ))}
             </div>
-            <a href="#cta" className="px-4 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
-              Get Started
-            </a>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleTheme}
+                className="relative w-14 h-7 rounded-full bg-secondary border border-border flex items-center transition-colors duration-300 hover:border-primary/40"
+                aria-label="Toggle theme"
+              >
+                <div
+                  className={`absolute w-5 h-5 rounded-full bg-primary flex items-center justify-center transition-transform duration-300 ${
+                    theme === "dark" ? "translate-x-7" : "translate-x-1"
+                  }`}
+                >
+                  {theme === "dark" ? (
+                    <Moon size={11} className="text-primary-foreground" />
+                  ) : (
+                    <Sun size={11} className="text-primary-foreground" />
+                  )}
+                </div>
+              </button>
+              <a href="#cta" className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wide hover:scale-[1.03] hover:shadow-[0_0_20px_hsl(75,85%,55%,0.2)] transition-all duration-200">
+                Get Started
+              </a>
+            </div>
           </div>
         </div>
       </nav>
 
       <HeroSection />
 
-      <div style={{ backgroundColor: "#F3F2ED" }}>
+      <div className="border-t border-border">
         <StatementBlock />
       </div>
 
-      <div id="whyvixa">
+      <div id="whyvixa" className="border-t border-border">
         <WhyVixa />
       </div>
 
-      <div id="coverage" style={{ backgroundColor: "#F3F2ED" }}>
+      <div id="coverage" className="border-t border-border bg-card">
         <AfricaNetwork />
       </div>
 
-      <div id="howitworks">
+      <div id="howitworks" className="border-t border-border">
         <HowItWorks />
       </div>
 
-      <div style={{ backgroundColor: "#F3F2ED" }}>
+      <div className="border-t border-border bg-card">
         <SafetyEngine />
       </div>
 
-      <div style={{ backgroundColor: "#FFFFFF" }}>
+      <div className="border-t border-border">
         <IntelligenceStack />
       </div>
 
-      <div style={{ backgroundColor: "#F3F2ED" }}>
+      <div className="border-t border-border bg-card">
         <LiveChatDemo />
       </div>
 
-      <div id="cta">
+      <div id="cta" className="border-t border-border">
         <FinalCTA />
       </div>
 
-      <footer className="py-6 px-4 border-t border-border">
+      <footer className="py-6 px-4 border-t border-border relative">
+        {/* Gradient line above footer */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         <div className="container mx-auto text-center text-muted-foreground text-xs">
-          <p>© 2025 VIXA. Intelligence for African money movement.</p>
+          <p className="tabular-nums">© 2025 VIXA. Intelligence for African money movement.</p>
         </div>
       </footer>
     </div>
