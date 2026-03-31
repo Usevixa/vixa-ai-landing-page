@@ -36,7 +36,7 @@ const LiveSimulation = () => {
   useEffect(() => {
     if (!started) return;
     
-    const timers: NodeJS.Timeout[] = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
     steps.forEach((_, i) => {
       timers.push(setTimeout(() => setCurrentStep(i), (i + 1) * 800));
     });
