@@ -1,30 +1,71 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import { useEffect, useRef } from 'react';
+import Navbar from './components/Navbar';
+import Hero from './sections/Hero';
+import SocialProofBar from './sections/SocialProofBar';
+import WhyVixa from './sections/WhyVixa';
+import LiveDemo from './sections/LiveDemo';
+import HowItWorks from './sections/HowItWorks';
+import TrustSecurity from './sections/TrustSecurity';
+import Coverage from './sections/Coverage';
+import Testimonials from './sections/Testimonials';
+import Comparison from './sections/Comparison';
+import CoreMessage from './sections/CoreMessage';
+import FinalCta from './sections/FinalCta';
+import Footer from './sections/Footer';
+import ThreadPlayground from './dev/ThreadPlayground';
+import { ScrollTrigger, useGSAP } from './lib/gsap';
+import { setupReveals, setupCounters, setupScatter, setupParallax } from './lib/mechanics';
 
-const queryClient = new QueryClient();
+function App() {
+  const main = useRef<HTMLElement>(null);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
+  // late-loading fonts/assets shift layout and desync every pin (§2)
+  useEffect(() => {
+    document.fonts.ready.then(() => ScrollTrigger.refresh());
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener('load', onLoad);
+    return () => window.removeEventListener('load', onLoad);
+  }, []);
+
+  // shared §5 mechanics, applied via data attributes across all sections
+  useGSAP(
+    () => {
+      if (!main.current) return;
+      setupReveals(main.current);
+      setupCounters(main.current);
+      setupScatter(main.current);
+      setupParallax(main.current);
+    },
+    { scope: main },
+  );
+
+  // dev playground stays reachable at ?playground (client-only; SSR skips)
+  if (
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).has('playground')
+  ) {
+    return <ThreadPlayground />;
+  }
+
+  return (
+    <>
+      <Navbar />
+      <main ref={main}>
+        <Hero />
+        <SocialProofBar />
+        <WhyVixa />
+        <LiveDemo />
+        <HowItWorks />
+        <TrustSecurity />
+        <Coverage />
+        <Testimonials />
+        <Comparison />
+        <CoreMessage />
+        <FinalCta />
+      </main>
+      <Footer />
+    </>
+  );
+}
 
 export default App;
