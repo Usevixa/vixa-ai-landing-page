@@ -2,7 +2,7 @@
 // blur after 80px (single 0.4s transition, CSS-driven via a toggled class).
 import { useEffect, useRef, useState } from 'react';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
-import { WA_LINK } from '../sections/Hero';
+import { WA_LINK } from '../lib/site';
 
 const LINKS = [
   { label: 'Why Vixa', href: '#why' },

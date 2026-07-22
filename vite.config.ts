@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import { resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 
@@ -12,4 +13,14 @@ export default defineConfig({
       brotliSize: true,
     }),
   ],
+  build: {
+    // MPA: landing page + standalone legal pages (no router, §2)
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        privacy: resolve(__dirname, 'privacy.html'),
+        terms: resolve(__dirname, 'terms.html'),
+      },
+    },
+  },
 })

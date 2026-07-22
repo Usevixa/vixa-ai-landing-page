@@ -70,6 +70,36 @@
     @apply max-w-content mx-auto;
   }
 
+  /* Legal pages (Privacy / Terms) — readable prose in the VIXA palette */
+  .legal-prose {
+    @apply text-vx-ash;
+  }
+  .legal-prose h2 {
+    @apply font-display text-title mt-12 mb-3 font-medium text-vx-bone;
+  }
+  .legal-prose h2:first-child {
+    @apply mt-0;
+  }
+  .legal-prose p {
+    @apply mt-3 leading-[1.7];
+  }
+  .legal-prose ul {
+    @apply mt-3 flex list-none flex-col gap-2 pl-0;
+  }
+  .legal-prose li {
+    @apply relative pl-5 leading-[1.7];
+  }
+  .legal-prose li::before {
+    content: '';
+    @apply absolute left-0 top-[0.68em] h-[6px] w-[6px] rounded-full bg-vx-olive;
+  }
+  .legal-prose a {
+    @apply text-vx-lime underline underline-offset-2 transition-opacity hover:opacity-80;
+  }
+  .legal-prose strong {
+    @apply font-semibold text-vx-bone;
+  }
+
   /* WhatsApp micro-states (§7) — driven by threadChoreo via data attributes */
   .wa-ticks {
     color: theme('colors.wa-meta');

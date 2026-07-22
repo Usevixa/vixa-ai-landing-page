@@ -1,6 +1,6 @@
 // §6.12 — the one place to spend brightness: the olive glow at higher
 // intensity than the hero. Largest button on the page.
-import { WA_LINK } from './Hero';
+import { WA_LINK } from '../lib/site';
 
 export default function FinalCta() {
   return (

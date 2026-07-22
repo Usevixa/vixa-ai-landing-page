@@ -12,14 +12,12 @@ import {
   beatWindows,
 } from '../lib/threadChoreo';
 import { prefersReducedMotion } from '../lib/gsap';
+import { WA_LINK } from '../lib/site';
 import screenRect from '../assets/hero-screen-rect.json';
 
 // share of the pin the thread owns (entrance before, settle after)
 const THREAD_START = 0.16;
 const THREAD_SPAN = 0.78;
-
-// §12: real wa.me deep link pending from client
-export const WA_LINK = 'https://wa.me/13072058438';
 
 const windows = beatWindows(heroThread);
 const master = (t: number) => THREAD_START + t * THREAD_SPAN;
