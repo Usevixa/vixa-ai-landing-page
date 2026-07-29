@@ -17,7 +17,7 @@ export default function LegalLayout({
     <>
       {/* minimal static header — matches the pill nav's language, not its motion */}
       <header className="fixed inset-x-0 top-5 z-50 mx-auto w-full px-4">
-        <div className="mx-auto flex max-w-content items-center justify-between gap-4 rounded-pill border border-vx-slate bg-vx-char/70 py-2.5 pl-6 pr-2.5 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-content items-center justify-between gap-4 rounded-pill border border-vx-slate bg-white/80 py-2.5 pl-6 pr-2.5 backdrop-blur-xl">
           <a href="/" className="font-display text-[19px] font-bold tracking-[0.02em] text-vx-bone">
             VIXA
           </a>

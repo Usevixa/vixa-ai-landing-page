@@ -7,6 +7,7 @@
 // exactly how a real screenshot would scale. This kills every viewport-
 // dependent reflow (wrapping placeholders, cramped bubbles).
 import { useEffect, useRef, useState } from 'react';
+import { ScrollTrigger } from '../lib/gsap';
 
 export type ChatMessage = {
   id: string;
@@ -29,9 +30,12 @@ const EMOJI_LABELS: Record<string, string> = {
   '✅': 'done',
   '⚡': 'instant',
   '🔒': 'secure',
+  '🔐': 'secure',
+  '💱': 'exchange rate',
+  '⚠️': 'warning',
   '👉': 'pointing right',
 };
-const EMOJI_SPLIT = /(✅|⚡|🔒|👉)/g;
+const EMOJI_SPLIT = /(✅|⚡|🔒|🔐|💱|⚠️|👉)/g;
 
 export function renderBody(text: string) {
   return text.split(EMOJI_SPLIT).map((part, i) =>
@@ -120,7 +124,7 @@ function VoiceNote() {
 
 function TypingIndicator() {
   return (
-    <span role="img" className="flex h-5 items-center gap-[4px] px-1.5" aria-label="VIXA AI is typing">
+    <span role="img" className="flex h-5 items-center gap-[4px] px-1.5" aria-label="VIXA is typing">
       <span className="wa-dot h-[7px] w-[7px] rounded-full bg-wa-meta" />
       <span className="wa-dot h-[7px] w-[7px] rounded-full bg-wa-meta" style={{ animationDelay: '0.15s' }} />
       <span className="wa-dot h-[7px] w-[7px] rounded-full bg-wa-meta" style={{ animationDelay: '0.3s' }} />
@@ -128,48 +132,35 @@ function TypingIndicator() {
   );
 }
 
-function Bubble({
-  msg,
-  showSender,
-  showTail,
-}: {
-  msg: ChatMessage;
-  showSender: boolean;
-  showTail: boolean;
-}) {
+function Bubble({ msg, showTail }: { msg: ChatMessage; showTail: boolean }) {
   const out = msg.side === 'out';
   const isTyping = msg.type === 'typing';
   return (
     <div
-      className={`wa-msg flex px-[16px] ${out ? 'justify-end' : 'justify-start'} ${isTyping ? 'wa-typing absolute left-0 top-0 w-full' : ''}`}
+      className={`wa-msg flex px-[14px] ${out ? 'justify-end' : 'justify-start'} ${isTyping ? 'wa-typing absolute left-0 top-0 w-full' : ''}`}
       data-msg={msg.id}
       data-side={msg.side}
       data-type={msg.type}
     >
       <div
-        className={`wa-bubble relative max-w-[76%] px-[12px] pb-[8px] pt-[6px] text-[16.5px] leading-[21px] text-wa-text shadow-[0_1px_1px_rgba(0,0,0,0.18)] ${
+        className={`wa-bubble relative max-w-[75%] px-[12px] pb-[8px] pt-[7px] text-[16.5px] leading-[22px] text-wa-text shadow-[0_1px_1px_rgba(0,0,0,0.18)] ${
           out
-            ? `rounded-[16px] bg-wa-out ${showTail ? 'rounded-tr-[5px]' : ''}`
-            : `rounded-[16px] bg-wa-in ${showTail ? 'rounded-tl-[5px]' : ''}`
+            ? `rounded-[16px] bg-wa-out ${showTail ? 'rounded-br-[5px]' : ''}`
+            : `rounded-[16px] bg-wa-in ${showTail ? 'rounded-bl-[5px]' : ''}`
         }`}
       >
-        {/* tail — top corner, correct side, first bubble of a run only (§7) */}
+        {/* tail — bottom corner, correct side (iOS WhatsApp, §7) */}
         {showTail && (
           <span
             aria-hidden="true"
-            className={`absolute top-0 h-0 w-0 border-t-[9px] ${
+            className={`absolute bottom-0 h-0 w-0 border-b-[9px] ${
               out
-                ? '-right-[7px] border-l-[9px] border-l-transparent border-t-wa-out'
-                : '-left-[7px] border-r-[9px] border-r-transparent border-t-wa-in'
+                ? '-right-[7px] border-l-[9px] border-l-transparent border-b-wa-out'
+                : '-left-[7px] border-r-[9px] border-r-transparent border-b-wa-in'
             }`}
           />
         )}
-        <span className="sr-only">{out ? 'You:' : 'VIXA AI:'}</span>
-        {!out && showSender && !isTyping && (
-          <span className="block text-[14px] font-semibold leading-[20px] text-vx-lime" aria-hidden="true">
-            VIXA AI
-          </span>
-        )}
+        <span className="sr-only">{out ? 'You:' : 'VIXA:'}</span>
         {isTyping ? (
           <TypingIndicator />
         ) : msg.type === 'voice' ? (
@@ -179,14 +170,15 @@ function Bubble({
         )}
         {!isTyping && (
           <>
-            {/* spacer reserves room so the meta cluster never overlaps text */}
+            {/* spacer reserves room so the meta cluster never overlaps text —
+                short messages keep the timestamp inline, like real WhatsApp */}
             <span
               aria-hidden="true"
               className={`inline-block h-0 ${out ? 'w-[78px]' : 'w-[46px]'}`}
             />
             <span
               className={`absolute bottom-[6px] right-[10px] flex items-center gap-[3px] text-[12px] leading-none ${
-                out ? 'text-[#7FA79F]' : 'text-wa-meta'
+                out ? 'text-[#8AB3AA]' : 'text-wa-meta'
               }`}
               aria-hidden="true"
             >
@@ -200,7 +192,15 @@ function Bubble({
   );
 }
 
-export default function ChatThread({ messages }: { messages: ChatMessage[] }) {
+export default function ChatThread({
+  messages,
+  dateLabel = 'Today',
+  statusTime = '12:25',
+}: {
+  messages: ChatMessage[];
+  dateLabel?: string;
+  statusTime?: string;
+}) {
   // fit-to-container: layout at DESIGN_W, scale as one unit (screenshot-like)
   const outer = useRef<HTMLDivElement>(null);
   const [fit, setFit] = useState({ scale: 1, h: 844 });
@@ -219,11 +219,20 @@ export default function ChatThread({ messages }: { messages: ChatMessage[] }) {
     return () => ro.disconnect();
   }, []);
 
+  // the fit-scale changes the thread's internal geometry, which the pinned
+  // choreography measures — let ScrollTrigger re-read it once it settles
+  useEffect(() => {
+    ScrollTrigger.refresh();
+  }, [fit.scale, fit.h]);
+
   return (
-    <div ref={outer} className="h-full w-full" style={{ borderRadius: 'inherit' }}>
+    <div ref={outer} className="relative h-full w-full" style={{ borderRadius: 'inherit' }}>
       <div
-        className="wa-screen relative flex flex-col overflow-hidden bg-wa-bg"
+        className="wa-screen absolute left-0 top-0 flex flex-col overflow-hidden bg-wa-bg"
         style={{
+          // absolutely positioned so the design-width screen never participates
+          // in layout — a flow child that resizes when the fit settles shifts
+          // its whole column (measured CLS 0.119)
           width: DESIGN_W,
           height: fit.h,
           transform: `scale(${fit.scale})`,
@@ -252,7 +261,7 @@ export default function ChatThread({ messages }: { messages: ChatMessage[] }) {
 
         {/* iOS status bar: time · Dynamic Island · signal/wifi/battery */}
         <div className="relative z-10 flex h-[52px] shrink-0 items-end justify-between bg-wa-header px-[28px] pb-[7px]" aria-hidden="true">
-          <span className="w-[60px] text-center text-[16px] font-semibold tracking-[-0.02em] text-white">9:41</span>
+          <span className="w-[60px] text-center text-[16px] font-semibold tracking-[-0.02em] text-white">{statusTime}</span>
           <span className="absolute left-1/2 top-[11px] flex h-[36px] w-[125px] -translate-x-1/2 items-center justify-end rounded-[20px] bg-black pr-[10px]">
             <span className="h-[13px] w-[13px] rounded-full bg-[#14141c] ring-1 ring-[#2c2c35]" />
           </span>
@@ -262,7 +271,7 @@ export default function ChatThread({ messages }: { messages: ChatMessage[] }) {
               <rect x="0" y="7.5" width="3.4" height="4.5" rx="1" />
               <rect x="5" y="5" width="3.4" height="7" rx="1" />
               <rect x="10" y="2.5" width="3.4" height="9.5" rx="1" />
-              <rect x="15" y="0" width="3.4" height="12" rx="1" />
+              <rect x="15" y="0" width="3.4" height="12" rx="1" fillOpacity="0.4" />
             </svg>
             {/* wifi */}
             <svg viewBox="0 0 17 12" width="17" height="12" fill="currentColor">
@@ -273,36 +282,33 @@ export default function ChatThread({ messages }: { messages: ChatMessage[] }) {
             {/* battery */}
             <svg viewBox="0 0 28 13" width="28" height="13" fill="none">
               <rect x="0.5" y="0.5" width="24" height="12" rx="4" stroke="currentColor" strokeOpacity="0.45" />
-              <rect x="2" y="2" width="18" height="9" rx="2.5" fill="currentColor" />
+              <rect x="2" y="2" width="11" height="9" rx="2.5" fill="currentColor" />
               <path d="M26 4.5v4c1.2-.3 2-1.1 2-2s-.8-1.7-2-2z" fill="currentColor" fillOpacity="0.45" />
             </svg>
           </span>
         </div>
 
-        {/* chat header — iOS WhatsApp: back chevron, avatar, name, video + call (§6.2) */}
+        {/* chat header — iOS WhatsApp: back chevron, avatar, name, video + call */}
         <header className="relative z-10 flex shrink-0 items-center gap-[10px] bg-wa-header px-[14px] pb-[10px] pt-[4px]">
           <span className="flex shrink-0 items-center" aria-hidden="true">
-            <svg viewBox="0 0 12 20" width="12" height="20" className="text-[#53BDEB]" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 12 20" width="12" height="20" className="text-wa-text" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M10 2L2.5 10l7.5 8" />
             </svg>
           </span>
           <span
-            className="grid h-[40px] w-[40px] shrink-0 place-items-center rounded-full bg-vx-olive text-[15px] font-semibold text-vx-void"
+            className="grid h-[42px] w-[42px] shrink-0 place-items-center rounded-full bg-white text-[13px] font-bold tracking-[-0.03em] text-[#0B141A]"
             aria-hidden="true"
           >
-            VA
+            VI
           </span>
           <div className="min-w-0">
-            <p className="truncate text-[17px] font-semibold leading-[22px] text-wa-text">VIXA AI</p>
-            <p className="flex items-center gap-[6px] text-[13px] leading-[17px] text-vx-lime">
-              <span className="wa-online-dot h-[7px] w-[7px] rounded-full bg-vx-lime" aria-hidden="true" />
-              online
-            </p>
+            <p className="truncate text-[17px] font-semibold leading-[21px] text-wa-text">VIXA</p>
+            <p className="text-[13px] leading-[17px] text-wa-meta">Online</p>
           </div>
           <span className="ml-auto flex shrink-0 items-center gap-[24px] pr-[6px] text-wa-text" aria-hidden="true">
-            <svg viewBox="0 0 26 17" width="26" height="17" fill="currentColor">
-              <rect x="0" y="0.5" width="17.5" height="16" rx="4" />
-              <path d="M19 6.5l5-3.7c.8-.6 2 0 2 1v9.4c0 1-1.2 1.6-2 1l-5-3.7z" />
+            <svg viewBox="0 0 26 17" width="26" height="17" fill="none" stroke="currentColor" strokeWidth="1.7">
+              <rect x="0.9" y="1.4" width="16" height="14.2" rx="3.6" />
+              <path d="M18.4 7.2l4.7-3.4c.7-.5 1.7 0 1.7.9v8.1c0 .9-1 1.4-1.7.9l-4.7-3.4z" />
             </svg>
             <svg viewBox="0 0 21 21" width="21" height="21" fill="currentColor">
               <path d="M4.4 1.5c.5-.5 1.4-.5 1.9 0L9 4.2c.5.5.5 1.4 0 1.9L7.6 7.5c-.3.3-.4.8-.2 1.2a13.2 13.2 0 0 0 4.9 4.9c.4.2.9.1 1.2-.2l1.4-1.4c.5-.5 1.4-.5 1.9 0l2.7 2.7c.5.5.5 1.4 0 1.9l-1.5 1.5c-.9.9-2.3 1.3-3.5.9-5.3-1.8-9.5-6-11.3-11.3-.4-1.2 0-2.6.9-3.5z" />
@@ -311,44 +317,34 @@ export default function ChatThread({ messages }: { messages: ChatMessage[] }) {
         </header>
 
         {/* messages — role=log (§9); inner .wa-scroll is translated by choreography */}
-        <div className="relative min-h-0 flex-1 overflow-hidden" role="log" aria-label="Chat with VIXA AI">
-          <div className="wa-scroll flex flex-col gap-[8px] pt-[10px]">
+        <div className="relative min-h-0 flex-1 overflow-hidden" role="log" aria-label="Chat with VIXA">
+          <div className="wa-scroll flex flex-col gap-[8px] pb-[8px] pt-[12px]">
             <div className="mb-[4px] flex justify-center">
-              <span className="rounded-[8px] bg-wa-in px-[12px] py-[5px] text-[12.5px] font-medium uppercase tracking-[0.03em] text-wa-meta shadow-[0_1px_1px_rgba(0,0,0,0.18)]">
-                Today
+              <span className="rounded-[8px] bg-wa-in px-[12px] py-[6px] text-[13px] font-medium text-wa-meta shadow-[0_1px_1px_rgba(0,0,0,0.18)]">
+                {dateLabel}
               </span>
             </div>
             {(() => {
               // typing bubbles render inside the NEXT message's slot (absolute)
               // so their disappearance never shifts the flow — the real message
               // pops into the exact spot where the dots were.
-              type Item = { m: ChatMessage; typing?: ChatMessage; prevReal?: ChatMessage };
+              type Item = { m: ChatMessage; typing?: ChatMessage };
               const items: Item[] = [];
               let pendingTyping: ChatMessage | undefined;
-              let prevReal: ChatMessage | undefined;
               for (const m of messages) {
                 if (m.type === 'typing') {
                   pendingTyping = m;
                   continue;
                 }
-                items.push({ m, typing: pendingTyping, prevReal });
+                items.push({ m, typing: pendingTyping });
                 pendingTyping = undefined;
-                prevReal = m;
               }
-              return items.map(({ m, typing, prevReal: prev }) => {
-                const firstOfRun = !prev || prev.side !== m.side;
-                const bubble = (
-                  <Bubble
-                    key={m.id}
-                    msg={m}
-                    showSender={m.side === 'in' && firstOfRun}
-                    showTail={firstOfRun}
-                  />
-                );
+              return items.map(({ m, typing }) => {
+                const bubble = <Bubble key={m.id} msg={m} showTail />;
                 if (!typing) return bubble;
                 return (
                   <div key={m.id} className="relative">
-                    <Bubble msg={typing} showSender={false} showTail={true} />
+                    <Bubble msg={typing} showTail />
                     {bubble}
                   </div>
                 );
@@ -357,29 +353,35 @@ export default function ChatThread({ messages }: { messages: ChatMessage[] }) {
           </div>
         </div>
 
-        {/* composer — iOS WhatsApp: plus · field with sticker · camera · send (§7) */}
+        {/* composer — iOS WhatsApp: smiley · Message · clip · camera · mic (§7) */}
         <div className="relative z-10 shrink-0 pb-[30px]">
-          <div className="flex items-center gap-[12px] px-[12px] pt-[6px]">
-            <svg viewBox="0 0 22 22" width="26" height="26" className="shrink-0 text-wa-text" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
-              <path d="M11 3.8v14.4M3.8 11h14.4" />
-            </svg>
-            <div className="flex h-[38px] flex-1 items-center whitespace-nowrap rounded-full border border-[#2A3942] bg-wa-in py-[4px] pl-[16px] pr-[8px] text-[16px] text-wa-meta">
-              Type a message...
-              <svg viewBox="0 0 22 22" width="24" height="24" className="ml-auto shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+          <div className="flex items-center gap-[10px] px-[10px] pt-[8px]">
+            <div className="flex h-[40px] flex-1 items-center gap-[10px] whitespace-nowrap rounded-full bg-wa-in pl-[12px] pr-[14px] text-[16.5px] text-wa-meta">
+              {/* smiley */}
+              <svg viewBox="0 0 22 22" width="23" height="23" className="shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                 <circle cx="11" cy="11" r="9" />
                 <path d="M7 13a5 5 0 0 0 8 0" strokeLinecap="round" />
                 <circle cx="7.8" cy="8.6" r="1.1" fill="currentColor" stroke="none" />
                 <circle cx="14.2" cy="8.6" r="1.1" fill="currentColor" stroke="none" />
               </svg>
+              <span className="flex-1">Message</span>
+              {/* paperclip */}
+              <svg viewBox="0 0 20 22" width="21" height="23" className="shrink-0" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
+                <path d="M14.2 7.2v8.1a4.6 4.6 0 0 1-9.2 0V6.3a2.9 2.9 0 0 1 5.8 0v8.9a1.4 1.4 0 0 1-2.8 0V7.4" />
+              </svg>
+              {/* camera */}
+              <svg viewBox="0 0 24 22" width="24" height="22" className="shrink-0" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                <rect x="1" y="4.4" width="22" height="16.2" rx="3.8" />
+                <path d="M7.4 4.4L9 1.6h6l1.6 2.8" strokeLinejoin="round" />
+                <circle cx="12" cy="12.4" r="4.3" />
+              </svg>
             </div>
-            <svg viewBox="0 0 26 24" width="27" height="25" className="shrink-0 text-wa-text" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
-              <rect x="1" y="4.5" width="24" height="18" rx="4" />
-              <path d="M8 4.5L9.8 1.5h6.4L18 4.5" strokeLinejoin="round" />
-              <circle cx="13" cy="13" r="4.8" />
-            </svg>
-            <span className="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full bg-vx-olive" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="19" height="19" fill="#EDEDE4">
-                <path d="M3.4 20.4l17.8-7.6c.8-.4.8-1.5 0-1.9L3.4 3.3c-.7-.3-1.4.3-1.4 1v5.1c0 .5.4 1 .9 1l9.2 1.4c.3 0 .3.5 0 .5L2.9 13.7c-.5.1-.9.5-.9 1v5.1c0 .7.7 1.2 1.4.9z" />
+            <span className="grid h-[42px] w-[42px] shrink-0 place-items-center rounded-full bg-[#00A884]" aria-hidden="true">
+              {/* mic */}
+              <svg viewBox="0 0 20 22" width="20" height="22" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round">
+                <rect x="6.6" y="1.6" width="6.8" height="11.4" rx="3.4" fill="#fff" stroke="none" />
+                <path d="M3.8 10.2a6.2 6.2 0 0 0 12.4 0" />
+                <path d="M10 16.4v3.4" />
               </svg>
             </span>
           </div>

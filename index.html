@@ -8,7 +8,7 @@
       name="description"
       content="Send money on WhatsApp — instantly across Africa. Buy, sell, swap, or move crypto. No apps. Just send a message, confirm with your PIN, and your money moves."
     />
-    <meta name="theme-color" content="#14140F" />
+    <meta name="theme-color" content="#FFFFFF" />
     <title>VIXA AI — Send money on WhatsApp</title>
 
     <!-- Fonts (§8): clash-700 inlined below; the rest preloaded -->
@@ -21,6 +21,17 @@
         font-weight: 700;
         font-style: normal;
         font-display: swap;
+      }
+      /* Inter's swap grew the hero copy column, which moved the centre-aligned
+         phone beside it (measured CLS 0.119). Metric-matched to Arial so the
+         swap is dimensionally invisible. */
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('Arial');
+        ascent-override: 90%;
+        descent-override: 22.43%;
+        line-gap-override: 0%;
+        size-adjust: 107.64%;
       }
       /* metric-matched local fallback: pre-swap text renders slightly LARGER
          than Clash, so the font swap never produces a bigger LCP candidate —
