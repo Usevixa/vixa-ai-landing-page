@@ -35,7 +35,7 @@ export default function Navbar() {
 
   return (
     <header ref={ref} className="nav-pill fixed inset-x-0 top-5 z-50 mx-auto w-full px-4">
-      <div className="nav-pill-inner mx-auto flex items-center justify-between gap-4 rounded-pill border border-vx-slate bg-vx-char/70 py-2.5 pl-6 pr-2.5 backdrop-blur-xl transition-all duration-[400ms] ease-out">
+      <div className="nav-pill-inner mx-auto flex items-center justify-between gap-4 rounded-pill border border-vx-slate bg-white/80 py-2.5 pl-6 pr-2.5 backdrop-blur-xl transition-all duration-[400ms] ease-out">
         <a href="#top" className="font-display text-[19px] font-bold tracking-[0.02em] text-vx-bone">
           VIXA
         </a>
@@ -85,7 +85,7 @@ export default function Navbar() {
       {open && (
         <div
           id="nav-sheet"
-          className="mx-auto mt-2 rounded-card border border-vx-slate bg-vx-char/95 p-2 backdrop-blur-xl md:hidden"
+          className="mx-auto mt-2 rounded-card border border-vx-slate bg-white/95 p-2 backdrop-blur-xl md:hidden"
         >
           <ul>
             {LINKS.map((l) => (
@@ -93,7 +93,7 @@ export default function Navbar() {
                 <a
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-[10px] px-4 py-3 text-[15px] font-medium text-vx-bone hover:bg-vx-slate/40"
+                  className="block rounded-[10px] px-4 py-3 text-[15px] font-medium text-vx-bone hover:bg-vx-mint"
                 >
                   {l.label}
                 </a>

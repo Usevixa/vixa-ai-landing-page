@@ -1,4 +1,10 @@
-// §6.4 — 4 use-case cards, perspective scatter (M3), M5 header.
+// §6.4 — use cases. Split: copy + case list on one side, the phone showing a
+// completed transfer on the other.
+import SplitSection from '../components/SplitSection';
+import PhoneStage from '../components/PhoneStage';
+import ScrollThread from '../components/ScrollThread';
+import { whyThread } from '../data/threads';
+
 const CARDS = [
   { h: 'Send money home', b: 'Support family across borders in seconds.' },
   { h: 'Pay freelancers', b: 'Work with anyone across Africa without bank delays.' },
@@ -8,26 +14,38 @@ const CARDS = [
 
 export default function WhyVixa() {
   return (
-    <section id="why" className="section-pad gutter" aria-labelledby="why-h">
-      <div className="content-col">
-        <div data-reveal-group>
-          <h2 id="why-h" data-reveal className="font-display text-display-lg font-bold">
-            Why people use VIXA
-          </h2>
-        </div>
-        <div data-scatter-group className="mt-14 grid gap-6 md:grid-cols-2">
+    <SplitSection
+      id="why"
+      labelledBy="why-h"
+      tone="mint"
+      watermark="WHY"
+      eyebrow="Why VIXA"
+      heading={
+        <>
+          Built for how <span className="text-vx-olive">Africa actually moves money</span>
+        </>
+      }
+      body={
+        <ul className="mt-2 flex flex-col gap-5">
           {CARDS.map((c) => (
-            <article
-              key={c.h}
-              data-scatter
-              className="group rounded-card border border-vx-slate bg-vx-char p-8 transition-[border-color,transform] duration-300 [@media(hover:hover)]:hover:-translate-y-1 [@media(hover:hover)]:hover:border-vx-olive"
-            >
-              <h3 className="font-display text-title font-medium">{c.h}</h3>
-              <p className="mt-2.5 text-vx-ash">{c.b}</p>
-            </article>
+            <li key={c.h} className="flex gap-3.5">
+              <span
+                className="mt-[7px] h-[7px] w-[7px] shrink-0 rounded-full bg-vx-olive"
+                aria-hidden="true"
+              />
+              <span>
+                <strong className="block font-semibold text-vx-bone">{c.h}</strong>
+                <span className="text-[15.5px]">{c.b}</span>
+              </span>
+            </li>
           ))}
-        </div>
-      </div>
-    </section>
+        </ul>
+      }
+      visual={
+        <PhoneStage>
+          <ScrollThread messages={whyThread} statusTime="8:13" />
+        </PhoneStage>
+      }
+    />
   );
 }

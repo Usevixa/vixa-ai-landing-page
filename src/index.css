@@ -23,7 +23,7 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   html {
@@ -41,11 +41,11 @@
   }
 
   ::selection {
-    @apply bg-vx-lime text-vx-void;
+    @apply bg-vx-olive text-vx-void;
   }
 
   :focus-visible {
-    outline: 2px solid theme('colors.vx-lime');
+    outline: 2px solid theme('colors.vx-olive');
     outline-offset: 2px;
   }
 
@@ -68,6 +68,55 @@
   }
   .content-col {
     @apply max-w-content mx-auto;
+  }
+
+  /* Split layout system: copy on one side, a live demo on the other,
+     alternating sides down the page. */
+  .split-grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .split-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    /* reversed sections: copy sits right, visual left — source order stays
+       copy-first so screen readers and keyboard tabbing follow the narrative */
+    .split-grid[data-flip='true'] > .split-copy {
+      order: 2;
+    }
+  }
+
+  /* the soft rounded panel the phone sits on (Xara-style stage) */
+  .split-stage {
+    position: relative;
+    border-radius: 32px;
+    background: #ffffff;
+    box-shadow:
+      0 1px 2px rgba(15, 25, 18, 0.04),
+      0 24px 60px -28px rgba(15, 25, 18, 0.22);
+  }
+
+  /* oversized ghost word behind a section (CONTEXT / SPENDING / SUPPORT) */
+  /* text lives in ::before so it never enters the a11y tree or the
+     colour-contrast audit — it is pure decoration */
+  .split-watermark::before {
+    content: attr(data-text);
+  }
+  .split-watermark {
+    position: absolute;
+    left: 50%;
+    bottom: -0.12em;
+    transform: translateX(-50%);
+    font-weight: 700;
+    font-size: clamp(6rem, 17vw, 17rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    color: rgba(15, 25, 18, 0.035);
+    pointer-events: none;
+    user-select: none;
   }
 
   /* Legal pages (Privacy / Terms) — readable prose in the VIXA palette */
@@ -94,7 +143,7 @@
     @apply absolute left-0 top-[0.68em] h-[6px] w-[6px] rounded-full bg-vx-olive;
   }
   .legal-prose a {
-    @apply text-vx-lime underline underline-offset-2 transition-opacity hover:opacity-80;
+    @apply text-vx-olive underline underline-offset-2 transition-opacity hover:opacity-80;
   }
   .legal-prose strong {
     @apply font-semibold text-vx-bone;
@@ -151,6 +200,19 @@
    ScrollTrigger position below them mid-scroll — pins collided and
    reveal-gated sections stayed invisible. Correct choreography beats the
    marginal render saving on a 240KB page. */
+
+/* coverage map: soft halo behind each live-market marker. transform-only so
+   it composites on the GPU (§5 perf rules) */
+.map-pulse {
+  animation: map-pulse 2.8s ease-in-out infinite;
+}
+@keyframes map-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.22; }
+  50% { transform: scale(1.45); opacity: 0.08; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-pulse { animation: none; }
+}
 
 @keyframes wa-bounce {
   0%, 60%, 100% { transform: translateY(0); }

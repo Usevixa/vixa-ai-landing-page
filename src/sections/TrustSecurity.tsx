@@ -1,5 +1,10 @@
-// §6.7 — quieter than 6.4: smaller cards, no hover lift. Trust sits still.
-// Icons: single-weight 1.5px stroke, olive, inline SVG (§6.7).
+// §6.7 — trust. Split, phone on the right, showing a flagged transaction the
+// user cancels: the claim demonstrated rather than asserted.
+import SplitSection from '../components/SplitSection';
+import PhoneStage from '../components/PhoneStage';
+import ScrollThread from '../components/ScrollThread';
+import { trustThread } from '../data/threads';
+
 const ICONS: Record<string, React.ReactNode> = {
   pin: (
     <>
@@ -39,42 +44,48 @@ const ITEMS = [
 
 export default function TrustSecurity() {
   return (
-    <section className="section-pad gutter" aria-labelledby="trust-h">
-      <div className="content-col">
-        <div data-reveal-group>
-          <h2 id="trust-h" data-reveal className="font-display text-display-lg font-bold">
-            Money doesn't move <span className="text-vx-lime">without you</span>
-          </h2>
-          <div className="mt-14 grid gap-5 sm:grid-cols-2">
-            {ITEMS.map((it) => (
-              <article
-                key={it.h}
-                data-reveal
-                className="flex items-start gap-4 rounded-card border border-vx-slate bg-vx-char/60 p-6"
+    <SplitSection
+      labelledBy="trust-h"
+      tone="white"
+      flip
+      watermark="TRUST"
+      eyebrow="Trust &amp; security"
+      heading={
+        <>
+          Money doesn't move <span className="text-vx-olive">without you</span>
+        </>
+      }
+      body={
+        <div className="mt-2 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+          {ITEMS.map((it) => (
+            <div key={it.h} className="flex gap-3.5">
+              <svg
+                viewBox="0 0 24 24"
+                width="23"
+                height="23"
+                fill="none"
+                stroke="#1F6B3F"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="mt-0.5 shrink-0"
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="#7E8B3D"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                  className="mt-0.5 shrink-0"
-                >
-                  {ICONS[it.icon]}
-                </svg>
-                <div>
-                  <h3 className="text-[17px] font-semibold">{it.h}</h3>
-                  <p className="mt-1.5 text-[15px] text-vx-ash">{it.b}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+                {ICONS[it.icon]}
+              </svg>
+              <span>
+                <strong className="block text-[16px] font-semibold text-vx-bone">{it.h}</strong>
+                <span className="mt-1 block text-[15px]">{it.b}</span>
+              </span>
+            </div>
+          ))}
         </div>
-      </div>
-    </section>
+      }
+      visual={
+        <PhoneStage>
+          <ScrollThread messages={trustThread} statusTime="11:32" />
+        </PhoneStage>
+      }
+    />
   );
 }

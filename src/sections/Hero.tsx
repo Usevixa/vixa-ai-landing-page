@@ -1,23 +1,19 @@
-// §6.2 Hero — mechanic M1, the signature moment. ~350vh pin; headline scrubs
-// out; the phone rig (photo + live DOM thread, welded) rises and plays six
-// beats; satellite cards swap; rotation settles head-on at the ✅.
+// §6.2 Hero — light theme, split layout. Copy holds the left column while the
+// phone on the right plays the six-beat WhatsApp thread on scroll.
+//
+// Changed from the dark build: the headline no longer scrubs away. Holding the
+// copy in place for the whole pin is the point of the split — you read the
+// promise while the demo proves it.
 import { useRef } from 'react';
 import ChatThread from '../components/ChatThread';
-import HeroGrid from '../components/HeroGrid';
-import { heroThread } from '../data/threads';
-import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
-import {
-  buildThreadTimeline,
-  applyDiscreteStates,
-  beatWindows,
-} from '../lib/threadChoreo';
-import { prefersReducedMotion } from '../lib/gsap';
+import { heroThread, HERO_DATE } from '../data/threads';
+import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from '../lib/gsap';
+import { buildThreadTimeline, applyDiscreteStates, beatWindows } from '../lib/threadChoreo';
 import { WA_LINK } from '../lib/site';
 import screenRect from '../assets/hero-screen-rect.json';
 
-// share of the pin the thread owns (entrance before, settle after)
-const THREAD_START = 0.16;
-const THREAD_SPAN = 0.78;
+const THREAD_START = 0.1;
+const THREAD_SPAN = 0.85;
 
 const windows = beatWindows(heroThread);
 const master = (t: number) => THREAD_START + t * THREAD_SPAN;
@@ -27,20 +23,34 @@ export default function Hero() {
 
   useGSAP(
     () => {
+      const reduced =
+        prefersReducedMotion() && !new URLSearchParams(window.location.search).has('motion');
+
+      if (reduced) {
+        requestAnimationFrame(() => {
+          section.current?.querySelectorAll<HTMLElement>('.screen-rect').forEach((root) => {
+            buildThreadTimeline(root, heroThread).progress(1).kill();
+            applyDiscreteStates(root, 1, heroThread);
+          });
+          gsap.set('.hero-float', { autoAlpha: 1, y: 0 });
+        });
+        return;
+      }
+
       const mm = gsap.matchMedia();
 
-      const common = (threadRoot: HTMLElement, rig: HTMLElement | null) => {
+      mm.add('(min-width: 1024px)', () => {
+        const rig = section.current!.querySelector<HTMLElement>('.phone-rig')!;
+        const threadRoot = rig.querySelector<HTMLElement>('.screen-rect')!;
+
+        gsap.set('.hero-float', { autoAlpha: 0, y: 14 });
+
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section.current,
             start: 'top top',
-            // function-based absolute distance: a %-string here resolves
-            // against the trigger's height, which includes the pin spacer —
-            // every refresh would compound the padding exponentially
-            end: () => '+=' + window.innerHeight * 3.5,
+            end: () => '+=' + window.innerHeight * 2.2,
             pin: '.hero-pin',
-            // pre-existing spacer: no re-parent at init, so the prerendered
-            // H1 (the LCP element) is never repainted by pin setup (§8)
             pinSpacer: '.hero-pin-spacer',
             scrub: true,
             anticipatePin: 1,
@@ -50,78 +60,51 @@ export default function Hero() {
               applyDiscreteStates(threadRoot, p, heroThread);
             },
             onToggle: (self) => {
-              if (rig) rig.style.willChange = self.isActive ? 'transform' : '';
+              rig.style.willChange = self.isActive ? 'transform' : '';
             },
           },
         });
-        tl.set({}, {}, 1); // exact duration 1 == pin progress
+        tl.set({}, {}, 1);
 
-        // headline clears BEFORE the phone crosses it — no collision moment
-        tl.to('.hero-copy', { autoAlpha: 0, y: -40, duration: 0.07, ease: 'power2.in' }, 0.03);
-
-        // thread beats
         const threadTl = buildThreadTimeline(threadRoot, heroThread);
         threadTl.paused(false);
         tl.add(threadTl, THREAD_START);
         threadTl.duration(THREAD_SPAN);
 
-        return tl;
-      };
+        // the phone drifts up a touch through the beats — never frozen
+        tl.fromTo(rig, { y: 26 }, { y: -20, duration: 0.9, ease: 'none' }, 0.05);
 
-      // §9: reduced motion — no pin, no scrub, final states applied.
-      // ?motion forces the animated path for dev/testing in automated browsers.
-      const reduced =
-        prefersReducedMotion() && !new URLSearchParams(window.location.search).has('motion');
-
-      if (reduced) {
-        section.current!.querySelectorAll<HTMLElement>('.screen-rect').forEach((root) => {
-          const tl = buildThreadTimeline(root, heroThread);
-          tl.progress(1).kill();
-          applyDiscreteStates(root, 1, heroThread);
-        });
-        gsap.set('.hero-sat', { autoAlpha: 1, x: 0 });
-        return;
-      }
-
-      mm.add('(min-width: 768px)', () => {
-        const rig = section.current!.querySelector<HTMLElement>('.phone-rig')!;
-        const threadRoot = rig.querySelector<HTMLElement>('.screen-rect')!;
-
-        // welded unit: photo + DOM thread transform together (§5 M1)
-        gsap.set(rig, {
-          rotateY: -6,
-          rotateX: 2,
-          scale: 0.965,
-          transformOrigin: '50% 60%',
-          y: () => window.innerHeight * 0.82,
-        });
-        gsap.set('.hero-sat', { autoAlpha: 0 });
-
-        const tl = common(threadRoot, rig);
-
-        // entrance: a long silky glide up from the bottom edge, starting only
-        // after the headline has begun to clear
-        tl.to(rig, { y: 0, scale: 1, duration: 0.18, ease: 'power3.out' }, 0.05);
-        // then a barely-there drift through the beats — never frozen
-        tl.to(rig, { y: -16, duration: 0.62, ease: 'none' }, 0.3);
-
-        // satellite cards — two swaps, never more than two on screen (§5 M1)
-        tl.fromTo('.hero-sat-l', { x: -60, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.05, ease: 'power2.out' }, master(windows[2].start));
-        tl.to('.hero-sat-l', { x: -30, autoAlpha: 0, duration: 0.04, ease: 'power2.in' }, master(windows[4].start));
-        tl.fromTo('.hero-sat-r', { x: 60, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.05, ease: 'power2.out' }, master(windows[5].start));
-
-        // beat 6: the ✅ lands, the rig settles head-on, glow warms (§6.2)
-        tl.to(rig, { rotateY: 0, rotateX: 0, duration: 0.16, ease: 'power2.inOut' }, master(windows[5].start));
-        tl.to('.hero-glow', { opacity: 1.5, duration: 0.14 }, master(windows[5].start));
+        // floats ride their matching beats
+        const RATE = windows[2].start;
+        const DONE = windows[windows.length - 1].start;
+        tl.to('.hero-float-rate', { autoAlpha: 1, y: 0, duration: 0.05, ease: 'power2.out' }, master(RATE));
+        tl.to('.hero-float-done', { autoAlpha: 1, y: 0, duration: 0.05, ease: 'power2.out' }, master(DONE));
       });
 
-      mm.add('(max-width: 767.98px)', () => {
+      // below lg the section is a normal stacked block: the thread plays as it
+      // scrolls through the viewport, no pin (a pinned phone-in-a-phone eats
+      // the whole screen on mobile)
+      mm.add('(max-width: 1023.98px)', () => {
         const frame = section.current!.querySelector<HTMLElement>('.phone-frame-mobile')!;
         const threadRoot = frame.querySelector<HTMLElement>('.screen-rect')!;
 
-        gsap.set(frame, { y: () => window.innerHeight * 0.9, scale: 0.97, transformOrigin: '50% 60%' });
-        const tl = common(threadRoot, frame);
-        tl.to(frame, { y: 0, scale: 1, duration: 0.18, ease: 'power3.out' }, 0.05);
+        gsap.set('.hero-float', { autoAlpha: 1, y: 0 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: frame,
+            start: 'top 78%',
+            end: 'bottom 20%',
+            scrub: true,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => applyDiscreteStates(threadRoot, self.progress, heroThread),
+          },
+        });
+        tl.set({}, {}, 1);
+        const threadTl = buildThreadTimeline(threadRoot, heroThread);
+        threadTl.paused(false);
+        tl.add(threadTl, 0);
+        threadTl.duration(1);
       });
 
       return () => mm.revert();
@@ -129,8 +112,6 @@ export default function Hero() {
     { scope: section },
   );
 
-  // cqw is relative to the RIG (image) width, so the radius must be scaled
-  // against imgW — dividing by the screen width over-rounds the corners ~3x
   const rectStyle = {
     left: `${screenRect.pct.left}%`,
     top: `${screenRect.pct.top}%`,
@@ -140,108 +121,126 @@ export default function Hero() {
   };
 
   return (
-    <section ref={section} id="top" aria-label="VIXA AI — send money on WhatsApp">
+    <section ref={section} id="top" aria-label="VIXA — send money on WhatsApp">
       <div className="hero-pin-spacer">
-      <div className="hero-pin relative h-screen overflow-hidden">
-        <HeroGrid />
+        {/* the soft green wash is painted as a background, not a child element:
+            a 900px decorative div inside a container that grows on font/image
+            load is a pure CLS generator (measured 0.126) */}
+        {/* items-center only where the split is side-by-side. Stacked, a
+            vertically-centred column recentres on every late height change
+            (fonts, thread fit) and drags the phone with it — measured as the
+            page's entire CLS. */}
+        {/* Deliberately flat white — no wash. The hero photo's backdrop is
+            level-matched to pure #FFF, so ANY tint behind it exposes the
+            image's rectangle as a lighter patch. */}
+        <div className="hero-pin gutter relative flex min-h-screen items-start overflow-hidden bg-vx-void pt-[112px] lg:items-center lg:pt-0">
+          <div className="content-col relative w-full">
+            <div className="split-grid">
+              {/* copy */}
+              <div className="split-copy" data-reveal-group>
+                <p
+                  data-reveal
+                  className="text-eyebrow font-semibold uppercase tracking-[0.14em] text-vx-olive"
+                >
+                  Money on WhatsApp
+                </p>
+                <h1
+                  data-reveal
+                  className="font-display text-display-lg mt-5 max-w-[16ch] font-bold text-vx-bone"
+                >
+                  Send money on <span className="text-vx-olive">WhatsApp</span>, instantly across{' '}
+                  <span className="text-vx-olive">Africa</span>.
+                </h1>
+                <p data-reveal className="text-body-lg mt-6 max-w-[48ch] text-vx-ash">
+                  Send money like you send a message. Buy, sell, swap, or move crypto. No apps. No
+                  long steps. Just send a message, confirm with your PIN, and your money moves.
+                </p>
+                <div data-reveal className="mt-9 flex flex-wrap items-center gap-4">
+                  <a
+                    href={WA_LINK}
+                    className="inline-flex items-center gap-2.5 rounded-pill bg-vx-olive px-7 py-3.5 text-[15px] font-semibold text-vx-void transition-colors hover:bg-vx-olive-lo"
+                  >
+                    <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.8-.6-3.1-1.3-5.1-4.4-5.3-4.6-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l1 2.4c.1.2.1.4 0 .6l-.4.5-.3.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.2.4-.2.6-.1l2.2 1.1c.2.1.4.2.5.3.1.2.1.7-.1 1.4z" />
+                    </svg>
+                    Chat on WhatsApp
+                  </a>
+                  <a
+                    href="#demo"
+                    className="rounded-pill border border-vx-slate px-7 py-3.5 text-[15px] font-medium text-vx-bone transition-colors hover:border-vx-olive hover:text-vx-olive"
+                  >
+                    See it in action
+                  </a>
+                </div>
+              </div>
 
-        {/* headline block (§6.2) */}
-        <div className="hero-copy gutter absolute inset-x-0 top-[15vh] z-10 text-center">
-          <h1 className="font-display text-display-lg mx-auto max-w-[22ch] font-bold">
-            Send money on <span className="text-vx-lime">WhatsApp</span> — instantly across{' '}
-            <span className="text-vx-lime">Africa</span>.
-          </h1>
-          <p className="text-body-lg mx-auto mt-5 max-w-[56ch] text-vx-ash">
-            Send money like you send a message. Buy, sell, swap, or move crypto. No apps. No long
-            steps. Just send a message, confirm with your PIN, and your money moves.
-          </p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={WA_LINK}
-              className="rounded-pill bg-vx-olive px-7 py-3.5 text-[15px] font-semibold text-vx-void transition-colors hover:bg-vx-olive-lo cursor-pointer"
-            >
-              Chat on WhatsApp Now
-            </a>
-            <a
-              href="#demo"
-              className="rounded-pill border border-vx-slate px-7 py-3.5 text-[15px] font-medium text-vx-bone transition-colors hover:border-vx-olive"
-            >
-              Send your first transfer
-            </a>
-          </div>
-        </div>
+              {/* phone */}
+              <div className="split-visual relative">
+                {/* desktop: the photographed hand, thread composited into the glass */}
+                <div
+                  className="phone-rig relative mx-auto hidden w-full max-w-[440px] lg:block"
+                  style={{ aspectRatio: `${screenRect.imgW} / ${screenRect.imgH}`, containerType: 'inline-size' }}
+                >
+                  <picture>
+                    <source srcSet="/hero-hand-phone.avif" type="image/avif" />
+                    <img
+                      src="/hero-hand-phone.webp"
+                      width={screenRect.imgW}
+                      height={screenRect.imgH}
+                      alt="A hand holding a phone running VIXA in WhatsApp"
+                      fetchPriority="high"
+                      decoding="async"
+                      className="h-full w-full"
+                      onLoad={() => ScrollTrigger.refresh()}
+                    />
+                  </picture>
+                  <div className="screen-rect absolute overflow-hidden" style={rectStyle}>
+                    <ChatThread messages={heroThread} dateLabel={HERO_DATE} />
+                  </div>
+                </div>
 
-        {/* stage */}
-        <div className="pointer-events-none absolute inset-0 z-20" style={{ perspective: '1600px' }}>
-          {/* one radial glow behind the phone (§3) — desktop has it baked into
-              the photo itself so no seam can outline the image rectangle */}
-          <div
-            aria-hidden="true"
-            className="hero-glow absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-[46%] md:hidden"
-            style={{
-              background:
-                'radial-gradient(closest-side, rgba(126,139,61,0.16), rgba(126,139,61,0.05) 55%, transparent 72%)',
-            }}
-          />
+                {/* below lg: a clean CSS device frame */}
+                <div className="phone-frame-mobile mx-auto w-full max-w-[330px] lg:hidden">
+                  <div
+                    className="rounded-[46px] p-[9px]"
+                    style={{
+                      background:
+                        'linear-gradient(150deg, #d7dbd8 0%, #8d948f 28%, #5f6763 62%, #b9bfbb 100%)',
+                      boxShadow: '0 2px 4px rgba(15,25,18,0.14), 0 30px 60px -24px rgba(15,25,18,0.4)',
+                    }}
+                  >
+                    <div
+                      className="screen-rect relative overflow-hidden rounded-[38px] bg-black"
+                      style={{ aspectRatio: '390 / 844' }}
+                    >
+                      <ChatThread messages={heroThread} dateLabel={HERO_DATE} />
+                    </div>
+                  </div>
+                </div>
 
-          {/* desktop: photo rig — image + thread are siblings, welded (§5 M1) */}
-          <div
-            className="phone-rig absolute left-1/2 top-[-14vh] hidden h-[132vh] -translate-x-1/2 md:block"
-            style={{
-              aspectRatio: '1400 / 1875',
-              transformStyle: 'preserve-3d',
-              containerType: 'inline-size',
-            }}
-          >
-            <picture>
-              <source srcSet="/hero-hand-phone.avif" type="image/avif" />
-              <img
-                src="/hero-hand-phone.webp"
-                width={1400}
-                height={1875}
-                alt="A hand holding a phone running VIXA AI in WhatsApp"
-                fetchPriority="high"
-                decoding="async"
-                className="h-full w-full"
-                onLoad={() => ScrollTrigger.refresh()}
-              />
-            </picture>
-            <div className="screen-rect absolute overflow-hidden" style={rectStyle}>
-              <ChatThread messages={heroThread} />
-            </div>
-          </div>
-
-          {/* mobile: minimal CSS device frame — the visitor is already holding
-              a phone; the photo adds nothing at 390px (§5 M1) */}
-          <div className="phone-frame-mobile absolute left-1/2 top-[7vh] h-[86vh] w-[min(92vw,44vh)] -translate-x-1/2 md:hidden">
-            <div className="h-full w-full rounded-[40px] border border-vx-slate bg-black p-[8px] shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
-              <div className="screen-rect h-full w-full overflow-hidden rounded-[32px]">
-                <ChatThread messages={heroThread} />
+                {/* floating proof cards */}
+                <div className="hero-float hero-float-rate absolute left-[-2%] top-[24%] z-20 hidden items-center gap-3 rounded-[16px] border border-vx-slate bg-white px-4 py-3 shadow-[0_10px_30px_-12px_rgba(15,25,18,0.25)] lg:flex">
+                  <img src="/flags/ng.svg" alt="" width={34} height={34} className="h-[34px] w-[34px] rounded-full" loading="lazy" decoding="async" />
+                  <div>
+                    <p className="text-[15px] font-semibold leading-5 text-vx-bone">₦1,400.11</p>
+                    <p className="text-mono-meta mt-0.5 text-vx-ash">Buy rate · USDT</p>
+                  </div>
+                </div>
+                <div className="hero-float hero-float-done absolute right-[-3%] top-[62%] z-20 hidden items-center gap-3 rounded-[16px] border border-vx-slate bg-white px-4 py-3 shadow-[0_10px_30px_-12px_rgba(15,25,18,0.25)] lg:flex">
+                  <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-vx-olive/12 text-vx-olive" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M2.5 8.5l3.5 3.5 7.5-8" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-[15px] font-semibold leading-5 text-vx-bone">100 USDT credited</p>
+                    <p className="text-mono-meta mt-0.5 text-vx-ash">Balance: 100 USDT</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* satellite cards (§5 M1) — data echoes of the thread, not new copy */}
-          <div className="hero-sat hero-sat-l absolute left-[7%] top-[38%] z-30 hidden items-center gap-3 rounded-card border border-vx-slate bg-vx-char px-4 py-3 lg:flex">
-            <img src="/flags/ke.svg" alt="" width={36} height={36} className="h-9 w-9 rounded-full" loading="lazy" decoding="async" />
-            <div>
-              <p className="text-[15px] font-semibold leading-5">6,450 KES</p>
-              <p className="text-mono-meta mt-0.5 text-vx-ash">via M-Pesa</p>
-            </div>
-          </div>
-          <div className="hero-sat hero-sat-r absolute right-[7%] top-[54%] z-30 hidden items-center gap-3 rounded-card border border-vx-slate bg-vx-char px-4 py-3 lg:flex">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-vx-olive/25 text-vx-lime" aria-hidden="true">
-              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2.5 8.5l3.5 3.5 7.5-8" />
-              </svg>
-            </span>
-            <div>
-              <p className="text-[15px] font-semibold leading-5">Ref: VX-8291</p>
-              <p className="text-mono-meta mt-0.5 text-vx-ash">Sent to +254****</p>
-            </div>
-          </div>
         </div>
-      </div>
       </div>
     </section>
   );

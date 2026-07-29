@@ -7,6 +7,27 @@ import type { ChatMessage } from '../components/ChatThread';
 
 export type BeatWindow = { start: number; end: number };
 
+/** breathing room kept between the newest bubble and the composer */
+const BOTTOM_GAP = 12;
+
+/**
+ * Layout offset of `el` from `ancestor`, accumulated up the offsetParent
+ * chain. Plain `el.offsetTop` measures from the nearest POSITIONED ancestor —
+ * messages that follow a typing indicator sit inside a `relative` wrapper, so
+ * their raw offsetTop reads ~0 and the thread under-scrolls, hiding the last
+ * bubble behind the composer. Everything here stays in unscaled layout px, so
+ * it composes correctly with clientHeight/offsetHeight.
+ */
+function offsetWithin(el: HTMLElement, ancestor: HTMLElement): number {
+  let y = 0;
+  let node: HTMLElement | null = el;
+  while (node && node !== ancestor) {
+    y += node.offsetTop;
+    node = node.offsetParent as HTMLElement | null;
+  }
+  return y;
+}
+
 /** Normalized [0..1] windows, one per message; the last beat breathes 1.4x (§6.2). */
 export function beatWindows(messages: ChatMessage[]): BeatWindow[] {
   const weights = messages.map((_, i) => (i === messages.length - 1 ? 1.4 : 1));
@@ -64,13 +85,23 @@ export function buildThreadTimeline(root: HTMLElement, messages: ChatMessage[]) 
     // message's bottom edge sits inside the visible rect (§5 M1 pinned
     // outside, scrolling inside)
     if (scroller && viewport) {
-      const needed = Math.max(
-        0,
-        el.offsetTop + el.offsetHeight - (viewport.clientHeight - 8),
+      // Function-based so GSAP re-reads layout on invalidate. The screen is
+      // fit-scaled by ChatThread one frame AFTER this timeline is built, so a
+      // value measured now would be stale and the last bubble would sit
+      // behind the composer.
+      tl.to(
+        scroller,
+        {
+          y: () =>
+            -Math.max(
+              0,
+              offsetWithin(el, viewport) + el.offsetHeight - (viewport.clientHeight - BOTTOM_GAP),
+            ),
+          duration: span * 0.35,
+          ease: 'power2.out',
+        },
+        start,
       );
-      if (needed > 0) {
-        tl.to(scroller, { y: -needed, duration: span * 0.35, ease: 'power2.out' }, start);
-      }
     }
   });
 
