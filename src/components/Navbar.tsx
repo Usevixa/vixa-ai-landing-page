@@ -2,7 +2,7 @@
 // blur after 80px (single 0.4s transition, CSS-driven via a toggled class).
 import { useEffect, useRef, useState } from 'react';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
-import { WA_LINK } from '../lib/site';
+import { WA_LINK, trackWhatsAppClick } from '../lib/site';
 
 const LINKS = [
   { label: 'Why Vixa', href: '#why' },
@@ -58,6 +58,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href={WA_LINK}
+             onClick={() => trackWhatsAppClick('nav')}
             className="rounded-pill bg-vx-olive px-5 py-2.5 text-[14px] font-semibold text-vx-void transition-colors hover:bg-vx-olive-lo"
           >
             Chat on WhatsApp

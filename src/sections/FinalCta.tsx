@@ -1,6 +1,6 @@
 // §6.12 — the one place to spend brightness. On a light page that inverts:
 // a deep green band is the loudest thing on the scroll.
-import { WA_LINK } from '../lib/site';
+import { WA_LINK, trackWhatsAppClick } from '../lib/site';
 
 export default function FinalCta() {
   return (
@@ -27,6 +27,7 @@ export default function FinalCta() {
         <div data-reveal className="mt-10">
           <a
             href={WA_LINK}
+            onClick={() => trackWhatsAppClick('final-cta')}
             className="inline-flex items-center gap-2.5 rounded-pill bg-white px-10 py-[1.125rem] text-[17px] font-semibold text-vx-olive transition-transform hover:scale-[1.02]"
           >
             <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor" aria-hidden="true">
