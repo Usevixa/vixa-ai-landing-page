@@ -1,7 +1,7 @@
 // Shared chrome for the Privacy / Terms pages. Deliberately static — no GSAP,
 // no ScrollTrigger — so each legal page ships a tiny, fast bundle.
 import type { ReactNode } from "react";
-import { WA_LINK, trackWhatsAppClick } from "../lib/site";
+import { WA_LINK, COMPANY_NAME, trackWhatsAppClick } from "../lib/site";
 import Footer from "../sections/Footer";
 
 export default function LegalLayout({
@@ -46,7 +46,7 @@ export default function LegalLayout({
             {title}
           </h1>
           <p className="text-mono-meta mt-4 text-vx-ash">
-            Last updated {updated}
+            Last updated {updated} · Operated by {COMPANY_NAME}
           </p>
           <div className="legal-prose mt-12">{children}</div>
         </div>

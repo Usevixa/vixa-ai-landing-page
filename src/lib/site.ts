@@ -9,6 +9,11 @@ export const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_
 
 export const SUPPORT_EMAIL = 'support@vixa.com';
 
+// Legal entity that owns and operates VIXA. Shown in the footer, legal pages,
+// and structured data so the brand is publicly tied to the company (Meta
+// Business Verification). Keep spelling identical to the registration docs.
+export const COMPANY_NAME = 'Bitmigo Technologies';
+
 // last-updated date shown on the legal pages
 export const LEGAL_UPDATED = 'July 2026';
 

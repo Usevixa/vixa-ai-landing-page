@@ -1,15 +1,16 @@
 // Privacy Policy. TEMPLATE CONTENT — must be reviewed by counsel before
 // launch (§12). Written for VIXA: a WhatsApp-native crypto/remittance service.
 import LegalLayout from './LegalLayout';
-import { LEGAL_UPDATED, SUPPORT_EMAIL } from '../lib/site';
+import { LEGAL_UPDATED, SUPPORT_EMAIL, COMPANY_NAME } from '../lib/site';
 
 export default function PrivacyPage() {
   return (
     <LegalLayout title="Privacy Policy" updated={LEGAL_UPDATED}>
       <p>
-        This Privacy Policy explains how VIXA (&ldquo;VIXA&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;)
-        collects, uses, and protects your information when you use our money-transfer service
-        through WhatsApp. By using VIXA, you agree to the practices described here.
+        VIXA is owned and operated by {COMPANY_NAME} (&ldquo;{COMPANY_NAME}&rdquo;, &ldquo;VIXA&rdquo;,
+        &ldquo;we&rdquo;, &ldquo;us&rdquo;). {COMPANY_NAME} is the data controller responsible for
+        your personal information. This Privacy Policy explains how we collect, use, and protect
+        your information when you use our money-transfer service through WhatsApp. By using VIXA, you agree to the practices described here.
       </p>
 
       <h2>Information we collect</h2>
@@ -86,8 +87,8 @@ export default function PrivacyPage() {
 
       <h2>Contact us</h2>
       <p>
-        Questions about this policy or your data? Reach us on WhatsApp support or email{' '}
-        <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+        Questions about this policy or your data? Contact {COMPANY_NAME}, the operator of VIXA, on
+        WhatsApp support or email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
       </p>
     </LegalLayout>
   );
