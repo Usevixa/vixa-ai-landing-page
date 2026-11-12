@@ -1,15 +1,17 @@
 // Terms of Service. TEMPLATE CONTENT — must be reviewed by counsel before
 // launch (§12). Written for VIXA: a WhatsApp-native crypto/remittance service.
 import LegalLayout from './LegalLayout';
-import { LEGAL_UPDATED, SUPPORT_EMAIL } from '../lib/site';
+import { LEGAL_UPDATED, SUPPORT_EMAIL, COMPANY_NAME } from '../lib/site';
 
 export default function TermsPage() {
   return (
     <LegalLayout title="Terms of Service" updated={LEGAL_UPDATED}>
       <p>
-        These Terms of Service (&ldquo;Terms&rdquo;) govern your use of VIXA, a service that lets
-        you send, receive, buy, sell, swap, and move money and crypto through WhatsApp. By using
-        VIXA, you agree to these Terms.
+        These Terms of Service (&ldquo;Terms&rdquo;) are an agreement between you and{' '}
+        {COMPANY_NAME} (&ldquo;{COMPANY_NAME}&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;), the company
+        that owns and operates VIXA. They govern your use of VIXA, a service that lets you send,
+        receive, buy, sell, swap, and move money and crypto through WhatsApp. By using VIXA, you
+        agree to these Terms.
       </p>
 
       <h2>Eligibility</h2>
@@ -68,7 +70,8 @@ export default function TermsPage() {
 
       <h2>Limitation of liability</h2>
       <p>
-        To the fullest extent permitted by law, VIXA is provided &ldquo;as is&rdquo; and we are not
+        To the fullest extent permitted by law, VIXA is provided &ldquo;as is&rdquo; and{' '}
+        {COMPANY_NAME} is not
         liable for indirect, incidental, or consequential damages arising from your use of the
         service. Nothing in these Terms limits liability that cannot be limited under applicable
         law.
@@ -83,8 +86,8 @@ export default function TermsPage() {
 
       <h2>Contact us</h2>
       <p>
-        Questions about these Terms? Reach us on WhatsApp support or email{' '}
-        <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+        Questions about these Terms? Contact {COMPANY_NAME}, the operator of VIXA, on WhatsApp
+        support or email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
       </p>
     </LegalLayout>
   );
